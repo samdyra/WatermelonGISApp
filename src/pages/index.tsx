@@ -4,40 +4,72 @@ import { api, type RouterOutputs } from "~/utils/api";
 import { SignIn, SignInButton } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
+import { useState } from "react";
 
 const CreatePostWizard = () => {
-  const { user } = useUser()
-  if (!user) return null
-  console.log(user)
-  return (
-    <div className="border-b border-slate-400 flex gap-3 p-4">
-      <Image width={50} height={50} src={user?.profileImageUrl} className="rounded-full" alt="Profile Image"/>
-      <input placeholder="Type some emojis" className="bg-transparent outline-none w-full" />
-    </div>
-  )
-}
+  const { user } = useUser();
+  const ctx = api.useContext()
 
-type PostWithUser = RouterOutputs["posts"]["getAll"][number]
+  const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
+    onSuccess: () => {
+      setInput("");
+      void ctx.posts.getAll.invalidate()
+    }
+  });
+  const [ input, setInput ] = useState<string>("");
+
+  if (!user) return null;
+
+  return (
+    <div className="flex gap-3 border-b border-slate-400 p-4">
+      <Image
+        width={50}
+        height={50}
+        src={user?.profileImageUrl}
+        className="rounded-full"
+        alt="Profile Image"
+      />
+      <input
+        placeholder="Type some emojis"
+        className="w-full bg-transparent outline-none"
+        value={input}
+        onChange={(e) => {
+          setInput(e.target.value);
+        }}
+        type="text"
+        disabled={isPosting}
+      />
+      <button onClick={() => mutate({ content: input })}>Post</button>
+    </div>
+  );
+};
+
+type PostWithUser = RouterOutputs["posts"]["getAll"][number];
 
 const PostView = (props: PostWithUser) => {
-  const { post, author } = props
+  const { post, author } = props;
 
   return (
-    <div className="flex gap-3 p-4 border-b border-slate-400">
-      <Image src={author?.profileImageUrl} alt="User Image" width={50} height={50} className=" rounded-full"/>
+    <div className="flex gap-3 border-b border-slate-400 p-4">
+      <Image
+        src={author?.profileImageUrl}
+        alt="User Image"
+        width={50}
+        height={50}
+        className=" rounded-full"
+      />
       <div>
         <h1 className="text-xs text-gray-600">{author.username}</h1>
         <h1 className="text-sm">{post.content}</h1>
       </div>
     </div>
-  )
-}
-
+  );
+};
 
 const Home: NextPage = () => {
-  const user = useUser()
-  const { data, isLoading } = api.posts.getAll.useQuery()
-  if (isLoading) return <h1>Loading...</h1>
+  const user = useUser();
+  const { data, isLoading } = api.posts.getAll.useQuery();
+  if (isLoading) return <h1>Loading...</h1>;
 
   return (
     <>
@@ -47,7 +79,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex h-screen justify-center">
-        <div className="w-full md:max-w-2xl border-x border-slate-200">
+        <div className="w-full border-x border-slate-200 md:max-w-2xl">
           <div className="border-b border-slate-400">
             {!user.isSignedIn && (
               <div className="flex justify-center">
@@ -59,7 +91,7 @@ const Home: NextPage = () => {
           </div>
           <div className="flex flex-col">
             {data?.map((fullPost) => (
-              <PostView {...fullPost} key={fullPost.post.id}/>
+              <PostView {...fullPost} key={fullPost.post.id} />
             ))}
           </div>
         </div>

@@ -30,6 +30,7 @@ const config = {
     // "import/order": "off",
     "react/prop-types": "off",
     "no-use-before-define": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "no-underscore-dangle": "warn",
     "react-native/no-raw-text": "off",
     "react/jsx-filename-extension": "off",

@@ -5,6 +5,8 @@ import { SignIn, SignInButton } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
+import Link from "next/link";
 
 const CreatePostWizard = () => {
   const { user } = useUser();
@@ -14,6 +16,9 @@ const CreatePostWizard = () => {
     onSuccess: () => {
       setInput("");
       void ctx.posts.getAll.invalidate()
+    },
+    onError: () => {
+      toast.error("Something Went Wrong!");
     }
   });
   const [ input, setInput ] = useState<string>("");
@@ -52,15 +57,19 @@ const PostView = (props: PostWithUser) => {
   return (
     <div className="flex gap-3 border-b border-slate-400 p-4">
       <Image
-        src={author?.profileImageUrl}
+        src={author.profileImageUrl}
         alt="User Image"
         width={50}
         height={50}
         className=" rounded-full"
       />
       <div>
-        <h1 className="text-xs text-gray-600">{author.username}</h1>
-        <h1 className="text-sm">{post.content}</h1>
+        <Link href={author.username!}>
+          <h1 className="text-xs text-gray-600">{author.username}</h1>
+        </Link>
+        <Link href={`/post/${post.id}`}>
+          <h1 className="text-sm">{post.content}</h1>
+        </Link>
       </div>
     </div>
   );

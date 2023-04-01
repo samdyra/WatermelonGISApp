@@ -7,8 +7,8 @@ import {
 import { useUser } from "@clerk/nextjs";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const user = useUser()
+  const { data } = api.posts.getAll.useQuery()
 
   return (
     <>
@@ -21,8 +21,10 @@ const Home: NextPage = () => {
         <SignInButton />
         <SignOutButton />
         <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
-        <h1>{hello.data?.greeting}</h1>
         <h1>{user.user?.fullName}</h1>
+        {data?.map((post) => (
+          <h1 key={post.id}>{post.content}</h1>
+        ))}
       </main>
     </>
   );

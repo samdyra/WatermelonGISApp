@@ -1,0 +1,23 @@
+diff --git a/node_modules/react-leaflet/lib/MapContainer.d.ts b/node_modules/react-leaflet/lib/MapContainer.d.ts
+index 9cc061e..6892b7d 100644
+--- a/node_modules/react-leaflet/lib/MapContainer.d.ts
++++ b/node_modules/react-leaflet/lib/MapContainer.d.ts
+@@ -9,5 +9,7 @@ export interface MapContainerProps extends MapOptions {
+     placeholder?: ReactNode;
+     style?: CSSProperties;
+     whenReady?: () => void;
++    center: number[];
++    zoom: number;
+ }
+ export declare const MapContainer: React.ForwardRefExoticComponent<MapContainerProps & React.RefAttributes<LeafletMap>>;
+diff --git a/node_modules/react-leaflet/lib/TileLayer.d.ts b/node_modules/react-leaflet/lib/TileLayer.d.ts
+index 9bd5d47..04792af 100644
+--- a/node_modules/react-leaflet/lib/TileLayer.d.ts
++++ b/node_modules/react-leaflet/lib/TileLayer.d.ts
+@@ -3,5 +3,6 @@ import { type LayerProps } from '@react-leaflet/core';
+ import { TileLayer as LeafletTileLayer, type TileLayerOptions } from 'leaflet';
+ export interface TileLayerProps extends TileLayerOptions, LayerProps {
+     url: string;
++    attribution: string;
+ }
+ export declare const TileLayer: import("react").ForwardRefExoticComponent<TileLayerProps & import("react").RefAttributes<LeafletTileLayer>>;

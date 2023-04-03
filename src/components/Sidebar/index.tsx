@@ -24,10 +24,10 @@ const SideBar = () => {
           style={{ right: isOpen ? "-270px" : "-20px" }}
           onClick={handleOpen}
         >
-          <Image src="openlogo.svg" alt="open-icon" width={10} height={10} className={isOpen ? s.icon1_active : s.icon1}/>
+          <Image src="openlogo.svg" alt="open-icon" width={10} height={10} className={isOpen ? s.icon1_active : s.icon1} loading={"lazy"} />
         </button>
         <button className={s.openButton2} onClick={handleOpen2}>
-          <Image src="openlogo.svg" alt="open-icon" className={!isOpen2 ? s.icon1_active : s.icon1} width={10} height={10}/>
+          <Image src="openlogo.svg" alt="open-icon" className={!isOpen2 ? s.icon1_active : s.icon1} width={10} height={10} loading={"lazy"}/>
         </button>
       </div>
       <div className={s.wrapper2} style={wrapper2Style}></div>

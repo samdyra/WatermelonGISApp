@@ -4,7 +4,7 @@
   height: calc(100vh - 4rem);
   background-color: rgb(31 41 55);
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   z-index: 2;
@@ -17,9 +17,8 @@
   flex-direction: column;
   height: calc(100vh - 4rem);
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
-
   background-color:  #b6b6b6;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   z-index: 1;

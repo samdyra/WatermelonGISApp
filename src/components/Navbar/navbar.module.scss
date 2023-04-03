@@ -1,0 +1,47 @@
+.wrapper {
+  height: calc(100vh - 4rem);
+  width: 100vw;
+}
+
+.burgerbar {
+  width: 2em;
+  height: 0.25em;
+  background-color: white;
+  border-radius: 0.5em;
+  transform: rotate(0) translate(0);
+  transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s;
+}
+
+.burgermenu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.burgerbar2 {
+  width: 2em;
+  height: 0.25em;
+  background-color: white;
+  border-radius: 0.5em;
+}
+
+.burgerbar2:nth-child(1) {
+  transform: translate(0, 11.5px) rotate(45deg);
+  transition: ease-out 0.5s;
+}
+
+.burgerbar2:nth-child(2) {
+  transform: scale(0.1);
+  transition: ease-out 0.5s;
+}
+
+.burgerbar2:nth-child(3) {
+  transform: translate(0, -12.5px) rotate(135deg);
+  transition: ease-out 0.5s;
+}
+
+.burgerbar2:nth-child(3) {
+  transform: translate(0, -12.5px) rotate(135deg);
+  transition: ease-out 0.5s;
+}

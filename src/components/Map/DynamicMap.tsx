@@ -1,10 +1,10 @@
-
+import s from "./map.module.scss";
 import "leaflet/dist/leaflet.css";
 import { TileLayer, MapContainer } from "react-leaflet";
 
 
 const Map = ({}) => (
-  <div className="w-full h-full">
+  <div className={s.wrapper}>
     <MapContainer
       center={[ -6.733252, 108.552161 ]}
       zoom={13}

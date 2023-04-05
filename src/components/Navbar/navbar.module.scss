@@ -4,8 +4,8 @@
 }
 
 .burgerbar {
-  width: 2em;
-  height: 0.25em;
+  width: 1.5em;
+  height: 0.1em;
   background-color: white;
   border-radius: 0.5em;
   transform: rotate(0) translate(0);
@@ -17,27 +17,27 @@
   flex-direction: column;
   justify-content: center;
   gap: 8px;
+  cursor: pointer;
+}
+
+.burgerbar:hover {
+  cursor: pointer;
 }
 
 .burgerbar2 {
-  width: 2em;
-  height: 0.25em;
+  width: 1.5em;
+  height: 0.1em;
   background-color: white;
   border-radius: 0.5em;
 }
 
 .burgerbar2:nth-child(1) {
-  transform: translate(0, 11.5px) rotate(45deg);
+  transform: translate(0, 7.0px) rotate(45deg);
   transition: ease-out 0.5s;
 }
 
 .burgerbar2:nth-child(2) {
   transform: scale(0.1);
-  transition: ease-out 0.5s;
-}
-
-.burgerbar2:nth-child(3) {
-  transform: translate(0, -12.5px) rotate(135deg);
   transition: ease-out 0.5s;
 }
 

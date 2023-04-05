@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import s from "./navbar.module.scss";
 import Link from "next/link";
-import { useRouter } from 'next/router';
-
+import { useRouter } from "next/router";
+import { useUser } from "@clerk/nextjs";
+import { SignInButton, UserButton } from "@clerk/nextjs";
 
 interface Props {
   handleShowSidebar: () => void;
@@ -17,7 +18,29 @@ const Navbar = (props: Props) => {
 
   const { asPath } = useRouter();
   const isAtHomePage = asPath === "/";
-  
+  const user = useUser();
+  const isSignedIn = user.isSignedIn;
+
+  const HandleButtonSignIn = () => {
+    if (isSignedIn) {
+      return (
+        <>
+          <UserButton />
+        </>
+        
+      );
+    }
+
+    return (
+      <SignInButton mode="modal">
+        <img
+          className="h-8 w-8 rounded-full"
+          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
+          alt=""
+        />
+      </SignInButton>
+    );
+  };
 
   return (
     <nav className="bg-gray-800">
@@ -79,44 +102,38 @@ const Navbar = (props: Props) => {
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
-                {
-                  isAtHomePage ? (
-                    <Link
-                      href="/"
-                      className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
-                      aria-current="page"
-                    >
-                  Home
-                    </Link>
-                    
-                  ) : (
-                    <Link
-                      href="/"
-                      className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                    >
-                  Home
-                    </Link>
-                  )
-                }
-                {
-                  !isAtHomePage ? (
-                    <Link
-                      href="/playground"
-                      className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
-                      aria-current="page"
-                    >
-                  Playground
-                    </Link>
-                    
-                  ) : (
-                    <Link
-                      href="/playground"
-                      className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                    >
-                  Playground
-                    </Link>
-                  )
-                }
+                {isAtHomePage ? (
+                  <Link
+                    href="/"
+                    className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
+                    aria-current="page"
+                  >
+                    Home
+                  </Link>
+                ) : (
+                  <Link
+                    href="/"
+                    className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                  >
+                    Home
+                  </Link>
+                )}
+                {!isAtHomePage ? (
+                  <Link
+                    href="/playground"
+                    className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
+                    aria-current="page"
+                  >
+                    Playground
+                  </Link>
+                ) : (
+                  <Link
+                    href="/playground"
+                    className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                  >
+                    Playground
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -131,11 +148,7 @@ const Navbar = (props: Props) => {
                   aria-haspopup="true"
                 >
                   <span className="sr-only">Open user menu</span>
-                  <img
-                    className="h-8 w-8 rounded-full"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                    alt=""
-                  />
+                  <HandleButtonSignIn />
                 </button>
               </div>
             </div>

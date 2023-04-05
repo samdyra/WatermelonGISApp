@@ -4,11 +4,14 @@ import Head from "next/head";
 import Descbar from "~/components/Descbar";
 import Map from "~/components/Map";
 import Navbar from "~/components/Navbar";
-import Sidebar from "~/components/Sidebar";
+import Layerbar from "~/components/Layerbar";
 
-const Home: NextPage = () => {
+const Playground: NextPage = () => {
   const [ isOpen, setIsOpen ] = useState(false);
+  const [ isLayerOpen, setIsLayerOpen ] = useState(false);
+  const [ isToolsOpen ] = useState(true);
   const handleShowSidebar = () => setIsOpen(!isOpen);
+  const handleShowLayerbar = () => setIsLayerOpen(!isLayerOpen);
 
   return (
     <>
@@ -20,11 +23,12 @@ const Home: NextPage = () => {
       <main className="border-3 overflow-hidden bg-red-600">
         <Navbar handleShowSidebar={handleShowSidebar}/>
         <Map />
+        <Layerbar isOpen={isLayerOpen} handleShowLayerbar={handleShowLayerbar} position="left" size="large"/>
+        <Layerbar isOpen={isToolsOpen} position="right" size="small"/>
         <Descbar isOpen={isOpen}/>
-        <Sidebar />
       </main>
     </>
   )
 }
 
-export default Home;
+export default Playground;

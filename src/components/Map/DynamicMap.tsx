@@ -14,6 +14,7 @@ const Map = ({}) => (
         zIndex: 0,
         boxShadow: "-2px 3px 5px 0 rgba(0,.9,0,.4)",
       }}
+      zoomControl={false}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

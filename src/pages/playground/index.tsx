@@ -2,7 +2,7 @@ import { type NextPage } from "next";
 import { useState } from "react";
 import Head from "next/head";
 import {
-  Map, Navbar, Layerbar, Descbar, AddFeature 
+  Navbar, Layerbar, Descbar, AddFeature, Map
 } from "~/components";
 
 const Playground: NextPage = () => {

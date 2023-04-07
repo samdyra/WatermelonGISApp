@@ -1,5 +1,4 @@
 import React, { memo } from "react";
-import s from "./descbar.module.scss";
 
 interface Props {
   isOpen: boolean;
@@ -21,23 +20,19 @@ const LayerBar = (props: Props) => {
         left: props.position === "left" ? "0.5rem" : "unset",
         right: props.position === "right" ? "0.5rem" : "unset",
       }}
+      onClick={props.handleShowLayerbar}
     >
-      {props.handleShowLayerbar && <ButtonCollapse handlePress={props.handleShowLayerbar} />}
+      {props.handleShowLayerbar && <ButtonCollapse />}
       {props.isOpen && props.children}
     </div>
   );
 };
 
-interface ButtonTypes {
-  handlePress: () => void;
-}
-
-const ButtonCollapse = (props: ButtonTypes) => (
+const ButtonCollapse = () => (
   <div
     className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:cursor-pointer "
     aria-controls="mobile-menu"
     aria-expanded="false"
-    onClick={props.handlePress}
   >
     <svg
       className="block h-6 w-6"

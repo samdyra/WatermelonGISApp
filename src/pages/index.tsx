@@ -1,10 +1,9 @@
 import { type NextPage } from "next";
 import { useState } from "react";
 import Head from "next/head";
-import Descbar from "~/components/Descbar";
-import Map from "~/components/Map";
-import Navbar from "~/components/Navbar";
-import Sidebar from "~/components/Sidebar";
+import {
+  Map, Navbar, Sidebar, Descbar 
+} from "~/components";
 
 const Home: NextPage = () => {
   const [ isOpen, setIsOpen ] = useState(false);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import s from "./navbar.module.scss";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -197,4 +197,4 @@ const Navbar = (props: Props) => {
   );
 };
 
-export default Navbar;
+export default memo(Navbar);

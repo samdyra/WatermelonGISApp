@@ -46,7 +46,7 @@ const config = {
     "object-curly-spacing": [ "warn", "always" ],
     "object-curly-newline": [ 2, { "multiline": true, "minProperties": 3 } ],
     "arrow-body-style": "warn",
-    "consistent-return": "warn",
+    "consistent-return": "off",
     "no-nested-ternary": "warn",
     // "import/named": "error",
     "no-plusplus": "warn",

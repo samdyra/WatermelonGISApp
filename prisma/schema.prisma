@@ -16,3 +16,11 @@ model Post {
     authorId    String
     @@index([authorId], name: "authorId")
 }
+
+model Feature {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    content  String @db.VarChar(255)
+    authorId    String
+    @@index([authorId], name: "authorId")
+}

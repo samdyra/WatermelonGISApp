@@ -1,15 +1,13 @@
 import { type NextPage } from "next";
 import { useState } from "react";
 import Head from "next/head";
-import Descbar from "~/components/Descbar";
-import Map from "~/components/Map";
-import Navbar from "~/components/Navbar";
-import Layerbar from "~/components/Layerbar";
+import {
+  Map, Navbar, Layerbar, Descbar, AddFeature 
+} from "~/components";
 
 const Playground: NextPage = () => {
   const [ isOpen, setIsOpen ] = useState(false);
-  const [ isLayerOpen, setIsLayerOpen ] = useState(false);
-  const [ isToolsOpen ] = useState(true);
+  const [ isLayerOpen, setIsLayerOpen ] = useState(true);
   const handleShowSidebar = () => setIsOpen(!isOpen);
   const handleShowLayerbar = () => setIsLayerOpen(!isLayerOpen);
 
@@ -23,8 +21,10 @@ const Playground: NextPage = () => {
       <main className="border-3 overflow-hidden bg-red-600">
         <Navbar handleShowSidebar={handleShowSidebar}/>
         <Map />
-        <Layerbar isOpen={isLayerOpen} handleShowLayerbar={handleShowLayerbar} position="left" size="large"/>
-        <Layerbar isOpen={isToolsOpen} position="right" size="small"/>
+        <Layerbar isOpen={isLayerOpen} handleShowLayerbar={handleShowLayerbar} position="left" size="large">
+          <AddFeature />
+        </Layerbar>
+        <Layerbar isOpen position="right" size="small"/>
         <Descbar isOpen={isOpen}/>
       </main>
     </>

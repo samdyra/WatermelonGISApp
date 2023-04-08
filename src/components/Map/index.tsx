@@ -2,12 +2,26 @@ import dynamic from 'next/dynamic';
 
 const DynamicMap = dynamic(() => import('./DynamicMap'), { ssr: false });
 
-interface Props {
-  data?: {
-    id: string;
-    name: string;
-    feature: string;
+interface GeoJson {
+  type: string;
+  features: {
+    type: string;
+    geometry: {
+      type: string;
+      coordinates: number[];
+    }
+    properties: object;
   }[]
+  crs: {
+    type: string;
+    properties: {
+      name: string
+    }
+  };
+  name: string;
+}
+interface Props {
+  data: GeoJson[]
 }
 
 const Map = (props: Props) => (

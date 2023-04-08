@@ -1,36 +1,36 @@
-import React, {
-  memo, useEffect, useState 
-} from "react";
-import { center } from "@turf/turf";
-import { type AllGeoJSON } from "@turf/helpers";
+import React, { memo } from "react";
 
+interface GeoJson {
+  type: string;
+  features: {
+    type: string;
+    geometry: {
+      type: string;
+      coordinates: number[];
+    }
+    properties: object;
+  }[]
+  crs: {
+    type: string;
+    properties: {
+      name: string
+    }
+  };
+  name: string;
+}
 interface Props {
-  data?: {
-    id: string;
-    name: string;
-    feature: string;
-  }[];
+  data: GeoJson[]
 }
 
 const Analysis = (props: Props) => {
-  const [ geoJson, setGeoJson ] = useState<AllGeoJSON | null>(null);
-  const sample = props.data && props.data[0]?.feature;
+  console.log("test", props.data)
 
-  useEffect(() => {
-    if (sample) {
-      fetch(sample)
-        .then((res) => res.json().then((out: AllGeoJSON) => setGeoJson(out)))
-        .catch((err) => console.log(err));
-    }
-  }, [ sample ]);
+  // useEffect(() => {
+  //   if (geoJson) {
+  //     const centerPoint = center(geoJson);
+  //   }
 
-  useEffect(() => {
-    if (geoJson) {
-      const centerPoint = center(geoJson);
-      console.log("anjing", centerPoint);
-    }
-
-  }, [ geoJson ])
+  // }, [ geoJson ])
 
   return (
     <div className="h-full w-full p-5">
@@ -41,6 +41,10 @@ const Analysis = (props: Props) => {
           <p className="text-xs text-slate-200">Mean Spatial</p>
         </div>
       </div>
+      {props.data.map((el) => (
+        // eslint-disable-next-line react/jsx-key
+        <p className="flex flex-col">{el.name}</p>
+      ))}
     </div>
   )
 }

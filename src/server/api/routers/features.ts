@@ -13,10 +13,14 @@ export const featureRouter = createTRPCRouter({
   }),
 
   create: privateProcedure
-    .input(z.object({ feature: z.string() }))
+    .input(z.object({ feature: z.string(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const authorId = ctx.userId;
-      const features = await ctx.prisma.feature.create({ data: { authorId, feature: input.feature }, });
+      const features = await ctx.prisma.feature.create({
+        data: {
+          authorId, feature: input.feature, name: input.name 
+        }, 
+      });
 
       return features;
     }),

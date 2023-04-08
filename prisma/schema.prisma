@@ -22,5 +22,6 @@ model Feature {
     createdAt DateTime @default(now())
     feature  String @db.VarChar(255)
     authorId    String
+    name String
     @@index([authorId], name: "authorId")
 }

@@ -4,5 +4,7 @@ export { default as Navbar } from "./Navbar";
 export { default as Sidebar } from "./Sidebar";
 export { default as AddFeature } from "./AddFeature";
 export { default as Map } from "./Map"
+export { default as Analysis } from "./Analysis"
+
 
 

@@ -3,19 +3,26 @@ import "leaflet/dist/leaflet.css";
 import {
   TileLayer, MapContainer, GeoJSON 
 } from "react-leaflet";
-import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
-import { type GeoJsonTypes } from "geojson";
+import type { GeoJsonObject } from 'geojson';
 
-const Map = ({}) => {
-  const [ geoJson, setGeoJson ] = useState<GeoJsonTypes | null>(null);
-  const { data } = api.features.getFeaturesByUserId.useQuery();
-  const sample = data && data[0]?.feature;
+
+interface Props {
+  data?: {
+    id: string;
+    name: string;
+    feature: string;
+  }[]
+}
+
+const Map = (props: Props) => {
+  const [ geoJson, setGeoJson ] = useState<GeoJsonObject | null>(null);
+  const sample = props.data && props.data[0]?.feature;
 
   useEffect(() => {
     if (sample) {
       fetch(sample)
-        .then((res) => res.json().then((out: GeoJsonTypes) => setGeoJson(out)))
+        .then((res) => res.json().then((out: GeoJsonObject) => setGeoJson(out)))
         .catch((err) => console.log(err));
     }
   }, [ sample ]);

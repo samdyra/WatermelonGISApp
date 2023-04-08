@@ -21,7 +21,7 @@ interface GeoJson {
   name: string;
 }
 interface Props {
-  data: GeoJson[]
+  data?: GeoJson[]
 }
 
 const Map = (props: Props) => (

@@ -1,3 +1,36 @@
+diff --git a/node_modules/react-leaflet/lib/GeoJSON.d.ts b/node_modules/react-leaflet/lib/GeoJSON.d.ts
+index 17daacd..162912c 100644
+--- a/node_modules/react-leaflet/lib/GeoJSON.d.ts
++++ b/node_modules/react-leaflet/lib/GeoJSON.d.ts
+@@ -3,7 +3,27 @@ import { type PathProps } from '@react-leaflet/core';
+ import type { GeoJsonObject } from 'geojson';
+ import { GeoJSON as LeafletGeoJSON, type GeoJSONOptions } from 'leaflet';
+ import type { LayerGroupProps } from './LayerGroup.js';
++
++interface GeoJson {
++    type: string;
++    features: {
++      type: string;
++      geometry: {
++        type: string;
++        coordinates: number[];
++      }
++      properties: object;
++    }[]
++    crs: {
++      type: string;
++      properties: {
++        name: string
++      }
++    };
++    name: string;
++  }
++
+ export interface GeoJSONProps extends GeoJSONOptions, LayerGroupProps, PathProps {
+-    data: GeoJsonObject;
++    data: GeoJson;
+ }
+ export declare const GeoJSON: import("react").ForwardRefExoticComponent<GeoJSONProps & import("react").RefAttributes<LeafletGeoJSON<any, import("geojson").Geometry>>>;
 diff --git a/node_modules/react-leaflet/lib/MapContainer.d.ts b/node_modules/react-leaflet/lib/MapContainer.d.ts
 index 9cc061e..4e0536f 100644
 --- a/node_modules/react-leaflet/lib/MapContainer.d.ts

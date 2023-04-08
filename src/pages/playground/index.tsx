@@ -1,5 +1,5 @@
 import { type NextPage } from "next";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Head from "next/head";
 import {
   Navbar,
@@ -15,43 +15,13 @@ import { ref } from "firebase/storage";
 import { storage } from "~/constants/firebase";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
-interface GeoJson {
-  type: string;
-  features: {
-    type: string;
-    geometry: {
-      type: string;
-      coordinates: number[];
-    }
-    properties: object;
-  }[]
-  crs: {
-    type: string;
-    properties: {
-      name: string
-    }
-  };
-  name: string;
-}[]
-
 const Playground: NextPage = () => {
   const [ isOpen, setIsOpen ] = useState(false);
   const [ isLayerOpen, setIsLayerOpen ] = useState(true);
-  const [ geoJson, setGeoJson ] = useState<GeoJson[]>([]);
 
   const ctx = api.useContext();
-  const { data, isSuccess } = api.features.getFeaturesByUserId.useQuery();
-
-  useEffect(() => {
-    if (isSuccess) {
-      setGeoJson([]);
-
-      data.map((el) => {
-        handleDownload(el.feature);
-      });
-    }
-
-  }, [ data, isSuccess ]);
+  const { data } = api.features.getFeaturesByUserId.useQuery();
+  console.log(data)
 
   const { mutate } = api.features.create.useMutation({
     onSuccess: () => {
@@ -61,16 +31,6 @@ const Playground: NextPage = () => {
       toast.error("Something Went Wrong!");
     },
   });
-
-  const handleDownload = (data: string) => {
-    fetch(data)
-      .then((res) =>
-        res.json().then((res: GeoJson) => {
-          setGeoJson((current) => [ ...current, res ]);
-        })
-      )
-      .catch((err) => console.log(err));
-  };
 
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -118,7 +78,7 @@ const Playground: NextPage = () => {
       </Head>
       <main className="border-3 overflow-hidden bg-red-600">
         <Navbar handleShowSidebar={handleShowSidebar} />
-        <Map data={geoJson} />
+        <Map data={data} />
         <Layerbar
           isOpen={isLayerOpen}
           handleShowLayerbar={handleShowLayerbar}
@@ -128,7 +88,7 @@ const Playground: NextPage = () => {
           <AddFeature handleUpload={handleUpload} data={data} />
         </Layerbar>
         <Layerbar isOpen position="right" size="small">
-          <Analysis data={geoJson} />
+          <Analysis data={data} />
         </Layerbar>
         <Descbar isOpen={isOpen} />
       </main>

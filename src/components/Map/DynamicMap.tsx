@@ -11,19 +11,19 @@ interface GeoJson {
     geometry: {
       type: string;
       coordinates: number[];
-    }
+    };
     properties: object;
-  }[]
+  }[];
   crs: {
     type: string;
     properties: {
-      name: string
-    }
+      name: string;
+    };
   };
   name: string;
 }
 interface Props {
-  data: GeoJson[]
+  data?: GeoJson[];
 }
 
 const Map = (props: Props) => (
@@ -43,10 +43,11 @@ const Map = (props: Props) => (
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {props.data.map((el) => (
-        // eslint-disable-next-line react/jsx-key
-        <GeoJSON data={el}/>
-      ))}
+      {props.data &&
+        props.data.map((el) => {
+          const r = (Math.random() + 1).toString(36).substring(7);
+          return <GeoJSON data={el} key={r} />;
+        })}
     </MapContainer>
   </div>
 );

@@ -1,4 +1,10 @@
 import React, { memo } from "react";
+import { api } from "~/utils/api";
+import toast from "react-hot-toast";
+import { ref } from "firebase/storage";
+import { storage } from "~/constants/firebase";
+import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
+
 
 interface GeoJson {
   type: string;
@@ -24,6 +30,39 @@ interface Props {
 
 const Analysis = (props: Props) => {
   const [ selected, setSelected ] = React.useState<GeoJson | null>(null);
+  
+  const { mutate } = api.vectorAnalysis.create.useMutation({
+    onSuccess: (data) => {
+      console.log(data)
+      const blob = new Blob([ JSON.stringify(data) ], { type: "application/json" });
+      const storageRef = ref(storage, `/features/test`);
+      const uploadFiles = uploadBytesResumable(storageRef, blob);
+
+      uploadFiles.on(
+        "state_changed",
+        (snapshot) => {
+          console.log(snapshot);
+        },
+        () => {
+          toast.error("Please upload again!");
+        },
+        () => {
+          getDownloadURL(uploadFiles.snapshot.ref)
+            .then((url) => {
+              console.log(url)
+              toast.success("Successfully upload data!");
+            })
+            .catch(() => {
+              toast.error("Please upload again!");
+            });
+        }
+      );
+    } 
+  })
+
+  const handleClickAnalysis = () => {
+    mutate({ feature: selected })
+  }
 
   return (
     <div className="h-full w-full p-5">
@@ -59,7 +98,7 @@ const Analysis = (props: Props) => {
       <div className="rounded-md bg-gray-600 h-4/6 ">
         <div className="p-2">
           <div className="">
-            <h1 className="mb-2 flex py-2 bg-gray-800 rounded-md px-2 items-center text-xs text-slate-200">Available Analysis Tools</h1>
+            <h1 className="mb-2 flex py-2 bg-gray-800 rounded-md px-2 items-center text-xs text-slate-200" onClick={handleClickAnalysis}>Mean Spatial</h1>
             <h1 className="mb-2 flex py-2 bg-gray-800 rounded-md px-2 items-center text-xs text-slate-200">Available Analysis Tools</h1>
           </div>
         </div>

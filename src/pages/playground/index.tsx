@@ -21,7 +21,6 @@ const Playground: NextPage = () => {
 
   const ctx = api.useContext();
   const { data } = api.features.getFeaturesByUserId.useQuery();
-  console.log(data)
 
   const { mutate } = api.features.create.useMutation({
     onSuccess: () => {

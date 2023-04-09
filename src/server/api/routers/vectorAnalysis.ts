@@ -1,7 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
+// TO DO: SOLVE THIS TECH DEBT
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import center from "@turf/center";
-import { featureCollection, point } from "@turf/turf";
+import { featureCollection } from "@turf/turf";
 
 
 export const vectorAnalysisRouter = createTRPCRouter({
@@ -9,9 +14,13 @@ export const vectorAnalysisRouter = createTRPCRouter({
     .input(z.object({ feature: z.any() }))
     .mutation( ({ input }) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const feature = center(input.feature, { properties: { name: "test" } });
-      const featuresCollection = featureCollection([ feature ]);
+      const inputData = center(input.feature);
+      const collected = featureCollection([ inputData ]);
+      const nameOnly = input.feature.name.split(".")[0];
+      const feature = { ...collected, name: nameOnly }
 
-      return featuresCollection
+
+
+      return feature
     }),
 });

@@ -16,7 +16,7 @@ interface GeoJson {
       name: string;
     };
   };
-  name: string;
+  name?: string;
 }
 interface Props {
   handleUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;

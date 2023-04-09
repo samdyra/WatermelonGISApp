@@ -22,7 +22,7 @@ interface GeoJson {
       name: string;
     };
   };
-  name: string;
+  name?: string;
 }
 interface Props {
   data?: GeoJson[];
@@ -30,12 +30,23 @@ interface Props {
 
 const Analysis = (props: Props) => {
   const [ selected, setSelected ] = React.useState<GeoJson | null>(null);
-  
+  const ctx = api.useContext();
+
+  const { mutate: mutateDB } = api.features.create.useMutation({
+    onSuccess: () => {
+      void ctx.features.getFeaturesByUserId.invalidate()
+    },
+    onError: () => {
+      toast.error("Something Went Wrong!");
+    },
+  });
+
   const { mutate } = api.vectorAnalysis.create.useMutation({
     onSuccess: (data) => {
       console.log(data)
       const blob = new Blob([ JSON.stringify(data) ], { type: "application/json" });
-      const storageRef = ref(storage, `/features/test`);
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      const storageRef = ref(storage, `/features/${data.name}-MeanSpatial`);
       const uploadFiles = uploadBytesResumable(storageRef, blob);
 
       uploadFiles.on(
@@ -49,7 +60,8 @@ const Analysis = (props: Props) => {
         () => {
           getDownloadURL(uploadFiles.snapshot.ref)
             .then((url) => {
-              console.log(url)
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/restrict-template-expressions
+              mutateDB({ feature: url, name: `${data.name}-MeanSpatial` ?? "file" });
               toast.success("Successfully upload data!");
             })
             .catch(() => {
@@ -76,6 +88,7 @@ const Analysis = (props: Props) => {
               setSelected(JSON.parse(sel.currentTarget.value));
             }}
           >
+            <option defaultValue="Choose Your Feature">Choose Your Feature</option>
             {props.data &&
                 props.data.map((data) => {
                   const r = (Math.random() + 1).toString(36).substring(7);
@@ -97,7 +110,7 @@ const Analysis = (props: Props) => {
       </div>
       <div className="rounded-md bg-gray-600 h-4/6 ">
         <div className="p-2">
-          <div className="">
+          <div className="cursor-pointer">
             <h1 className="mb-2 flex py-2 bg-gray-800 rounded-md px-2 items-center text-xs text-slate-200" onClick={handleClickAnalysis}>Mean Spatial</h1>
             <h1 className="mb-2 flex py-2 bg-gray-800 rounded-md px-2 items-center text-xs text-slate-200">Available Analysis Tools</h1>
           </div>

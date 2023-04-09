@@ -37,8 +37,11 @@ export const featureRouter = createTRPCRouter({
         const response = await fetch(featureLink);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const json:GeoJson = await response.json();
+        const nameOnly = featureObj.name.split(".")[0];
+        const feature = { ...json, name: nameOnly }
 
-        return json
+
+        return feature
       })
     );
   

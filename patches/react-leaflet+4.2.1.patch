@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-leaflet/lib/GeoJSON.d.ts b/node_modules/react-leaflet/lib/GeoJSON.d.ts
-index 17daacd..162912c 100644
+index 17daacd..7eaee68 100644
 --- a/node_modules/react-leaflet/lib/GeoJSON.d.ts
 +++ b/node_modules/react-leaflet/lib/GeoJSON.d.ts
 @@ -3,7 +3,27 @@ import { type PathProps } from '@react-leaflet/core';
@@ -23,7 +23,7 @@ index 17daacd..162912c 100644
 +        name: string
 +      }
 +    };
-+    name: string;
++    name?: string;
 +  }
 +
  export interface GeoJSONProps extends GeoJSONOptions, LayerGroupProps, PathProps {

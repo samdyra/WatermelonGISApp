@@ -3,6 +3,9 @@ import "leaflet/dist/leaflet.css";
 import {
   TileLayer, MapContainer, GeoJSON 
 } from "react-leaflet";
+import 'leaflet-defaulticon-compatibility';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
+
 
 interface GeoJson {
   type: string;
@@ -20,7 +23,7 @@ interface GeoJson {
       name: string;
     };
   };
-  name: string;
+  name?: string;
 }
 interface Props {
   data?: GeoJson[];
@@ -44,7 +47,7 @@ const Map = (props: Props) => (
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {props.data &&
-        props.data.map((el) => {
+        props.data.map((el: GeoJson) => {
           const r = (Math.random() + 1).toString(36).substring(7);
           return <GeoJSON data={el} key={r} />;
         })}

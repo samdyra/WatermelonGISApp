@@ -18,7 +18,7 @@ interface GeoJson {
       name: string
     }
   };
-  name: string;
+  name?: string;
 }
 interface Props {
   data?: GeoJson[]

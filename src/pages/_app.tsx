@@ -6,6 +6,11 @@ import "~/styles/globals.css";
 import Head from "next/head";
 import 'leaflet/dist/leaflet.css';
 
+
+
+
+
+
 const MyApp: AppType = ({ Component, pageProps }) => (
   <ClerkProvider {...pageProps}>
     <Head>

@@ -46,7 +46,7 @@ const AddFeature = (props: Props) => (
       {props.data?.map((item) => {
         const r = (Math.random() + 1).toString(36).substring(7);
         return (
-          <div className="mb-2  flex border-b border-slate-400 pb-1" key={r}>
+          <div className="mb-2 flex py-1 bg-gray-800 rounded-md px-3 items-center" key={r}>
             <div className="flex w-[95%] items-center">
               <Shape />
               <p className="text-xs text-slate-200">{item.name}</p>

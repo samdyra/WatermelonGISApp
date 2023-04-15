@@ -11,18 +11,20 @@ import {
 } from "~/components";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
-import { deleteObject, ref } from "firebase/storage";
-import { storage } from "~/constants/firebase";
-import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { handleUploadData, deleteFirebaseData } from "~/helpers/globalHelpers";
+
 
 
 const Playground: NextPage = () => {
+
+  // ---------- HOOKS ----------
   const [ isOpen, setIsOpen ] = useState(false);
   const [ isLayerOpen, setIsLayerOpen ] = useState(true);
 
   const ctx = api.useContext();
   const { data } = api.features.getFeaturesByUserId.useQuery();
 
+  // ---------- MUTATIONS ----------
   const { mutate } = api.features.create.useMutation({
     onSuccess: () => {
       void ctx.features.getFeaturesByUserId.invalidate()
@@ -32,56 +34,20 @@ const Playground: NextPage = () => {
     },
   });
 
-  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files == null || files[0] == undefined) {
-      return toast.error("Please upload again!");
-    }
-
-    if (files) {
-      const blob = new Blob([ files[0] ], { type: "application/json" });
-      const storageRef = ref(storage, `/features/${files[0].name}`);
-      const uploadFiles = uploadBytesResumable(storageRef, blob);
-      const fileName = files[0].name ?? "file";
-
-      uploadFiles.on(
-        "state_changed",
-        (snapshot) => {
-          console.log(snapshot);
-        },
-        () => {
-          toast.error("Please upload again!");
-        },
-        () => {
-          getDownloadURL(uploadFiles.snapshot.ref)
-            .then((url) => {
-              mutate({ feature: url, name: fileName });
-              toast.success("Successfully upload data!");
-            })
-            .catch(() => {
-              toast.error("Please upload again!");
-            });
-        }
-      );
-    }
-  };
-
   const { mutate: deleteFeature } = api.features.delete.useMutation({
     onSuccess: async ({ feature }) => {
       void ctx.features.getFeaturesByUserId.invalidate();
-      try {
-        const storageRef = ref(storage, feature);
-        await deleteObject(storageRef);
-        toast.success("Successfully delete data!");
-      }
-      catch (error) {
-        toast.error("Somethign Went Wrong!");
-      }
+      await deleteFirebaseData(feature)
     },
     onError: () => {
       toast.error("Something Went Wrong!");
     },
   });
+
+  // ---------- HANDLERS ----------
+  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleUploadData(event, (url, fileName) => mutate({ feature: url, name: fileName }));
+  };
 
   const handleDelete = (id: string) => deleteFeature({ id });
   const handleShowSidebar = () => setIsOpen(!isOpen);

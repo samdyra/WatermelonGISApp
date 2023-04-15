@@ -51,7 +51,6 @@ const UseAnalysisResult = () => {
       },
     });
 
-
   // ---------- HANDLERS ----------
   const handleMutateData = () => {
     switch (modalName) {

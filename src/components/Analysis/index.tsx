@@ -53,7 +53,6 @@ const Analysis = (props: Props) => {
     { name: "Weighted Mean Spatial", },
   ];
     
-
   const { mutate: mutateDB } = api.features.create.useMutation({
     onSuccess: () => {
       void ctx.features.getFeaturesByUserId.invalidate();
@@ -63,7 +62,7 @@ const Analysis = (props: Props) => {
     },
   });
 
-  const uploadToFirebase = (data: ITurf, storageName="output", callback: () => void ) => {
+  const uploadToFirebase = (data: ITurf, storageName="output", callback: (url: string) => void ) => {
     const blob = new Blob([ JSON.stringify(data) ], { type: "application/json", });
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     const storageRef = ref(storage, `/features/${data.name}-${storageName}`);
@@ -80,11 +79,7 @@ const Analysis = (props: Props) => {
       () => {
         getDownloadURL(uploadFiles.snapshot.ref)
           .then((url) => {
-            callback({
-              feature: url,
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              name: `${data.name}-${storageName}` ?? "file",
-            })
+            callback(url)
             toast.success("Successfully upload data!");
           })
           .catch(() => {
@@ -96,71 +91,26 @@ const Analysis = (props: Props) => {
 
   const { mutate: meanSpatial } = api.vectorAnalysis.meanSpatial.useMutation({
     onSuccess: (data) => {
-      const blob = new Blob([ JSON.stringify(data) ], { type: "application/json", });
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      const storageRef = ref(storage, `/features/${data.name}-MeanSpatial`);
-      const uploadFiles = uploadBytesResumable(storageRef, blob);
-
-      uploadFiles.on(
-        "state_changed",
-        (snapshot) => {
-          console.log(snapshot);
-        },
-        () => {
-          toast.error("Please upload again!");
-        },
-        () => {
-          getDownloadURL(uploadFiles.snapshot.ref)
-            .then((url) => {
-              mutateDB({
-                feature: url,
-                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                name: `${data.name}-MeanSpatial` ?? "file",
-              });
-              toast.success("Successfully upload data!");
-            })
-            .catch(() => {
-              toast.error("Please upload again!");
-            });
-        }
-      );
+      uploadToFirebase(data, "MeanSpatial", (url) => {
+        mutateDB({
+          feature: url,
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+          name: `${data.name}-MeanSpatial` ?? "file",
+        });
+      })
     },
   });
 
   const { mutate: weightedMeanSpatial } =
     api.vectorAnalysis.weightedMeanSpatial.useMutation({
       onSuccess: (data) => {
-        const blob = new Blob([ JSON.stringify(data) ], { type: "application/json", });
-        const storageRef = ref(
-          storage,
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-          `/features/${data.name}-WeightedMeanSpatial`
-        );
-        const uploadFiles = uploadBytesResumable(storageRef, blob);
-
-        uploadFiles.on(
-          "state_changed",
-          (snapshot) => {
-            console.log(snapshot);
-          },
-          () => {
-            toast.error("Please upload again!");
-          },
-          () => {
-            getDownloadURL(uploadFiles.snapshot.ref)
-              .then((url) => {
-                mutateDB({
-                  feature: url,
-                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                  name: `${data.name}-WeightedMean` ?? "file",
-                });
-                toast.success("Successfully upload data!");
-              })
-              .catch(() => {
-                toast.error("Please upload again!");
-              });
-          }
-        );
+        uploadToFirebase(data, "WeightedMean", (url) => {
+          mutateDB({
+            feature: url,
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            name: `${data.name}-WeightedMean` ?? "file",
+          });
+        })
       },
     });
 

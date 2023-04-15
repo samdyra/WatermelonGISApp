@@ -21,6 +21,7 @@ const Analysis = (props: Props) => {
     setModalName,
     setPropertiesSelected,
     setSelected,
+    isLoading
   } = UseAnalysisResult();
 
   return (
@@ -38,6 +39,7 @@ const Analysis = (props: Props) => {
       setModalName={setModalName}
       setPropertiesSelected={setPropertiesSelected}
       setSelected={setSelected}
+      isLoading={isLoading}
     />
   );
 };

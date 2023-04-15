@@ -6,6 +6,8 @@ export { default as AddFeature } from "./AddFeature";
 export { default as Map } from "./Map"
 export { default as Analysis } from "./Analysis"
 export { default as Modal } from "./Modal"
+export { default as NLoading } from "./UIBase/NLoading"
+
 
 
 

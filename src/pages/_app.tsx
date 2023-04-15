@@ -6,11 +6,6 @@ import "~/styles/globals.css";
 import Head from "next/head";
 import 'leaflet/dist/leaflet.css';
 
-
-
-
-
-
 const MyApp: AppType = ({ Component, pageProps }) => (
   <ClerkProvider {...pageProps}>
     <Head>
@@ -18,7 +13,7 @@ const MyApp: AppType = ({ Component, pageProps }) => (
       <meta name="description" content="Fruits" />
       <link rel="icon" href="/favicon.ico" />
     </Head>
-    <Toaster position="bottom-center"/>
+    <Toaster position="top-center"/>
     <Component {...pageProps} />
   </ClerkProvider>
 );

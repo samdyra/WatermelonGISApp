@@ -17,7 +17,7 @@ const UseAnalysisResult = () => {
   const [ isModalVisible, handleShowModal, handleHideModal ] = useModalState(false);
 
   // ---------- MUTATIONS ----------
-  const { mutate: createFeature } = api.features.create.useMutation({
+  const { mutate: createFeature, isLoading: loadingCreateData } = api.features.create.useMutation({
     onSuccess: () => {
       void ctx.features.getFeaturesByUserId.invalidate();
     },
@@ -26,7 +26,7 @@ const UseAnalysisResult = () => {
     },
   });
 
-  const { mutate: meanSpatial } = api.vectorAnalysis.meanSpatial.useMutation({
+  const { mutate: meanSpatial, isLoading: loadingMeanSpatial } = api.vectorAnalysis.meanSpatial.useMutation({
     onSuccess: (data) => {
       uploadToFirebase(data, MEAN_SPATIAL_CODE, (url) => {
         createFeature({
@@ -38,7 +38,7 @@ const UseAnalysisResult = () => {
     },
   });
 
-  const { mutate: weightedMeanSpatial } =
+  const { mutate: weightedMeanSpatial, isLoading: loadingWeightedMean } =
     api.vectorAnalysis.weightedMeanSpatial.useMutation({
       onSuccess: (data) => {
         uploadToFirebase(data, WEIGHTED_MEAN_SPATIAL_CODE, (url) => {
@@ -51,14 +51,18 @@ const UseAnalysisResult = () => {
       },
     });
 
+  const isLoading = loadingCreateData || loadingMeanSpatial || loadingWeightedMean;
+
   // ---------- HANDLERS ----------
   const handleMutateData = () => {
     switch (modalName) {
     case MEAN_SPATIAL_METHOD:
       meanSpatial({ feature: selected });
+      handleHideModal()
       break;
     case WEIGHTED_MEAN_SPATIAL_METHOD:
       weightedMeanSpatial({ feature: selected, weight: propertiesSelected });
+      handleHideModal()
       break;
     default:
     }
@@ -87,6 +91,7 @@ const UseAnalysisResult = () => {
     AnalysisOptions,
     handleMutateData,
     featureProperties,
+    isLoading
   };
 };
 

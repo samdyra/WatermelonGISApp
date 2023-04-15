@@ -40,7 +40,7 @@ export const featureRouter = createTRPCRouter({
         const json:GeoJson = await response.json();
         const nameOnly = featureObj.name.split(".")[0];
         const feature = {
-          ...json, name: nameOnly, id: featureObj.id 
+          ...json, name: nameOnly, id: featureObj.id, link: featureLink
         }
 
 

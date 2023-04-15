@@ -16,7 +16,7 @@ const Home: NextPage = () => {
         <meta name="description" content="Fruits" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="border-3 overflow-hidden bg-red-600">
+      <main className="border-3 overflow-hidden">
         <Navbar handleShowSidebar={handleShowSidebar}/>
         <Map />
         <Descbar isOpen={isOpen}/>

@@ -25,7 +25,7 @@ const Playground: NextPage = () => {
   const { data } = api.features.getFeaturesByUserId.useQuery();
 
   // ---------- MUTATIONS ----------
-  const { mutate } = api.features.create.useMutation({
+  const { mutate, isLoading: loadingCreateData } = api.features.create.useMutation({
     onSuccess: () => {
       void ctx.features.getFeaturesByUserId.invalidate()
     },
@@ -34,7 +34,7 @@ const Playground: NextPage = () => {
     },
   });
 
-  const { mutate: deleteFeature } = api.features.delete.useMutation({
+  const { mutate: deleteFeature, isLoading: loadingDeleteData } = api.features.delete.useMutation({
     onSuccess: async ({ feature }) => {
       void ctx.features.getFeaturesByUserId.invalidate();
       await deleteFirebaseData(feature)
@@ -43,6 +43,8 @@ const Playground: NextPage = () => {
       toast.error("Something Went Wrong!");
     },
   });
+
+  const isLoading = loadingCreateData || loadingDeleteData;
 
   // ---------- HANDLERS ----------
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +62,7 @@ const Playground: NextPage = () => {
         <meta name="description" content="Fruits" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="border-3 overflow-hidden bg-red-600">
+      <main className="border-3 overflow-hidden">
         <Navbar handleShowSidebar={handleShowSidebar} />
         <Map data={data} />
         <Layerbar
@@ -69,7 +71,7 @@ const Playground: NextPage = () => {
           position="left"
           size="large"
         >
-          <AddFeature handleUpload={handleUpload} data={data} handleDelete={handleDelete} />
+          <AddFeature handleUpload={handleUpload} data={data} handleDelete={handleDelete} isLoading={isLoading} />
         </Layerbar>
         <Layerbar isOpen position="right" size="small">
           <Analysis data={data} />

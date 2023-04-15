@@ -17,10 +17,12 @@ interface GeoJson {
     };
   };
   name?: string;
+  id: string;
 }
 interface Props {
   handleUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   data?: GeoJson[];
+  handleDelete: (id: string) => void;
 }
 
 const AddFeature = (props: Props) => (
@@ -51,7 +53,7 @@ const AddFeature = (props: Props) => (
               <Shape />
               <p className="text-xs text-slate-200">{item.name}</p>
             </div>
-            <div className="cursor-pointer text-base text-slate-200">x</div>
+            <div className="cursor-pointer text-base text-slate-200" onClick={() => props.handleDelete(item.id)}>x</div>
           </div>
         );
       })}

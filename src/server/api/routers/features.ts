@@ -25,6 +25,7 @@ export const featureRouter = createTRPCRouter({
   getFeaturesByUserId: privateProcedure.query(async ({ ctx }) => {
 
     const authorId = ctx.userId;
+
     const data = await ctx.prisma.feature.findMany({
       where: { authorId: authorId },
       take: 100,
@@ -38,7 +39,9 @@ export const featureRouter = createTRPCRouter({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const json:GeoJson = await response.json();
         const nameOnly = featureObj.name.split(".")[0];
-        const feature = { ...json, name: nameOnly }
+        const feature = {
+          ...json, name: nameOnly, id: featureObj.id 
+        }
 
 
         return feature
@@ -60,4 +63,14 @@ export const featureRouter = createTRPCRouter({
 
       return features;
     }),
+
+  
+  delete: privateProcedure
+    .input(z.object({ id: z.string(), }))
+    .mutation(async ({ ctx, input }) => {
+      const features = await ctx.prisma.feature.delete({ where: { id: input.id }, });
+
+      return features;
+    }
+    ),
 });

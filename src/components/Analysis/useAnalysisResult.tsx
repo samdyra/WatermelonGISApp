@@ -17,7 +17,7 @@ const UseAnalysisResult = () => {
   const [ isModalVisible, handleShowModal, handleHideModal ] = useModalState(false);
 
   // ---------- MUTATIONS ----------
-  const { mutate: mutateDB } = api.features.create.useMutation({
+  const { mutate: createFeature } = api.features.create.useMutation({
     onSuccess: () => {
       void ctx.features.getFeaturesByUserId.invalidate();
     },
@@ -29,7 +29,7 @@ const UseAnalysisResult = () => {
   const { mutate: meanSpatial } = api.vectorAnalysis.meanSpatial.useMutation({
     onSuccess: (data) => {
       uploadToFirebase(data, MEAN_SPATIAL_CODE, (url) => {
-        mutateDB({
+        createFeature({
           feature: url,
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           name: `${data.name}-${MEAN_SPATIAL_CODE}` ?? "file",
@@ -42,7 +42,7 @@ const UseAnalysisResult = () => {
     api.vectorAnalysis.weightedMeanSpatial.useMutation({
       onSuccess: (data) => {
         uploadToFirebase(data, WEIGHTED_MEAN_SPATIAL_CODE, (url) => {
-          mutateDB({
+          createFeature({
             feature: url,
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             name: `${data.name}-${WEIGHTED_MEAN_SPATIAL_CODE}` ?? "file",
@@ -64,7 +64,7 @@ const UseAnalysisResult = () => {
     default:
     }
   }
-  
+
   const featureProperties = (): string[] => {
     if (!selected) return [ "No Feature Selected" ];
     const properties = selected.features.map((feature) =>

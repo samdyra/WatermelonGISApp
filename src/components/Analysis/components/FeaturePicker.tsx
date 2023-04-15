@@ -22,21 +22,18 @@ const FeaturePicker = (props: Props) => (
             Choose Your Feature
         </option>
         {props.data &&
-            props.data.map((data) => {
-              const r = (Math.random() + 1).toString(36).substring(7);
-              return (
-                <>
-                  <option
-                    id="countries"
-                    key={r}
-                    value={JSON.stringify(data)}
-                    className="font-semibold"
-                  >
-                    {data.name}
-                  </option>
-                </>
-              );
-            })}
+            props.data.map((data) => (
+              <>
+                <option
+                  id="countries"
+                  key={data.id}
+                  value={JSON.stringify(data)}
+                  className="font-semibold"
+                >
+                  {data.name}
+                </option>
+              </>
+            ))}
       </select>
       <h1 className="ml-1 text-xs text-slate-300">
         {props.selected?.name ?? "Choose Your Feature"}

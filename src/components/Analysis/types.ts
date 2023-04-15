@@ -19,6 +19,7 @@ export interface GeoJson {
       };
     };
     name?: string;
+    id: string
   }
   
 export interface ITurf {

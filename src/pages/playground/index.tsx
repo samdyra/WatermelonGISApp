@@ -11,9 +11,10 @@ import {
 } from "~/components";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
-import { ref } from "firebase/storage";
+import { deleteObject, ref } from "firebase/storage";
 import { storage } from "~/constants/firebase";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
+
 
 const Playground: NextPage = () => {
   const [ isOpen, setIsOpen ] = useState(false);
@@ -65,6 +66,24 @@ const Playground: NextPage = () => {
     }
   };
 
+  const { mutate: deleteFeature } = api.features.delete.useMutation({
+    onSuccess: async ({ feature }) => {
+      void ctx.features.getFeaturesByUserId.invalidate();
+      try {
+        const storageRef = ref(storage, feature);
+        await deleteObject(storageRef);
+        toast.success("Successfully delete data!");
+      }
+      catch (error) {
+        toast.error("Somethign Went Wrong!");
+      }
+    },
+    onError: () => {
+      toast.error("Something Went Wrong!");
+    },
+  });
+
+  const handleDelete = (id: string) => deleteFeature({ id });
   const handleShowSidebar = () => setIsOpen(!isOpen);
   const handleShowLayerbar = () => setIsLayerOpen(!isLayerOpen);
 
@@ -84,7 +103,7 @@ const Playground: NextPage = () => {
           position="left"
           size="large"
         >
-          <AddFeature handleUpload={handleUpload} data={data} />
+          <AddFeature handleUpload={handleUpload} data={data} handleDelete={handleDelete} />
         </Layerbar>
         <Layerbar isOpen position="right" size="small">
           <Analysis data={data} />

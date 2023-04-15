@@ -6,6 +6,9 @@ import { storage } from "~/constants/firebase";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { Modal } from "~/components";
 import useModalState from "~/hooks/useModalState";
+import {
+  type Feature, type Point, type Properties, type BBox 
+} from "@turf/helpers";
 
 interface GeoJson {
   type: string;
@@ -25,18 +28,31 @@ interface GeoJson {
   };
   name?: string;
 }
+
+interface ITurf {
+  name: string;
+  type: "FeatureCollection";
+  features: Feature<Point, Properties>[];
+  bbox?: BBox | undefined;
+}
 interface Props {
   data?: GeoJson[];
 }
 
 const Analysis = (props: Props) => {
+ 
   const [ selected, setSelected ] = React.useState<GeoJson | null>(null);
   const [ propertiesSelected, setPropertiesSelected ] = React.useState<string>("")
 
   const ctx = api.useContext();
   const [ modalName, setModalName ] = React.useState("");
-  const [ isModalVisible, handleShowModal, handleHideModal ] =
-    useModalState(false);
+  const [ isModalVisible, handleShowModal, handleHideModal ] = useModalState(false);
+
+  const AnalysisOptions = [
+    { name: "Mean Spatial", },
+    { name: "Weighted Mean Spatial", },
+  ];
+    
 
   const { mutate: mutateDB } = api.features.create.useMutation({
     onSuccess: () => {
@@ -46,6 +62,37 @@ const Analysis = (props: Props) => {
       toast.error("Something Went Wrong!");
     },
   });
+
+  const uploadToFirebase = (data: ITurf, storageName="output", callback: () => void ) => {
+    const blob = new Blob([ JSON.stringify(data) ], { type: "application/json", });
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    const storageRef = ref(storage, `/features/${data.name}-${storageName}`);
+    const uploadFiles = uploadBytesResumable(storageRef, blob);
+
+    uploadFiles.on(
+      "state_changed",
+      (snapshot) => {
+        console.log(snapshot);
+      },
+      () => {
+        toast.error("Please upload again!");
+      },
+      () => {
+        getDownloadURL(uploadFiles.snapshot.ref)
+          .then((url) => {
+            callback({
+              feature: url,
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+              name: `${data.name}-${storageName}` ?? "file",
+            })
+            toast.success("Successfully upload data!");
+          })
+          .catch(() => {
+            toast.error("Please upload again!");
+          });
+      }
+    );
+  }
 
   const { mutate: meanSpatial } = api.vectorAnalysis.meanSpatial.useMutation({
     onSuccess: (data) => {
@@ -116,17 +163,6 @@ const Analysis = (props: Props) => {
         );
       },
     });
-
-  const AnalysisOptions = [
-    {
-      name: "Mean Spatial",
-      onClick: () => meanSpatial({ feature: selected }),
-    },
-    {
-      name: "Weighted Mean Spatial",
-      onClick: () => weightedMeanSpatial({ feature: selected, weight: propertiesSelected }),
-    },
-  ];
 
   const handleMutateData = () => {
     if (modalName === "Mean Spatial") {

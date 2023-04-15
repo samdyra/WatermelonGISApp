@@ -8,13 +8,15 @@ import {
 import { uploadToFirebase } from "~/helpers/globalHelpers";
 
 const UseAnalysisResult = () => {
-  const ctx = api.useContext();
 
+  // ---------- HOOKS ----------
+  const ctx = api.useContext();
   const [ selected, setSelected ] = React.useState<GeoJson | null>(null);
   const [ propertiesSelected, setPropertiesSelected ] = React.useState<string>("");
   const [ modalName, setModalName ] = React.useState("");
   const [ isModalVisible, handleShowModal, handleHideModal ] = useModalState(false);
 
+  // ---------- MUTATIONS ----------
   const { mutate: mutateDB } = api.features.create.useMutation({
     onSuccess: () => {
       void ctx.features.getFeaturesByUserId.invalidate();
@@ -49,15 +51,20 @@ const UseAnalysisResult = () => {
       },
     });
 
-  const handleMutateData = () => {
-    if (modalName === MEAN_SPATIAL_METHOD) {
-      meanSpatial({ feature: selected });
-    }
-    else if (modalName === WEIGHTED_MEAN_SPATIAL_METHOD) {
-      weightedMeanSpatial({ feature: selected, weight: propertiesSelected });
-    }
-  };
 
+  // ---------- HANDLERS ----------
+  const handleMutateData = () => {
+    switch (modalName) {
+    case MEAN_SPATIAL_METHOD:
+      meanSpatial({ feature: selected });
+      break;
+    case WEIGHTED_MEAN_SPATIAL_METHOD:
+      weightedMeanSpatial({ feature: selected, weight: propertiesSelected });
+      break;
+    default:
+    }
+  }
+  
   const featureProperties = (): string[] => {
     if (!selected) return [ "No Feature Selected" ];
     const properties = selected.features.map((feature) =>

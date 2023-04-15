@@ -6,35 +6,9 @@ import { storage } from "~/constants/firebase";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { Modal } from "~/components";
 import useModalState from "~/hooks/useModalState";
-import {
-  type Feature, type Point, type Properties, type BBox 
-} from "@turf/helpers";
-
-interface GeoJson {
-  type: string;
-  features: {
-    type: string;
-    geometry: {
-      type: string;
-      coordinates: number[];
-    };
-    properties: object;
-  }[];
-  crs: {
-    type: string;
-    properties: {
-      name: string;
-    };
-  };
-  name?: string;
-}
-
-interface ITurf {
-  name: string;
-  type: "FeatureCollection";
-  features: Feature<Point, Properties>[];
-  bbox?: BBox | undefined;
-}
+import { type GeoJson, type ITurf } from "./types";
+import FeaturePicker from "./components/FeaturePicker";
+import AttributePicker from "./components/AttributePicker";
 interface Props {
   data?: GeoJson[];
 }
@@ -123,86 +97,13 @@ const Analysis = (props: Props) => {
     }
   }
 
-  const featureProperties = () => {
-    if (!selected) return [ [ "No Feature Selected" ] ];
+  const featureProperties = (): string[] => {
+    if (!selected) return [ "No Feature Selected" ] ;
     const properties = selected.features.map((feature) => Object.keys(feature.properties));
 
-    if (properties[0] === undefined) return [ [ "No Feature Selected" ] ];
+    if (properties[0] === undefined) return [ "No Feature Selected" ] ;
     return properties[0]
   };
-
-  const FeaturePicker = () => (
-    <div className="flex border-b border-slate-400 pb-1 mb-5">
-      <div className="flex w-full items-center">
-        <select
-          id="countries"
-          className="mb-1 ml-2 mr-2 h-2 w-2 rotate-45 transform appearance-none border-4 border-[#1F2937] border-b-white border-r-white indent-[-9999px] font-semibold hover:cursor-pointer focus:border-4 focus:border-b-white focus:outline-none focus:ring-0"
-          onChange={(sel) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            setSelected(JSON.parse(sel.currentTarget.value));
-          }}
-        >
-          <option defaultValue="Choose Your Feature" className="font-semibold">
-            Choose Your Feature
-          </option>
-          {props.data &&
-            props.data.map((data) => {
-              const r = (Math.random() + 1).toString(36).substring(7);
-              return (
-                <>
-                  <option
-                    id="countries"
-                    key={r}
-                    value={JSON.stringify(data)}
-                    className="font-semibold"
-                  >
-                    {data.name}
-                  </option>
-                </>
-              );
-            })}
-        </select>
-        <h1 className="ml-1 text-xs text-slate-300">
-          {selected?.name ?? "Choose Your Feature"}
-        </h1>
-      </div>
-    </div>
-  );
-
-  const AttributePicker = () => (
-    <div className="mb-2  flex border-b border-slate-400 pb-1">
-      <div className="flex w-full items-center">
-        <select
-          id="countries"
-          className="mb-1 ml-2 mr-2 h-2 w-2 rotate-45 transform appearance-none border-4 border-[#1F2937] border-b-white border-r-white indent-[-9999px] font-semibold hover:cursor-pointer focus:border-4 focus:border-b-white focus:outline-none focus:ring-0"
-          onChange={(sel) => setPropertiesSelected(sel.currentTarget.value)}
-        >
-          <option defaultValue="Choose The Weight Field" className="font-semibold">
-            Choose The Weight Field
-          </option>
-          {
-            featureProperties().map((data) => {
-              const r = (Math.random() + 1).toString(36).substring(7);
-              return (
-                <>
-                  <option
-                    id="countries"
-                    key={r}
-                    value={data}
-                    className="font-semibold"
-                  >
-                    {data}
-                  </option>
-                </>
-              );
-            })}
-        </select>
-        <h1 className="ml-1 text-xs text-slate-300">
-          {propertiesSelected === "" ? "Choose The Weight Field" : propertiesSelected}
-        </h1>
-      </div>
-    </div>
-  );
 
   return (
     <div className="h-full w-full p-5">
@@ -213,8 +114,8 @@ const Analysis = (props: Props) => {
         modalName={modalName}
       >
         <div>
-          <FeaturePicker />
-          {modalName === "Weighted Mean Spatial" && <AttributePicker />}
+          <FeaturePicker selected={selected} data={props.data} setSelected={setSelected} />
+          {modalName === "Weighted Mean Spatial" && <AttributePicker featureProperties={featureProperties} propertiesSelected={propertiesSelected} setPropertiesSelected={setPropertiesSelected} />}
         </div>
       </Modal>
       <div className="h-4/6 rounded-md bg-gray-600 ">

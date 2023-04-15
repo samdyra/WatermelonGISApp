@@ -27,3 +27,20 @@ export interface ITurf {
     features: Feature<Point, Properties>[];
     bbox?: BBox | undefined;
   }
+
+export const MEAN_SPATIAL_METHOD = "Mean Spatial"
+export const WEIGHTED_MEAN_SPATIAL_METHOD = "Weighted Mean Spatial"
+export const MEAN_SPATIAL_CODE = "MeanSpatial"
+export const WEIGHTED_MEAN_SPATIAL_CODE = "WeightedMean"
+
+export const AnalysisOptions = [
+  {
+    name: MEAN_SPATIAL_METHOD, 
+    code: MEAN_SPATIAL_CODE
+  },
+  {
+    name: WEIGHTED_MEAN_SPATIAL_METHOD, 
+    code: WEIGHTED_MEAN_SPATIAL_CODE
+  },
+];
+

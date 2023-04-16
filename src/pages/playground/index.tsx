@@ -19,6 +19,7 @@ const Playground: NextPage = () => {
   // ---------- HOOKS ----------
   const [ isOpen, setIsOpen ] = useState(false);
   const [ isLayerOpen, setIsLayerOpen ] = useState(true);
+  const [ bm, setBm ] = useState("https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png");
 
   const ctx = api.useContext();
   const { data } = api.features.getFeaturesByUserId.useQuery();
@@ -63,7 +64,7 @@ const Playground: NextPage = () => {
       </Head>
       <main className="border-3 overflow-hidden">
         <Navbar handleShowSidebar={handleShowSidebar} />
-        <Map data={data} />
+        <Map data={data} bm={bm} />
         <Layerbar
           isOpen={isLayerOpen}
           handleShowLayerbar={handleShowLayerbar}
@@ -74,7 +75,7 @@ const Playground: NextPage = () => {
         </Layerbar>
         <Layerbar isOpen position="right" size="small">
           <Analysis data={data} />
-          <BaseMaps />
+          <BaseMaps bm={bm} setBm={setBm}/>
         </Layerbar>
         <Descbar isOpen={isOpen} />
       </main>

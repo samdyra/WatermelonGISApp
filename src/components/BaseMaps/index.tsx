@@ -1,52 +1,38 @@
 import React, { memo } from "react";
-import osm from "../../../public/osm.png";
-import pioneer from "../../../public/pioneer.png";
-import spinal from "../../../public/spinal.png";
-import stadiablack from "../../../public/stadiablack.png";
-import terrain from "../../../public/terrrain.png";
-import tone from "../../../public/tone.png";
+import { Basemaps as bm } from "../../constants/basemaps";
 
 import Image from "next/image";
 
-const Basemaps = () => {
-  const layer = [
-    {
-      name: "osm",
-      url: osm,
-    },
+interface Props {
+  setBm: (bm: string) => void;
+  bm: string;
+}
 
-    {
-      name: "pioneer",
-      url: pioneer,
-    },
-    {
-      name: "spinal",
-      url: spinal,
-    },
-    {
-      name: "stadiablack",
-      url: stadiablack,
-    },
-    {
-      name: "terrain",
-      url: terrain,
-    },
-    {
-      name: "tone",
-      url: tone,
-    },
-  ];
-
+const Basemaps = (props: Props) => {
   return (
     <div className="mx-auto bg-gray-600 rounded-md">
       <div className="grid grid-cols-3 gap-3 p-2 cursor-pointer">
-        {layer.map((el) => {
+        {bm.map((el) => {
+          const isPicked = el.link === props.bm;
+          if (isPicked) {
+            return (
+              <Image
+                className="h-[54px] w-[54px] rounded-md border-2 border-yellow-500"
+                src={el.url}
+                alt="basemap"
+                key={el.name}
+                onClick={() => props.setBm("")}
+              />
+            )
+          }
+
           return (
             <Image
               className="h-[54px] w-[54px] rounded-md"
               src={el.url}
               alt="basemap"
               key={el.name}
+              onClick={() => props.setBm(el.link)}
             />
           );
         })}

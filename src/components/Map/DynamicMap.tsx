@@ -1,16 +1,18 @@
 import s from "./map.module.scss";
 import "leaflet/dist/leaflet.css";
 import {
-  TileLayer, MapContainer, GeoJSON, useMap 
+  TileLayer, MapContainer, GeoJSON, useMap
 } from "react-leaflet";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import LatLngTuple = L.LatLngTuple;
 import { type GeoJson } from "~/helpers/types";
 import { marker, Icon } from "leaflet";
+
 interface Props {
   data?: GeoJson[];
+  bm: string;
 }
 
 type IFlyTo = {
@@ -66,8 +68,23 @@ const PanTo = (props: IFlyTo) => {
 
   return null;
 };
+type ISetUrl = (url: string) => void;
+
+type ICurrent = {
+  setUrl: ISetUrl
+} 
 
 const Map = (props: Props) => {
+
+  useEffect(() => {
+    if (ref.current) { 
+      (ref.current as ICurrent).setUrl(props.bm)
+    }
+  }, [ props.bm ]);
+
+  const ref = useRef(null);
+
+
   const pointToLayer = (feature: GeoJson, latlng: LatLngTuple) => {
     const color = feature.color.substring(1)
     const greenIcon = new Icon({
@@ -112,7 +129,8 @@ const Map = (props: Props) => {
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url={props.bm}
+          ref={ref}
         />
         {props.data && props.data[0] && <PanTo data={props.data[0]} />}
         {props.data &&

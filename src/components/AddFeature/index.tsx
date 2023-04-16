@@ -24,13 +24,8 @@ const AddFeature = (props: Props) => {
   return (
     <>
       {props.isLoading && <NLoading />}
+      
       <div className="h-full w-full px-5">
-        <label
-          htmlFor="file"
-          className="mb-3 flex cursor-pointer justify-center rounded-md bg-gray-600 text-base text-slate-200"
-        >
-          +
-        </label>
         <input
           type="file"
           name="file"
@@ -41,6 +36,15 @@ const AddFeature = (props: Props) => {
             props.handleUpload(event);
           }}
         />
+        <div className="flex">
+          <div className="text-sm text-slate-200 bg-gray-600 pl-5 mb-[-3.5px] pt-[6.5px] rounded-tl-md rounded-tr-sm w-[60%]">Added Layers</div>
+          <label
+            htmlFor="file"
+            className="text-slate-200 bg-gray-600 ml-[5px] text-center rounded-sm cursor-pointer mb-[5px] w-[40%] rounded-tr-md active:bg-slate-900 transition-all duration-150 ease-linear"
+          >
+          +
+          </label>
+        </div>
         <div className="flex h-1/2 flex-col rounded-md bg-gray-600 px-4 py-3">
           {props.data?.map((item) => {
             const r = (Math.random() + 1).toString(36).substring(7);

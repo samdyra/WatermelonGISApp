@@ -33,7 +33,8 @@ const AnalysisView = (props: Props) => {
   return (
     <>
       {isLoading && <NLoading />}
-      <div className="h-4/6 w-full p-5">
+      <div className="ml-5 text-sm text-slate-200 bg-gray-600 w-fit px-3 py-[2px] mb-[-3.5px] rounded-t-md my-5">Analysis Tools</div>
+      <div className="h-4/6 w-full px-5 pb-5">
         <Modal
           handleHideModal={handleHideModal}
           isModalVisible={isModalVisible}

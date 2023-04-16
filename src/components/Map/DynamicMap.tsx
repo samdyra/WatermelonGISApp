@@ -68,11 +68,13 @@ const PanTo = (props: IFlyTo) => {
 
   return null;
 };
+
 type ISetUrl = (url: string) => void;
 
 type ICurrent = {
   setUrl: ISetUrl
 } 
+
 
 const Map = (props: Props) => {
 

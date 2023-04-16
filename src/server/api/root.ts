@@ -9,6 +9,7 @@ import { vectorAnalysisRouter } from "./routers/vectorAnalysis";
  *
  * All routers added in /api/routers should be manually added here.
  */
+
 export const appRouter = createTRPCRouter({
   posts: postRouter,
   profile: profileRouter,

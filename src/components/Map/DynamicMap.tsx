@@ -79,7 +79,10 @@ const Map = (props: Props) => {
       shadowSize: [ 41, 41 ]
     });
 
-    return marker(latlng, { icon: greenIcon })
+    const markerView = marker(latlng, { icon: greenIcon })
+    markerView.bindPopup("test")
+
+    return markerView
   };
 
   const style = (feature: GeoJson) => {

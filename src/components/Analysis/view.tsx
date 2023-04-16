@@ -33,7 +33,7 @@ const AnalysisView = (props: Props) => {
   return (
     <>
       {isLoading && <NLoading />}
-      <div className="h-full w-full p-5">
+      <div className="h-4/6 w-full p-5">
         <Modal
           handleHideModal={handleHideModal}
           isModalVisible={isModalVisible}
@@ -45,7 +45,7 @@ const AnalysisView = (props: Props) => {
             {modalName === "Weighted Mean Spatial" && <AttributePicker featureProperties={featureProperties} propertiesSelected={propertiesSelected} setPropertiesSelected={setPropertiesSelected} />}
           </div>
         </Modal>
-        <div className="h-4/6 rounded-md bg-gray-600 ">
+        <div className="h-full rounded-md bg-gray-600 ">
           <div className="p-2">
             <div className="cursor-pointer">
               {AnalysisOptions.map((option) => (

@@ -8,6 +8,7 @@ import {
   AddFeature,
   Map,
   Analysis,
+  BaseMaps
 } from "~/components";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
@@ -73,6 +74,7 @@ const Playground: NextPage = () => {
         </Layerbar>
         <Layerbar isOpen position="right" size="small">
           <Analysis data={data} />
+          <BaseMaps />
         </Layerbar>
         <Descbar isOpen={isOpen} />
       </main>

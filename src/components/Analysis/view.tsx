@@ -1,39 +1,56 @@
 import { memo } from "react";
 import FeaturePicker from "./components/FeaturePicker";
 import AttributePicker from "./components/AttributePicker";
+import ClipPicker from "./components/ClipPicker";
 import { Modal, NLoading } from "~/components";
 import { type GeoJson } from "./types";
 import React from "react";
-
-
-
+import { WEIGHTED_MEAN_SPATIAL_METHOD, CLIP_METHOD } from "./types";
 interface Props {
-    handleHideModal: () => void
-    isModalVisible: boolean
-    handleMutateData: () => void
-    modalName: string
-    selected: GeoJson | null
-    data: GeoJson[] | undefined
-    setSelected: React.Dispatch<React.SetStateAction<GeoJson | null>>
-    featureProperties: () => string[]
-    propertiesSelected: string
-    setPropertiesSelected: React.Dispatch<React.SetStateAction<string>>
-    AnalysisOptions: { name: string }[]
-    setModalName: React.Dispatch<React.SetStateAction<string>>  
-    handleShowModal: () => void 
-    isLoading: boolean
+  handleHideModal: () => void;
+  isModalVisible: boolean;
+  handleMutateData: () => void;
+  modalName: string;
+  selected: GeoJson | null;
+  data: GeoJson[] | undefined;
+  setSelected: React.Dispatch<React.SetStateAction<GeoJson | null>>;
+  featureProperties: () => string[];
+  propertiesSelected: string;
+  setPropertiesSelected: React.Dispatch<React.SetStateAction<string>>;
+  AnalysisOptions: { name: string }[];
+  setModalName: React.Dispatch<React.SetStateAction<string>>;
+  handleShowModal: () => void;
+  isLoading: boolean;
+  setClipFeature: React.Dispatch<React.SetStateAction<GeoJson | null>>;
+  clipFeature: GeoJson | null;
 }
-
 
 const AnalysisView = (props: Props) => {
   const {
-    handleHideModal, isModalVisible, handleMutateData, modalName, selected, data, setSelected, featureProperties, propertiesSelected, setPropertiesSelected, AnalysisOptions, setModalName, handleShowModal, isLoading
-  } = props
+    handleHideModal,
+    isModalVisible,
+    handleMutateData,
+    modalName,
+    selected,
+    data,
+    setSelected,
+    featureProperties,
+    propertiesSelected,
+    setPropertiesSelected,
+    AnalysisOptions,
+    setModalName,
+    handleShowModal,
+    isLoading,
+    clipFeature,
+    setClipFeature,
+  } = props;
 
   return (
     <>
       {isLoading && <NLoading />}
-      <div className="ml-5 text-sm text-slate-200 bg-gray-600 w-fit px-3 py-[2px] mb-[-3.5px] rounded-t-md my-5">Analysis Tools</div>
+      <div className="my-5 mb-[-3.5px] ml-5 w-fit rounded-t-md bg-gray-600 px-3 py-[2px] text-sm text-slate-200">
+        Analysis Tools
+      </div>
       <div className="h-4/6 w-full px-5 pb-5">
         <Modal
           handleHideModal={handleHideModal}
@@ -42,8 +59,25 @@ const AnalysisView = (props: Props) => {
           modalName={modalName}
         >
           <div>
-            <FeaturePicker selected={selected} data={data} setSelected={setSelected} />
-            {modalName === "Weighted Mean Spatial" && <AttributePicker featureProperties={featureProperties} propertiesSelected={propertiesSelected} setPropertiesSelected={setPropertiesSelected} />}
+            <FeaturePicker
+              selected={selected}
+              data={data}
+              setSelected={setSelected}
+            />
+            {modalName === WEIGHTED_MEAN_SPATIAL_METHOD && (
+              <AttributePicker
+                featureProperties={featureProperties}
+                propertiesSelected={propertiesSelected}
+                setPropertiesSelected={setPropertiesSelected}
+              />
+            )}
+            {modalName === CLIP_METHOD && (
+              <ClipPicker
+                selected={clipFeature}
+                data={data}
+                setSelected={setClipFeature}
+              />
+            )}
           </div>
         </Modal>
         <div className="h-full rounded-md bg-gray-600 ">
@@ -66,7 +100,7 @@ const AnalysisView = (props: Props) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default memo(AnalysisView);

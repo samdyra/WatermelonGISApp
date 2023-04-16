@@ -39,6 +39,8 @@ export const MEAN_SPATIAL_METHOD = "Mean Spatial"
 export const WEIGHTED_MEAN_SPATIAL_METHOD = "Weighted Mean Spatial"
 export const MEAN_SPATIAL_CODE = "MeanSpatial"
 export const WEIGHTED_MEAN_SPATIAL_CODE = "WeightedMean"
+export const CLIP_METHOD = "Clip Feature"
+export const CLIP_CODE = "Clipped"
 
 export const AnalysisOptions = [
   {
@@ -48,6 +50,10 @@ export const AnalysisOptions = [
   {
     name: WEIGHTED_MEAN_SPATIAL_METHOD, 
     code: WEIGHTED_MEAN_SPATIAL_CODE
+  },
+  {
+    name: CLIP_METHOD, 
+    code: CLIP_CODE
   },
 ];
 

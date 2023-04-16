@@ -21,7 +21,9 @@ const Analysis = (props: Props) => {
     setModalName,
     setPropertiesSelected,
     setSelected,
-    isLoading
+    isLoading,
+    clipFeature,
+    setClipFeature,
   } = UseAnalysisResult();
 
   return (
@@ -34,6 +36,8 @@ const Analysis = (props: Props) => {
       handleShowModal={handleShowModal}
       isModalVisible={isModalVisible}
       modalName={modalName}
+      clipFeature={clipFeature}
+      setClipFeature={setClipFeature}
       propertiesSelected={propertiesSelected}
       selected={selected}
       setModalName={setModalName}

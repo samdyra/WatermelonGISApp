@@ -13,8 +13,6 @@ import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { handleUploadData, deleteFirebaseData } from "~/helpers/globalHelpers";
 
-
-
 const Playground: NextPage = () => {
 
   // ---------- HOOKS ----------

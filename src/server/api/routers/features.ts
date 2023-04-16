@@ -1,29 +1,7 @@
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import { getRandomHexColor } from "~/helpers/globalHelpers";
-import LatLngTuple = L.LatLngTuple
-
-
-interface GeoJson {
-  type: string;
-  features: {
-    type: string;
-    geometry: {
-      type: string;
-      coordinates: LatLngTuple | LatLngTuple[][] | LatLngTuple[][][];
-    };
-    properties: object;
-  }[];
-  crs: {
-    type: string;
-    properties: {
-      name: string;
-    };
-  };
-  name?: string;
-  color: string;
-}[]
-
+import { type GeoJson } from "~/helpers/types";
 
 export const featureRouter = createTRPCRouter({
   getFeaturesByUserId: privateProcedure.query(async ({ ctx }) => {
@@ -41,9 +19,19 @@ export const featureRouter = createTRPCRouter({
         const response = await fetch(featureLink);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const json:GeoJson = await response.json();
+        const featuresWithColor = json.features.map((feature) => ({
+          ...feature,
+          color: featureObj.color,
+        }));
+
+        const updatedJson = {
+          ...json,
+          features: featuresWithColor,
+        };
+    
         const nameOnly = featureObj.name.split(".")[0];
         const feature = {
-          ...json, name: nameOnly, id: featureObj.id, link: featureLink, color: featureObj.color
+          ...updatedJson, name: nameOnly, id: featureObj.id, link: featureLink, color: featureObj.color
         }
 
 

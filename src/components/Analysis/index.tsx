@@ -4,7 +4,7 @@ import View from "./view";
 import UseAnalysisResult from "./useAnalysisResult";
 
 interface Props {
-  data?: GeoJson[];
+  data?: GeoJson[]
 }
 
 const Analysis = (props: Props) => {

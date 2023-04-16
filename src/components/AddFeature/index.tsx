@@ -1,28 +1,7 @@
 import React, { memo } from "react";
 import { NLoading } from "~/components"
-import LatLngTuple = L.LatLngTuple
+import { type GeoJson } from '~/helpers/types';
 
-
-interface GeoJson {
-  type: string;
-  features: {
-    type: string;
-    geometry: {
-      type: string;
-      coordinates: LatLngTuple | LatLngTuple[][] | LatLngTuple[][][];
-    };
-    properties: object;
-  }[];
-  crs: {
-    type: string;
-    properties: {
-      name: string;
-    };
-  };
-  name?: string;
-  color: string;
-  id: string;
-}[]
 interface Props {
   handleUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   data?: GeoJson[];

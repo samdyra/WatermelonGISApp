@@ -18,7 +18,7 @@ const Home: NextPage = () => {
       </Head>
       <main className="border-3 overflow-hidden">
         <Navbar handleShowSidebar={handleShowSidebar}/>
-        <Map />
+        <Map bm="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png" />
         <Descbar isOpen={isOpen}/>
         <Sidebar />
       </main>

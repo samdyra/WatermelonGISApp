@@ -23,5 +23,6 @@ model Feature {
     feature  String @db.VarChar(255)
     authorId    String
     name String
+    color String
     @@index([authorId], name: "authorId")
 }

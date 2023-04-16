@@ -1,5 +1,7 @@
 import React, { memo } from "react";
 import { NLoading } from "~/components"
+import LatLngTuple = L.LatLngTuple
+
 
 interface GeoJson {
   type: string;
@@ -7,7 +9,7 @@ interface GeoJson {
     type: string;
     geometry: {
       type: string;
-      coordinates: number[];
+      coordinates: LatLngTuple | LatLngTuple[][] | LatLngTuple[][][];
     };
     properties: object;
   }[];
@@ -18,9 +20,9 @@ interface GeoJson {
     };
   };
   name?: string;
+  color: string;
   id: string;
-  link: string;
-}
+}[]
 interface Props {
   handleUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   data?: GeoJson[];
@@ -69,7 +71,7 @@ const AddFeature = (props: Props) => {
                 key={r}
               >
                 <div className="flex items-center">
-                  <Shape />
+                  <Shape color={item.color}/>
                   <p className="text-xs text-slate-200">{item.name}</p>
                 </div>
                 <div className="flex gap-3 ">
@@ -95,8 +97,12 @@ const AddFeature = (props: Props) => {
   );
 };
 
-const Shape = () => (
-  <div className="mr-2 h-3 w-3 border border-gray-400 bg-blue-500" />
+interface ShapeProps {
+  color?: string;
+}
+
+const Shape = (props: ShapeProps) => (
+  <div className="mr-2 h-3 w-3 border border-gray-400 bg-blue-500" style={{ backgroundColor: props.color }}/>
 );
 
 export default memo(AddFeature);

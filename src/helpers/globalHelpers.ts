@@ -75,3 +75,13 @@ export const deleteFirebaseData = async (feature:string) => {
     toast.error("Somethign Went Wrong!");
   }
 }
+
+export const getRandomHexColor = () : string => {
+  const randomInt = Math.floor(Math.random() * 16777215);
+
+  const hexString = randomInt.toString(16);
+
+  const paddedHexString = hexString.padStart(6, '0');
+
+  return `#${paddedHexString}`;
+}

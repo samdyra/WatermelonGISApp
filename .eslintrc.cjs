@@ -33,6 +33,7 @@ const config = {
     "@typescript-eslint/no-non-null-assertion": "off",
     "no-underscore-dangle": "warn",
     "react-native/no-raw-text": "off",
+    "react-hooks/exhaustive-deps": "off",
     "react/jsx-filename-extension": "off",
     "no-multi-spaces": "warn",
     "spaced-comment": "off",

@@ -1,6 +1,9 @@
 import {
   type Feature, type Point, type Properties, type BBox 
 } from "@turf/helpers";
+import LatLngTuple = L.LatLngTuple
+
+
 
 export interface GeoJson {
     type: string;
@@ -8,7 +11,7 @@ export interface GeoJson {
       type: string;
       geometry: {
         type: string;
-        coordinates: number[];
+        coordinates: LatLngTuple | LatLngTuple[][] | LatLngTuple[][][];
       };
       properties: object;
     }[];
@@ -19,8 +22,11 @@ export interface GeoJson {
       };
     };
     name?: string;
+    color: string;
     id: string
   }
+
+
   
 export interface ITurf {
     name: string;

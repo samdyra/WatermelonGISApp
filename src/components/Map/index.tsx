@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import LatLngTuple = L.LatLngTuple
 
 const DynamicMap = dynamic(() => import('./DynamicMap'), { ssr: false });
 
@@ -8,17 +9,18 @@ interface GeoJson {
     type: string;
     geometry: {
       type: string;
-      coordinates: number[];
-    }
+      coordinates: LatLngTuple | LatLngTuple[][] | LatLngTuple[][][];
+    };
     properties: object;
-  }[]
+  }[];
   crs: {
     type: string;
     properties: {
-      name: string
-    }
+      name: string;
+    };
   };
   name?: string;
+  color: string
 }
 interface Props {
   data?: GeoJson[]

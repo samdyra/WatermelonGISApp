@@ -1,14 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import s from "./map.module.scss";
 import "leaflet/dist/leaflet.css";
 import {
-  TileLayer, MapContainer, GeoJSON, useMap,Marker
+  TileLayer, MapContainer, GeoJSON, useMap
 } from "react-leaflet";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
 import { useEffect } from "react";
+import LatLngTuple = L.LatLngTuple
 
 interface GeoJson {
   type: string;
@@ -16,7 +14,7 @@ interface GeoJson {
     type: string;
     geometry: {
       type: string;
-      coordinates: any;
+      coordinates: LatLngTuple | LatLngTuple[][] | LatLngTuple[][][];
     };
     properties: object;
   }[];
@@ -27,6 +25,7 @@ interface GeoJson {
     };
   };
   name?: string;
+  color: string;
 }
 interface Props {
   data?: GeoJson[];
@@ -41,32 +40,37 @@ const PanTo = (props: IFlyTo) => {
 
   const { data } = props;
   const type = data.features[0]?.geometry.type;
-  const TYPE_STRING = "MultiLineString"
-  const TYPE_POINT = "Point"
-  const TYPE_POLYGON = "Polygon"
+  const TYPE_STRING = "MultiLineString" 
+  const TYPE_POINT = "Point" 
+  const TYPE_POLYGON = "MultiPolygon"
 
   const handleMapTo = () => {
     if (type === TYPE_STRING || type === TYPE_POLYGON || type === TYPE_POINT) {
       if (type === TYPE_STRING) {
-        const coord = data.features[0]?.geometry.coordinates[0]
+        const coord = data.features[0]?.geometry.coordinates[0] as LatLngTuple[]
         if (coord == undefined) return
-        const reverseCoord = [ ...coord[0] ].reverse()
-        map.flyTo(reverseCoord, 15, { animate: true })
+        const firstCoord = coord[0]
+        if (firstCoord == undefined) return
+        const reverseCoord = [ ...firstCoord ].reverse() as LatLngTuple
+        map.flyTo(reverseCoord, 17, { animate: true })
       }
 
       if (type === TYPE_POLYGON) {
-        const coord = data.features[0]?.geometry.coordinates[0]
+        const coord = data.features[0]?.geometry.coordinates[0] as LatLngTuple[][]
         if (coord == undefined) return
-        const reverseCoord = [ ...coord[0] ].reverse()
-        map.flyTo(reverseCoord, 15, { animate: true })
+        const setCoord = coord[0] as LatLngTuple[]
+        if (setCoord[0] == undefined) return
+        const firstCoord = [ ...setCoord[0] ]
+        const reverseCoord = firstCoord.reverse() as LatLngTuple
+        map.flyTo(reverseCoord,17, { animate: true })
       }
 
       if (type === TYPE_POINT) {
-        const coord = data.features[0]?.geometry.coordinates
+        if (data.features[0]?.geometry.coordinates == undefined) return
+        const coord: LatLngTuple = data.features[0]?.geometry.coordinates as LatLngTuple
         if (coord == undefined) return
-
-        const reverseCoord = [ ...coord ].reverse()
-        map.flyTo(reverseCoord, 15, { animate: true })
+        const reverseCoord: LatLngTuple = [ ...coord ].reverse() as LatLngTuple
+        map.flyTo(reverseCoord, 17, { animate: true })
       }
     }
   }
@@ -80,17 +84,18 @@ const PanTo = (props: IFlyTo) => {
 
 const Map = (props: Props) => {
 
-  const pointToLayer = (feature, latlng) => {
-    console.log("feature", feature, latlng)
-  }
+  // const pointToLayer = (feature, latlng) => {
+  //   console.log("feature", feature, latlng)
+  // }
   
-  const style = () => {
+  const style = (feature: GeoJson) => {
+    console.log("feature", feature)
     return {
-      fillColor: "rgb(255,0,0)",
+      fillColor: feature.color,
       weight: 2,
       opacity: 1,
       border: "solid",
-      color: "rgb(255, 0, 0)",
+      color: feature.color,
       dashArray: "",
       fillOpacity: 0.6,
     }
@@ -118,9 +123,8 @@ const Map = (props: Props) => {
         props.data.map((el: GeoJson) => {
           const r = (Math.random() + 1).toString(36).substring(7);
           return (
-            <>
-              <GeoJSON data={el} key={r} style={style} pointToLayer={pointToLayer}/>
-            </>
+
+            <GeoJSON data={el} key={r} style={style} />
           );
         })}
       </MapContainer>

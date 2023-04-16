@@ -1,5 +1,8 @@
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 import { z } from "zod";
+import { getRandomHexColor } from "~/helpers/globalHelpers";
+import LatLngTuple = L.LatLngTuple
+
 
 interface GeoJson {
   type: string;
@@ -7,17 +10,18 @@ interface GeoJson {
     type: string;
     geometry: {
       type: string;
-      coordinates: number[];
-    }
+      coordinates: LatLngTuple | LatLngTuple[][] | LatLngTuple[][][];
+    };
     properties: object;
-  }[]
+  }[];
   crs: {
     type: string;
     properties: {
-      name: string
-    }
+      name: string;
+    };
   };
-  name: string;
+  name?: string;
+  color: string;
 }[]
 
 
@@ -25,7 +29,6 @@ export const featureRouter = createTRPCRouter({
   getFeaturesByUserId: privateProcedure.query(async ({ ctx }) => {
 
     const authorId = ctx.userId;
-
     const data = await ctx.prisma.feature.findMany({
       where: { authorId: authorId },
       take: 100,
@@ -40,7 +43,7 @@ export const featureRouter = createTRPCRouter({
         const json:GeoJson = await response.json();
         const nameOnly = featureObj.name.split(".")[0];
         const feature = {
-          ...json, name: nameOnly, id: featureObj.id, link: featureLink
+          ...json, name: nameOnly, id: featureObj.id, link: featureLink, color: featureObj.color
         }
 
 
@@ -54,10 +57,11 @@ export const featureRouter = createTRPCRouter({
   create: privateProcedure
     .input(z.object({ feature: z.string(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const getColor = getRandomHexColor();
       const authorId = ctx.userId;
       const features = await ctx.prisma.feature.create({
         data: {
-          authorId, feature: input.feature, name: input.name 
+          authorId, feature: input.feature, name: input.name, color: getColor
         }, 
       });
 

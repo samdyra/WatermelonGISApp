@@ -1,15 +1,21 @@
-import React, { memo } from "react";
-import { NLoading } from "~/components"
+import React, { memo, } from "react";
+import { NLoading, } from "~/components"
 import { type GeoJson } from '~/helpers/types';
+import Image from "next/image";
+import dbImage from "../../../public/db.png";
+import downloadImage from "../../../public/download.png";
+import trashImage from "../../../public/trash.png";
 
 interface Props {
   handleUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   data?: GeoJson[];
   handleDelete: (id: string) => void;
   isLoading: boolean;
+  handleShowModal: (data: GeoJson) => void;
 }
 
 const AddFeature = (props: Props) => {
+
   const downloadData = (data: GeoJson) => {
     const blob = new Blob([ JSON.stringify(data) ], { type: "application/json" });
     const url = window.URL.createObjectURL(blob);
@@ -24,7 +30,6 @@ const AddFeature = (props: Props) => {
   return (
     <>
       {props.isLoading && <NLoading />}
-      
       <div className="h-full w-full px-5">
         <input
           type="file"
@@ -57,19 +62,25 @@ const AddFeature = (props: Props) => {
                   <Shape color={item.color}/>
                   <p className="text-xs text-slate-200">{item.name}</p>
                 </div>
-                <div className="flex gap-3 ">
-                  <div
-                    className="cursor-pointer text-sm text-slate-200"
+                <div className="flex gap-3 items-center">
+                  <Image
+                    src={dbImage}
+                    alt="download"
+                    className="cursor-pointer h-[11px] w-[11px] active:opacity-80 transition-all duration-150 ease-linear mt-[2px]"
+                    onClick={() => props.handleShowModal(item)}
+                  />
+                  <Image
+                    src={downloadImage}
+                    alt="download"
+                    className="cursor-pointer h-[16px] w-[16px] active:opacity-80 transition-all duration-150 ease-linear"
                     onClick={() => downloadData(item)}
-                  >
-                    +
-                  </div>
-                  <div
-                    className="cursor-pointer text-sm text-slate-200"
+                  />
+                  <Image
+                    src={trashImage}
+                    alt="download"
+                    className="cursor-pointer h-[11px] w-[11px] active:opacity-80 transition-all duration-150 ease-linear"
                     onClick={() => props.handleDelete(item.id)}
-                  >
-                    x
-                  </div>
+                  />
                 </div>
               </div>
             );

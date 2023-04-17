@@ -8,22 +8,27 @@ import {
   AddFeature,
   Map,
   Analysis,
-  BaseMaps
+  BaseMaps,
+  Table
 } from "~/components";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { handleUploadData, deleteFirebaseData } from "~/helpers/globalHelpers";
+import useModalState from "~/hooks/useModalState";
+import { type GeoJson } from "~/helpers/types";
+
 
 const Playground: NextPage = () => {
 
   // ---------- HOOKS ----------
+  const ctx = api.useContext();
+  const { data } = api.features.getFeaturesByUserId.useQuery();
   const [ isOpen, setIsOpen ] = useState(false);
   const [ isLayerOpen, setIsLayerOpen ] = useState(true);
   const [ isAnalysisOpen, setIsAnalysisOpen ] = useState(true);
   const [ bm, setBm ] = useState("https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png");
-
-  const ctx = api.useContext();
-  const { data } = api.features.getFeaturesByUserId.useQuery();
+  const [ isModalVisible, handleShowModal, handleHideModal ] = useModalState()
+  const [ tableData, setTableData ] = useState<GeoJson | undefined>(data?.[0])
 
   // ---------- MUTATIONS ----------
   const { mutate, isLoading: loadingCreateData } = api.features.create.useMutation({
@@ -51,6 +56,10 @@ const Playground: NextPage = () => {
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     handleUploadData(event, (url, fileName) => mutate({ feature: url, name: fileName }));
   };
+  const handleTableData = (data: GeoJson) => {
+    setTableData(data)
+    handleShowModal()
+  }
 
   const handleDelete = (id: string) => deleteFeature({ id });
   const handleShowSidebar = () => setIsOpen(!isOpen);
@@ -66,6 +75,7 @@ const Playground: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="border-3 overflow-hidden">
+        {tableData && <Table handleHideModal={handleHideModal} isModalVisible={isModalVisible} name={tableData.name}/>}
         <Navbar handleShowSidebar={handleShowSidebar} />
         <Map data={data} bm={bm} />
         <Layerbar
@@ -74,7 +84,7 @@ const Playground: NextPage = () => {
           position="left"
           size="large"
         >
-          <AddFeature handleUpload={handleUpload} data={data} handleDelete={handleDelete} isLoading={isLoading} />
+          <AddFeature handleUpload={handleUpload} data={data} handleDelete={handleDelete} isLoading={isLoading} handleShowModal={handleTableData}/>
         </Layerbar>
         <Layerbar isOpen={isAnalysisOpen} position="right" size="small" handleShowLayerbar={handleShowAnalysisbar}>
           <Analysis data={data} />

@@ -17,7 +17,6 @@ import { handleUploadData, deleteFirebaseData } from "~/helpers/globalHelpers";
 import useModalState from "~/hooks/useModalState";
 import { type GeoJson } from "~/helpers/types";
 
-
 const Playground: NextPage = () => {
 
   // ---------- HOOKS ----------
@@ -66,7 +65,6 @@ const Playground: NextPage = () => {
   const handleShowLayerbar = () => setIsLayerOpen(!isLayerOpen);
   const handleShowAnalysisbar = () => setIsAnalysisOpen(!isAnalysisOpen);
 
-
   return (
     <>
       <Head>
@@ -75,7 +73,7 @@ const Playground: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="border-3 overflow-hidden">
-        {tableData && <Table handleHideModal={handleHideModal} isModalVisible={isModalVisible} name={tableData.name}/>}
+        {tableData && <Table handleHideModal={handleHideModal} isModalVisible={isModalVisible} name={tableData.name} table={tableData}/>}
         <Navbar handleShowSidebar={handleShowSidebar} />
         <Map data={data} bm={bm} />
         <Layerbar

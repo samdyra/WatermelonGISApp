@@ -112,7 +112,7 @@ const AnalysisView = (props: Props) => {
               {AnalysisOptions.map((option) => (
                 <div
                   key={option.name}
-                  className="mb-2 flex items-center justify-between rounded-md bg-gray-800 px-2 py-2 text-xs"
+                  className="mb-2 flex items-center justify-between rounded-md bg-gray-800 px-2 py-2 text-xs active:opacity-80 transition-all duration-150 ease-linear"
                   onClick={() => {
                     setModalName(option.name);
                     handleShowModal();

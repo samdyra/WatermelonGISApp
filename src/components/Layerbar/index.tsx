@@ -3,7 +3,7 @@ import s from "./descbar.module.scss";
 
 interface Props {
   isOpen: boolean;
-  handleShowLayerbar?: () => void;
+  handleShowLayerbar: () => void;
   children?: React.ReactNode;
   position: "left" | "right";
   size: "small" | "large";
@@ -23,7 +23,7 @@ const LayerBar = (props: Props) => {
           right: props.position === "right" ? "0.5rem" : "unset",
         }}
       >
-        {props.handleShowLayerbar && <ButtonCollapse handlePress={props.handleShowLayerbar} />}
+        <ButtonCollapse handlePress={props.handleShowLayerbar} />
         {props.isOpen && props.children}
       </div>
     </>

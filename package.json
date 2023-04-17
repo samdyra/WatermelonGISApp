@@ -32,6 +32,7 @@
     "react-firebase-hooks": "^5.1.1",
     "react-hot-toast": "^2.4.0",
     "react-leaflet": "^4.2.1",
+    "reproject": "^1.2.7",
     "sass": "^1.60.0",
     "shpjs": "^4.0.4",
     "superjson": "1.12.2",

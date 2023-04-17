@@ -5,7 +5,12 @@ import ClipPicker from "./components/ClipPicker";
 import { Modal, NLoading } from "~/components";
 import { type GeoJson } from "./types";
 import React from "react";
-import { WEIGHTED_MEAN_SPATIAL_METHOD, CLIP_METHOD } from "./types";
+import {
+  WEIGHTED_MEAN_SPATIAL_METHOD,
+  CLIP_METHOD,
+  REPROJECT_METHOD,
+} from "./types";
+
 interface Props {
   handleHideModal: () => void;
   isModalVisible: boolean;
@@ -17,7 +22,10 @@ interface Props {
   featureProperties: () => string[];
   propertiesSelected: string;
   setPropertiesSelected: React.Dispatch<React.SetStateAction<string>>;
-  AnalysisOptions: { name: string }[];
+  AnalysisOptions: {
+    beta: boolean;
+    name: string;
+  }[];
   setModalName: React.Dispatch<React.SetStateAction<string>>;
   handleShowModal: () => void;
   isLoading: boolean;
@@ -45,10 +53,41 @@ const AnalysisView = (props: Props) => {
     setClipFeature,
   } = props;
 
+  const Complementary = () => {
+    switch (modalName) {
+    case WEIGHTED_MEAN_SPATIAL_METHOD:
+      return (
+        <AttributePicker
+          featureProperties={featureProperties}
+          propertiesSelected={propertiesSelected}
+          setPropertiesSelected={setPropertiesSelected}
+        />
+      );
+    case CLIP_METHOD:
+      return (
+        <ClipPicker
+          selected={clipFeature}
+          data={data}
+          setSelected={setClipFeature}
+        />
+      );
+    case REPROJECT_METHOD:
+      return (
+        <FeaturePicker
+          selected={selected}
+          data={data}
+          setSelected={setSelected}
+        />
+      );
+    default:
+      return null;
+    }
+  };
+
   return (
     <>
       {isLoading && <NLoading />}
-      <div className="my-5 mb-[-3.5px] ml-5 w-fit rounded-t-md bg-gray-600 px-3 py-[2px] text-sm text-slate-200">
+      <div className="mb-[-3.5px] ml-5 w-fit rounded-t-md bg-gray-600 px-3 py-[2px] text-sm text-slate-200">
         Analysis Tools
       </div>
       <div className="h-4/6 w-full px-5 pb-5">
@@ -58,42 +97,38 @@ const AnalysisView = (props: Props) => {
           callback={handleMutateData}
           modalName={modalName}
         >
-          <div>
+          {modalName !== REPROJECT_METHOD && (
             <FeaturePicker
               selected={selected}
               data={data}
               setSelected={setSelected}
             />
-            {modalName === WEIGHTED_MEAN_SPATIAL_METHOD && (
-              <AttributePicker
-                featureProperties={featureProperties}
-                propertiesSelected={propertiesSelected}
-                setPropertiesSelected={setPropertiesSelected}
-              />
-            )}
-            {modalName === CLIP_METHOD && (
-              <ClipPicker
-                selected={clipFeature}
-                data={data}
-                setSelected={setClipFeature}
-              />
-            )}
-          </div>
+          )}
+          <Complementary />
         </Modal>
         <div className="h-full rounded-md bg-gray-600 ">
           <div className="p-2">
             <div className="cursor-pointer">
               {AnalysisOptions.map((option) => (
-                <h1
+                <div
                   key={option.name}
-                  className="mb-2 flex items-center rounded-md bg-gray-800 px-2 py-2 text-xs text-slate-200"
+                  className="mb-2 flex items-center justify-between rounded-md bg-gray-800 px-2 py-2 text-xs"
                   onClick={() => {
                     setModalName(option.name);
                     handleShowModal();
                   }}
                 >
-                  {option.name}
-                </h1>
+                  <h1
+                    className="flex text-slate-200"
+                  >
+                    {option.name}
+                  </h1>
+                  {option.beta && (
+                    <h1 className="rounded-md bg-red-700 px-2 text-center text-[10px] text-slate-300">
+                      beta
+                    </h1>
+                  )}
+                </div>
               ))}
             </div>
           </div>

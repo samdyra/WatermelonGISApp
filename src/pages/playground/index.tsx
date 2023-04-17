@@ -19,6 +19,7 @@ const Playground: NextPage = () => {
   // ---------- HOOKS ----------
   const [ isOpen, setIsOpen ] = useState(false);
   const [ isLayerOpen, setIsLayerOpen ] = useState(true);
+  const [ isAnalysisOpen, setIsAnalysisOpen ] = useState(true);
   const [ bm, setBm ] = useState("https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png");
 
   const ctx = api.useContext();
@@ -54,6 +55,8 @@ const Playground: NextPage = () => {
   const handleDelete = (id: string) => deleteFeature({ id });
   const handleShowSidebar = () => setIsOpen(!isOpen);
   const handleShowLayerbar = () => setIsLayerOpen(!isLayerOpen);
+  const handleShowAnalysisbar = () => setIsAnalysisOpen(!isAnalysisOpen);
+
 
   return (
     <>
@@ -73,7 +76,7 @@ const Playground: NextPage = () => {
         >
           <AddFeature handleUpload={handleUpload} data={data} handleDelete={handleDelete} isLoading={isLoading} />
         </Layerbar>
-        <Layerbar isOpen position="right" size="small">
+        <Layerbar isOpen={isAnalysisOpen} position="right" size="small" handleShowLayerbar={handleShowAnalysisbar}>
           <Analysis data={data} />
           <BaseMaps bm={bm} setBm={setBm}/>
         </Layerbar>

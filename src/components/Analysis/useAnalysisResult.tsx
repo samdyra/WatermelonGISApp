@@ -11,6 +11,7 @@ import {
   WEIGHTED_MEAN_SPATIAL_CODE,
   CLIP_METHOD,
   CLIP_CODE,
+  REPROJECT_METHOD,
 } from "./types";
 import { uploadToFirebase } from "~/helpers/globalHelpers";
 
@@ -18,12 +19,10 @@ const UseAnalysisResult = () => {
   // ---------- HOOKS ----------
   const ctx = api.useContext();
   const [ selected, setSelected ] = React.useState<GeoJson | null>(null);
-  const [ propertiesSelected, setPropertiesSelected ] =
-    React.useState<string>("");
+  const [ propertiesSelected, setPropertiesSelected ] = React.useState<string>("");
   const [ clipFeature, setClipFeature ] = React.useState<GeoJson | null>(null);
   const [ modalName, setModalName ] = React.useState("");
-  const [ isModalVisible, handleShowModal, handleHideModal ] =
-    useModalState(false);
+  const [ isModalVisible, handleShowModal, handleHideModal ] = useModalState(false);
 
   // ---------- MUTATIONS ----------
   const { mutate: createFeature, isLoading: loadingCreateData } =
@@ -75,11 +74,19 @@ const UseAnalysisResult = () => {
       },
     });
 
+  const { mutate: reproject, isLoading: loadingReproject } =
+    api.vectorAnalysis.reproject.useMutation({
+      onSuccess: (data) => {
+        console.log("ANJING", data)
+      },
+    });
+
   const isLoading =
     loadingCreateData ||
     loadingMeanSpatial ||
     loadingWeightedMean ||
-    loadingClip;
+    loadingClip ||
+    loadingReproject;
 
   // ---------- HANDLERS ----------
   const handleMutateData = () => {
@@ -94,6 +101,10 @@ const UseAnalysisResult = () => {
       break;
     case CLIP_METHOD:
       clip({ feature: selected, clip: clipFeature });
+      handleHideModal();
+      break;
+    case REPROJECT_METHOD:
+      reproject({ feature: selected });
       handleHideModal();
       break;
     default:

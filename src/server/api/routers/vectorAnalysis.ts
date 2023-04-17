@@ -6,6 +6,9 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import clip from "turf-clip";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { detectCrs } from "reproject"
 import { createTRPCRouter, privateProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import center from "@turf/center";
@@ -49,6 +52,14 @@ export const vectorAnalysisRouter = createTRPCRouter({
       const inputData = clip(input.feature, input.clip) as ITurf
       const nameOnly = input.feature.name.split(".")[0];
       const feature = { ...inputData, name: nameOnly }
+
+      return feature
+    }),
+
+  reproject: privateProcedure
+    .input(z.object({ feature: z.any() }))
+    .mutation( ({ input }) => {
+      const feature = detectCrs(input.feature) as string
 
       return feature
     }),

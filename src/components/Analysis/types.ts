@@ -2,9 +2,6 @@ import {
   type Feature, type Point, type Properties, type BBox 
 } from "@turf/helpers";
 import LatLngTuple = L.LatLngTuple
-
-
-
 export interface GeoJson {
     type: string;
     features: {
@@ -25,9 +22,6 @@ export interface GeoJson {
     color: string;
     id: string
   }
-
-
-  
 export interface ITurf {
     name: string;
     type: "FeatureCollection";
@@ -41,19 +35,29 @@ export const MEAN_SPATIAL_CODE = "MeanSpatial"
 export const WEIGHTED_MEAN_SPATIAL_CODE = "WeightedMean"
 export const CLIP_METHOD = "Clip Feature"
 export const CLIP_CODE = "Clipped"
+export const REPROJECT_METHOD = "Reproject Feature"
+export const REPROJECT_CODE = "Reprojected"
 
 export const AnalysisOptions = [
   {
     name: MEAN_SPATIAL_METHOD, 
-    code: MEAN_SPATIAL_CODE
+    code: MEAN_SPATIAL_CODE,
+    beta: false
   },
   {
     name: WEIGHTED_MEAN_SPATIAL_METHOD, 
-    code: WEIGHTED_MEAN_SPATIAL_CODE
+    code: WEIGHTED_MEAN_SPATIAL_CODE,
+    beta: false
   },
   {
     name: CLIP_METHOD, 
-    code: CLIP_CODE
+    code: CLIP_CODE,
+    beta: false
+  },
+  {
+    name: REPROJECT_METHOD, 
+    code: REPROJECT_CODE,
+    beta: true
   },
 ];
 

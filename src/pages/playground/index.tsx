@@ -27,10 +27,7 @@ const Playground: NextPage = () => {
   const [ isAnalysisOpen, setIsAnalysisOpen ] = useState(true);
   const [ bm, setBm ] = useState("https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=cm12mCvBTIOBGz4tb8FTAoubM28MtIRzTmxkCcVplrCbgz20duEVixioH3HT8OMw");
   const [ isModalVisible, handleShowModal, handleHideModal ] = useModalState()
-  const [ tableData, setTableData ] = useState<GeoJson | undefined>(data?.[0])
-
-  // const result = data && data[0]?.features?.map(obj => [obj.properties?.lst_2000, obj.properties?.lst_2005]);
-  // const regress = regression.linear(result);
+  const [ tableData, setTableData ] = useState<GeoJson | undefined>(data?.[0]);
 
   // ---------- MUTATIONS ----------
   const { mutate, isLoading: loadingCreateData } = api.features.create.useMutation({

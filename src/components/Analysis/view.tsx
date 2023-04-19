@@ -109,7 +109,7 @@ const AnalysisView = (props: Props) => {
       <div className="mb-[-3.5px] ml-5 w-fit rounded-t-md bg-gray-600 px-3 py-[2px] text-sm text-slate-200">
         Analysis Tools
       </div>
-      <div className="h-4/6 w-full px-5 pb-5">
+      <div className="h-[60%] w-full px-5 pb-5">
         <Modal
           handleHideModal={handleHideModal}
           isModalVisible={isModalVisible}

@@ -78,7 +78,7 @@ const UseAnalysisResult = () => {
   const { mutate: reproject, isLoading: loadingReproject } =
     api.vectorAnalysis.reproject.useMutation({
       onSuccess: (data) => {
-        console.log("ANJING", data)
+        console.log(data)
       },
     });
 

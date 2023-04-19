@@ -18,21 +18,22 @@ function TableAttribute(props: IProps) {
   const tableBody = table.features.map((feature) => {
     return Object.values(feature.properties) as [];
   });
-  console.log(tableBody);
 
   return (
+    <div className="overflow-hidden">
     <AnimatePresence>
       {props.isModalVisible ? (
-        <>
+        <div className="overflow-hidden">
           <motion.div
-            className="absolute left-[28%] flex h-full w-full items-center"
+            className="absolute left-[28%] flex h-full items-center z-50 overflow-hidden w-1/2"
+            style={{overflow: "hidden"}}
             initial={{ x: -700 }}
             animate={{ x: 0 }}
             exit={{ opacity: 0 }}
           >
-            <div className="h-5/8 w-1/2">
+            <div className="h-5/8 w-full">
               {/*content*/}
-              <div className="flex h-full w-full flex-col rounded-xl border-0 bg-[#1F2937] shadow-lg ">
+              <div className="flex flex-col rounded-xl border-0 bg-[#1F2937] shadow-lg w-full">
                 {/*header*/}
                 <div className="flex items-center justify-between rounded-t border-b border-solid border-gray-900 px-5 pb-1 pt-2 text-xl">
                   <h1 className="font-semibold">{props.name}</h1>
@@ -56,14 +57,15 @@ function TableAttribute(props: IProps) {
             </div>
           </motion.div>
           <motion.div
-            className="fixed inset-0 z-40 bg-black"
+            className="fixed inset-0 z-40 bg-black overflow-hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.25 }}
             exit={{ opacity: 0 }}
           />
-        </>
+        </div>
       ) : null}
     </AnimatePresence>
+    </div>
   );
 }
 export default memo(TableAttribute);

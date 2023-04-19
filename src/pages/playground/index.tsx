@@ -25,7 +25,7 @@ const Playground: NextPage = () => {
   const [ isOpen, setIsOpen ] = useState(false);
   const [ isLayerOpen, setIsLayerOpen ] = useState(true);
   const [ isAnalysisOpen, setIsAnalysisOpen ] = useState(true);
-  const [ bm, setBm ] = useState("https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png");
+  const [ bm, setBm ] = useState("https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=cm12mCvBTIOBGz4tb8FTAoubM28MtIRzTmxkCcVplrCbgz20duEVixioH3HT8OMw");
   const [ isModalVisible, handleShowModal, handleHideModal ] = useModalState()
   const [ tableData, setTableData ] = useState<GeoJson | undefined>(data?.[0])
 

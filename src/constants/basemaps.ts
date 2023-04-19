@@ -25,7 +25,7 @@ export const Basemaps = [
   {
     name: "stadiablack",
     url: stadiablack,
-    link: "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+    link: "https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=cm12mCvBTIOBGz4tb8FTAoubM28MtIRzTmxkCcVplrCbgz20duEVixioH3HT8OMw"
   },
   {
     name: "terrain",
@@ -35,6 +35,7 @@ export const Basemaps = [
   {
     name: "tone",
     url: tone,
-    link: "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
+    link: "https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=cm12mCvBTIOBGz4tb8FTAoubM28MtIRzTmxkCcVplrCbgz20duEVixioH3HT8OMw"
   },
 ];
+

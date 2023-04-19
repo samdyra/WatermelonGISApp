@@ -29,6 +29,9 @@ const Playground: NextPage = () => {
   const [ isModalVisible, handleShowModal, handleHideModal ] = useModalState()
   const [ tableData, setTableData ] = useState<GeoJson | undefined>(data?.[0])
 
+  // const result = data && data[0]?.features?.map(obj => [obj.properties?.lst_2000, obj.properties?.lst_2005]);
+  // const regress = regression.linear(result);
+
   // ---------- MUTATIONS ----------
   const { mutate, isLoading: loadingCreateData } = api.features.create.useMutation({
     onSuccess: () => {

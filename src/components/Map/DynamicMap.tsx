@@ -36,7 +36,8 @@ const PanTo = (props: IFlyTo) => {
         if (coord == undefined) return;
         const firstCoord = coord[0];
         if (firstCoord == undefined) return;
-        const reverseCoord = [ ...firstCoord ].reverse() as LatLngTuple;
+        const unreversedCoord = [ firstCoord[0], firstCoord[1] ];
+        const reverseCoord = [ ...unreversedCoord ].reverse() as LatLngTuple;
         map.flyTo(reverseCoord, 17, { animate: true });
       }
 
@@ -47,7 +48,8 @@ const PanTo = (props: IFlyTo) => {
         const setCoord = coord[0] as LatLngTuple[];
         if (setCoord[0] == undefined) return;
         const firstCoord = [ ...setCoord[0] ];
-        const reverseCoord = firstCoord.reverse() as LatLngTuple;
+        const unreversedCoord = [ firstCoord[0], firstCoord[1] ];
+        const reverseCoord = unreversedCoord.reverse() as LatLngTuple;
         map.flyTo(reverseCoord, 17, { animate: true });
       }
 
@@ -55,8 +57,10 @@ const PanTo = (props: IFlyTo) => {
         if (data.features[0]?.geometry.coordinates == undefined) return;
         const coord: LatLngTuple = data.features[0]?.geometry
           .coordinates as LatLngTuple;
+        console.log(coord)
         if (coord == undefined) return;
-        const reverseCoord: LatLngTuple = [ ...coord ].reverse() as LatLngTuple;
+        const coordUnreversed = [coord[0], coord[1]]
+        const reverseCoord: LatLngTuple = [ ...coordUnreversed ].reverse() as LatLngTuple;
         map.flyTo(reverseCoord, 17, { animate: true });
       }
     }

@@ -23,6 +23,7 @@ const UseAnalysisResult = () => {
   const [ clipFeature, setClipFeature ] = React.useState<GeoJson | null>(null);
   const [ modalName, setModalName ] = React.useState("");
   const [ isModalVisible, handleShowModal, handleHideModal ] = useModalState(false);
+  const position = React.useState("0px");
 
   // ---------- MUTATIONS ----------
   const { mutate: createFeature, isLoading: loadingCreateData } =
@@ -137,6 +138,7 @@ const UseAnalysisResult = () => {
     isLoading,
     setClipFeature,
     clipFeature,
+    position
   };
 };
 

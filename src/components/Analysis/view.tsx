@@ -25,12 +25,14 @@ interface Props {
   AnalysisOptions: {
     beta: boolean;
     name: string;
+    position: string
   }[];
   setModalName: React.Dispatch<React.SetStateAction<string>>;
   handleShowModal: () => void;
   isLoading: boolean;
   setClipFeature: React.Dispatch<React.SetStateAction<GeoJson | null>>;
   clipFeature: GeoJson | null;
+  position: [string, React.Dispatch<React.SetStateAction<string>>] 
 }
 
 const AnalysisView = (props: Props) => {
@@ -51,6 +53,7 @@ const AnalysisView = (props: Props) => {
     isLoading,
     clipFeature,
     setClipFeature,
+    position
   } = props;
 
   const Complementary = () => {
@@ -96,6 +99,7 @@ const AnalysisView = (props: Props) => {
           isModalVisible={isModalVisible}
           callback={handleMutateData}
           modalName={modalName}
+          y={position[0]}
         >
           {modalName !== REPROJECT_METHOD && (
             <FeaturePicker
@@ -115,6 +119,7 @@ const AnalysisView = (props: Props) => {
                   className="mb-2 flex items-center justify-between rounded-md bg-gray-800 px-2 py-2 text-xs active:opacity-80 transition-all duration-150 ease-linear"
                   onClick={() => {
                     setModalName(option.name);
+                    position[1](option.position)
                     handleShowModal();
                   }}
                 >

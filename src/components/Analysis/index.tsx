@@ -24,6 +24,7 @@ const Analysis = (props: Props) => {
     isLoading,
     clipFeature,
     setClipFeature,
+    position
   } = UseAnalysisResult();
 
   return (
@@ -44,6 +45,7 @@ const Analysis = (props: Props) => {
       setPropertiesSelected={setPropertiesSelected}
       setSelected={setSelected}
       isLoading={isLoading}
+      position={position}
     />
   );
 };

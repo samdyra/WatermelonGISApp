@@ -42,22 +42,26 @@ export const AnalysisOptions = [
   {
     name: MEAN_SPATIAL_METHOD, 
     code: MEAN_SPATIAL_CODE,
-    beta: false
+    beta: false,
+    position: "30px"
   },
   {
     name: WEIGHTED_MEAN_SPATIAL_METHOD, 
     code: WEIGHTED_MEAN_SPATIAL_CODE,
-    beta: false
+    beta: false,
+    position: "60px"
   },
   {
     name: CLIP_METHOD, 
     code: CLIP_CODE,
-    beta: false
+    beta: false,
+    position: "90px"
   },
   {
     name: REPROJECT_METHOD, 
     code: REPROJECT_CODE,
-    beta: true
+    beta: true,
+    position: "120px"
   },
 ];
 

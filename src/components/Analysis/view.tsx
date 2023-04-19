@@ -2,6 +2,7 @@ import { memo } from "react";
 import FeaturePicker from "./components/FeaturePicker";
 import AttributePicker from "./components/AttributePicker";
 import ClipPicker from "./components/ClipPicker";
+import TwoAttributePicker from "./components/TwoAttributePicker";
 import { Modal, NLoading } from "~/components";
 import { type GeoJson } from "./types";
 import React from "react";
@@ -9,6 +10,7 @@ import {
   WEIGHTED_MEAN_SPATIAL_METHOD,
   CLIP_METHOD,
   REPROJECT_METHOD,
+  REGRESSION_METHOD
 } from "./types";
 
 interface Props {
@@ -25,14 +27,16 @@ interface Props {
   AnalysisOptions: {
     beta: boolean;
     name: string;
-    position: string
+    position: string;
   }[];
   setModalName: React.Dispatch<React.SetStateAction<string>>;
   handleShowModal: () => void;
   isLoading: boolean;
   setClipFeature: React.Dispatch<React.SetStateAction<GeoJson | null>>;
   clipFeature: GeoJson | null;
-  position: [string, React.Dispatch<React.SetStateAction<string>>] 
+  position: [string, React.Dispatch<React.SetStateAction<string>>];
+  secondPropertiesSelected: string;
+  setSecondPropertiesSelected: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const AnalysisView = (props: Props) => {
@@ -53,37 +57,49 @@ const AnalysisView = (props: Props) => {
     isLoading,
     clipFeature,
     setClipFeature,
-    position
+    position,
+    secondPropertiesSelected,
+    setSecondPropertiesSelected,
   } = props;
 
   const Complementary = () => {
     switch (modalName) {
-    case WEIGHTED_MEAN_SPATIAL_METHOD:
-      return (
-        <AttributePicker
-          featureProperties={featureProperties}
-          propertiesSelected={propertiesSelected}
-          setPropertiesSelected={setPropertiesSelected}
-        />
-      );
-    case CLIP_METHOD:
-      return (
-        <ClipPicker
-          selected={clipFeature}
-          data={data}
-          setSelected={setClipFeature}
-        />
-      );
-    case REPROJECT_METHOD:
-      return (
-        <FeaturePicker
-          selected={selected}
-          data={data}
-          setSelected={setSelected}
-        />
-      );
-    default:
-      return null;
+      case WEIGHTED_MEAN_SPATIAL_METHOD:
+        return (
+          <AttributePicker
+            featureProperties={featureProperties}
+            propertiesSelected={propertiesSelected}
+            setPropertiesSelected={setPropertiesSelected}
+          />
+        );
+      case CLIP_METHOD:
+        return (
+          <ClipPicker
+            selected={clipFeature}
+            data={data}
+            setSelected={setClipFeature}
+          />
+        );
+      case REPROJECT_METHOD:
+        return (
+          <FeaturePicker
+            selected={selected}
+            data={data}
+            setSelected={setSelected}
+          />
+        );
+      case REGRESSION_METHOD:
+        return (
+          <TwoAttributePicker
+            featureProperties={featureProperties}
+            propertiesSelected={propertiesSelected}
+            setPropertiesSelected={setPropertiesSelected}
+            secondPropertiesSelected={secondPropertiesSelected}
+            setSecondPropertiesSelected={setSecondPropertiesSelected}
+          />
+        );
+      default:
+        return null;
     }
   };
 
@@ -116,18 +132,14 @@ const AnalysisView = (props: Props) => {
               {AnalysisOptions.map((option) => (
                 <div
                   key={option.name}
-                  className="mb-2 flex items-center justify-between rounded-md bg-gray-800 px-2 py-2 text-xs active:opacity-80 transition-all duration-150 ease-linear"
+                  className="mb-2 flex items-center justify-between rounded-md bg-gray-800 px-2 py-2 text-xs transition-all duration-150 ease-linear active:opacity-80"
                   onClick={() => {
                     setModalName(option.name);
-                    position[1](option.position)
+                    position[1](option.position);
                     handleShowModal();
                   }}
                 >
-                  <h1
-                    className="flex text-slate-200"
-                  >
-                    {option.name}
-                  </h1>
+                  <h1 className="flex text-slate-200">{option.name}</h1>
                   {option.beta && (
                     <h1 className="rounded-md bg-red-700 px-2 text-center text-[10px] text-slate-300">
                       beta

@@ -12,17 +12,23 @@ import {
   CLIP_METHOD,
   CLIP_CODE,
   REPROJECT_METHOD,
+  REGRESSION_CODE,
+  REGRESSION_METHOD,
 } from "./types";
 import { uploadToFirebase } from "~/helpers/globalHelpers";
 
 const UseAnalysisResult = () => {
   // ---------- HOOKS ----------
   const ctx = api.useContext();
-  const [ selected, setSelected ] = React.useState<GeoJson | null>(null);
-  const [ propertiesSelected, setPropertiesSelected ] = React.useState<string>("");
-  const [ clipFeature, setClipFeature ] = React.useState<GeoJson | null>(null);
-  const [ modalName, setModalName ] = React.useState("");
-  const [ isModalVisible, handleShowModal, handleHideModal ] = useModalState(false);
+  const [selected, setSelected] = React.useState<GeoJson | null>(null);
+  const [propertiesSelected, setPropertiesSelected] =
+    React.useState<string>("");
+  const [secondPropertiesSelected, setSecondPropertiesSelected] =
+    React.useState<string>("");
+  const [clipFeature, setClipFeature] = React.useState<GeoJson | null>(null);
+  const [modalName, setModalName] = React.useState("");
+  const [isModalVisible, handleShowModal, handleHideModal] =
+    useModalState(false);
   const position = React.useState("0px");
 
   // ---------- MUTATIONS ----------
@@ -78,7 +84,14 @@ const UseAnalysisResult = () => {
   const { mutate: reproject, isLoading: loadingReproject } =
     api.vectorAnalysis.reproject.useMutation({
       onSuccess: (data) => {
-        console.log(data)
+        console.log(data);
+      },
+    });
+
+  const { mutate: regression, isLoading: loadingRegression } =
+    api.vectorAnalysis.regression.useMutation({
+      onSuccess: (data) => {
+        console.log(REGRESSION_CODE, data);
       },
     });
 
@@ -87,38 +100,47 @@ const UseAnalysisResult = () => {
     loadingMeanSpatial ||
     loadingWeightedMean ||
     loadingClip ||
-    loadingReproject;
+    loadingReproject ||
+    loadingRegression;
 
   // ---------- HANDLERS ----------
   const handleMutateData = () => {
     switch (modalName) {
-    case MEAN_SPATIAL_METHOD:
-      meanSpatial({ feature: selected });
-      handleHideModal();
-      break;
-    case WEIGHTED_MEAN_SPATIAL_METHOD:
-      weightedMeanSpatial({ feature: selected, weight: propertiesSelected });
-      handleHideModal();
-      break;
-    case CLIP_METHOD:
-      clip({ feature: selected, clip: clipFeature });
-      handleHideModal();
-      break;
-    case REPROJECT_METHOD:
-      reproject({ feature: selected });
-      handleHideModal();
-      break;
-    default:
+      case MEAN_SPATIAL_METHOD:
+        meanSpatial({ feature: selected });
+        handleHideModal();
+        break;
+      case WEIGHTED_MEAN_SPATIAL_METHOD:
+        weightedMeanSpatial({ feature: selected, weight: propertiesSelected });
+        handleHideModal();
+        break;
+      case CLIP_METHOD:
+        clip({ feature: selected, clip: clipFeature });
+        handleHideModal();
+        break;
+      case REPROJECT_METHOD:
+        reproject({ feature: selected });
+        handleHideModal();
+        break;
+      case REGRESSION_METHOD:
+        regression({
+          feature: selected,
+          row: propertiesSelected,
+          secondRow: secondPropertiesSelected,
+        });
+        handleHideModal();
+        break;
+      default:
     }
   };
 
   const featureProperties = (): string[] => {
-    if (!selected) return [ "No Feature Selected" ];
+    if (!selected) return ["No Feature Selected"];
     const properties = selected.features.map((feature) =>
       Object.keys(feature.properties)
     );
 
-    if (properties[0] === undefined) return [ "No Feature Selected" ];
+    if (properties[0] === undefined) return ["No Feature Selected"];
     return properties[0];
   };
 
@@ -138,7 +160,9 @@ const UseAnalysisResult = () => {
     isLoading,
     setClipFeature,
     clipFeature,
-    position
+    position,
+    secondPropertiesSelected,
+    setSecondPropertiesSelected,
   };
 };
 

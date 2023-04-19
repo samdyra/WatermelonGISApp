@@ -37,6 +37,8 @@ export const CLIP_METHOD = "Clip Feature"
 export const CLIP_CODE = "Clipped"
 export const REPROJECT_METHOD = "Reproject Feature"
 export const REPROJECT_CODE = "Reprojected"
+export const REGRESSION_METHOD = "Linear Regression"
+export const REGRESSION_CODE = "Regression"
 
 export const AnalysisOptions = [
   {
@@ -62,6 +64,12 @@ export const AnalysisOptions = [
     code: REPROJECT_CODE,
     beta: true,
     position: "120px"
+  },
+  {
+    name: REGRESSION_METHOD, 
+    code: REGRESSION_CODE,
+    beta: false,
+    position: "150px"
   },
 ];
 

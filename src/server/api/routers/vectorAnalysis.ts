@@ -63,4 +63,12 @@ export const vectorAnalysisRouter = createTRPCRouter({
 
       return feature
     }),
+
+    regression: privateProcedure
+    .input(z.object({ feature: z.any(), row: z.string(), secondRow: z.string() }))
+    .mutation( ({ input }) => {
+      const feature = detectCrs(input.feature) as string
+
+      return feature
+    }),
 });

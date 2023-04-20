@@ -1,4 +1,4 @@
-import { type SetStateAction, useState } from "react";
+import { type SetStateAction, useState } from 'react';
 
 /**
  * Hooks for modal state
@@ -14,7 +14,7 @@ type IModalState = [
 ];
 
 const useModalState = (initialState = false): IModalState => {
-  const [ isModalVisible, setIsModalVisible ] = useState<boolean>(initialState);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(initialState);
 
   function handleShowModal(): void {
     setIsModalVisible(true);
@@ -24,7 +24,7 @@ const useModalState = (initialState = false): IModalState => {
     setIsModalVisible(false);
   }
 
-  return [ isModalVisible, handleShowModal, handleHideModal, setIsModalVisible ];
+  return [isModalVisible, handleShowModal, handleHideModal, setIsModalVisible];
 };
 
 export default useModalState;

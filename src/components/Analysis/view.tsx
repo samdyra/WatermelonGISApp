@@ -64,42 +64,42 @@ const AnalysisView = (props: Props) => {
 
   const Complementary = () => {
     switch (modalName) {
-      case WEIGHTED_MEAN_SPATIAL_METHOD:
-        return (
-          <AttributePicker
-            featureProperties={featureProperties}
-            propertiesSelected={propertiesSelected}
-            setPropertiesSelected={setPropertiesSelected}
-          />
-        );
-      case CLIP_METHOD:
-        return (
-          <ClipPicker
-            selected={clipFeature}
-            data={data}
-            setSelected={setClipFeature}
-          />
-        );
-      case REPROJECT_METHOD:
-        return (
-          <FeaturePicker
-            selected={selected}
-            data={data}
-            setSelected={setSelected}
-          />
-        );
-      case REGRESSION_METHOD:
-        return (
-          <TwoAttributePicker
-            featureProperties={featureProperties}
-            propertiesSelected={propertiesSelected}
-            setPropertiesSelected={setPropertiesSelected}
-            secondPropertiesSelected={secondPropertiesSelected}
-            setSecondPropertiesSelected={setSecondPropertiesSelected}
-          />
-        );
-      default:
-        return null;
+    case WEIGHTED_MEAN_SPATIAL_METHOD:
+      return (
+        <AttributePicker
+          featureProperties={featureProperties}
+          propertiesSelected={propertiesSelected}
+          setPropertiesSelected={setPropertiesSelected}
+        />
+      );
+    case CLIP_METHOD:
+      return (
+        <ClipPicker
+          selected={clipFeature}
+          data={data}
+          setSelected={setClipFeature}
+        />
+      );
+    case REPROJECT_METHOD:
+      return (
+        <FeaturePicker
+          selected={selected}
+          data={data}
+          setSelected={setSelected}
+        />
+      );
+    case REGRESSION_METHOD:
+      return (
+        <TwoAttributePicker
+          featureProperties={featureProperties}
+          propertiesSelected={propertiesSelected}
+          setPropertiesSelected={setPropertiesSelected}
+          secondPropertiesSelected={secondPropertiesSelected}
+          setSecondPropertiesSelected={setSecondPropertiesSelected}
+        />
+      );
+    default:
+      return null;
     }
   };
 

@@ -106,31 +106,31 @@ const UseAnalysisResult = () => {
   // ---------- HANDLERS ----------
   const handleMutateData = () => {
     switch (modalName) {
-      case MEAN_SPATIAL_METHOD:
-        meanSpatial({ feature: selected });
-        handleHideModal();
-        break;
-      case WEIGHTED_MEAN_SPATIAL_METHOD:
-        weightedMeanSpatial({ feature: selected, weight: propertiesSelected });
-        handleHideModal();
-        break;
-      case CLIP_METHOD:
-        clip({ feature: selected, clip: clipFeature });
-        handleHideModal();
-        break;
-      case REPROJECT_METHOD:
-        reproject({ feature: selected });
-        handleHideModal();
-        break;
-      case REGRESSION_METHOD:
-        regression({
-          feature: selected,
-          row: propertiesSelected,
-          secondRow: secondPropertiesSelected,
-        });
-        handleHideModal();
-        break;
-      default:
+    case MEAN_SPATIAL_METHOD:
+      meanSpatial({ feature: selected });
+      handleHideModal();
+      break;
+    case WEIGHTED_MEAN_SPATIAL_METHOD:
+      weightedMeanSpatial({ feature: selected, weight: propertiesSelected });
+      handleHideModal();
+      break;
+    case CLIP_METHOD:
+      clip({ feature: selected, clip: clipFeature });
+      handleHideModal();
+      break;
+    case REPROJECT_METHOD:
+      reproject({ feature: selected });
+      handleHideModal();
+      break;
+    case REGRESSION_METHOD:
+      regression({
+        feature: selected,
+        row: propertiesSelected,
+        secondRow: secondPropertiesSelected,
+      });
+      handleHideModal();
+      break;
+    default:
     }
   };
 

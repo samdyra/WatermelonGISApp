@@ -15,6 +15,7 @@ import center from '@turf/center';
 import { featureCollection, centerMean } from '@turf/turf';
 import { type ITurf } from '~/components/Analysis/types';
 import regression from 'regression';
+import { type DataPoint } from 'regression';
 
 type FeatureType = {
   properties: {
@@ -69,10 +70,12 @@ export const vectorAnalysisRouter = createTRPCRouter({
     )
     .mutation(({ input }) => {
       const { row: firstRow, secondRow } = input;
-      const formatted = input.feature?.features?.map((obj: FeatureType) => [
+
+      const formatted: DataPoint[] = input.feature?.features?.map((obj: FeatureType) => [
         obj.properties?.[firstRow],
         obj.properties?.[secondRow],
       ]);
+
       const result = regression.linear(formatted);
 
       return { result };

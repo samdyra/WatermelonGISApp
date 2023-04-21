@@ -92,12 +92,32 @@ export const vectorAnalysisRouter = createTRPCRouter({
   directionModule: privateProcedure
     .input(z.object({ feature: z.any(), weight: z.string() }))
     .mutation(({ input }) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const inputData = centerMean(input.feature, { weight: input.weight });
-      const collected = featureCollection([inputData]);
-      const nameOnly = input.feature.name.split('.')[0];
-      const feature = { ...collected, name: nameOnly };
+      const results = [];
+      const uniqueTahuns = Array.from(
+        new Set(
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          input.feature.features.map(
+            (feature: { properties: { tahun: number } }) =>
+              feature.properties.tahun
+          )
+        )
+      ).sort();
 
-      return feature;
+      for (let i = 0; i < uniqueTahuns.length; i++) {
+        const currentTahun = uniqueTahuns[i] as number;
+        const features = input.feature.features.filter(
+          (feature: { properties: { tahun: number } }) =>
+            feature.properties.tahun <= currentTahun
+        );
+        const centroidResult = center({
+          type: 'FeatureCollection',
+          features,
+        });
+
+        const collectionResult = featureCollection([centroidResult]);
+        results.push({ ...collectionResult, tahun: currentTahun });
+      }
+
+      return results;
     }),
 });

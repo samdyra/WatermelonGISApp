@@ -57,7 +57,6 @@ const PanTo = (props: IFlyTo) => {
         if (data.features[0]?.geometry.coordinates == undefined) return;
         const coord: LatLngTuple = data.features[0]?.geometry
           .coordinates as LatLngTuple;
-        console.log(coord)
         if (coord == undefined) return;
         const coordUnreversed = [coord[0], coord[1]]
         const reverseCoord: LatLngTuple = [ ...coordUnreversed ].reverse() as LatLngTuple;

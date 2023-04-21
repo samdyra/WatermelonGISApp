@@ -100,13 +100,7 @@ const UseAnalysisResult = () => {
   const { mutate: directionModule, isLoading: loadingDirection } =
     api.vectorAnalysis.directionModule.useMutation({
       onSuccess: (data) => {
-        uploadToFirebase(data, DIRECTION_CODE, (url) => {
-          createFeature({
-            feature: url,
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            name: `${data.name}-${DIRECTION_CODE}` ?? "file",
-          });
-        });
+        console.log(DIRECTION_CODE, data);
       },
     });
 

@@ -24,15 +24,17 @@ type FeatureType = {
 };
 
 export const vectorAnalysisRouter = createTRPCRouter({
-  meanSpatial: privateProcedure.input(z.object({ feature: z.any() })).mutation(({ input }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const inputData = center(input.feature);
-    const collected = featureCollection([inputData]);
-    const nameOnly = input.feature.name.split('.')[0];
-    const feature = { ...collected, name: nameOnly };
+  meanSpatial: privateProcedure
+    .input(z.object({ feature: z.any() }))
+    .mutation(({ input }) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      const inputData = center(input.feature);
+      const collected = featureCollection([inputData]);
+      const nameOnly = input.feature.name.split('.')[0];
+      const feature = { ...collected, name: nameOnly };
 
-    return feature;
-  }),
+      return feature;
+    }),
 
   weightedMeanSpatial: privateProcedure
     .input(z.object({ feature: z.any(), weight: z.string() }))
@@ -46,19 +48,23 @@ export const vectorAnalysisRouter = createTRPCRouter({
       return feature;
     }),
 
-  clip: privateProcedure.input(z.object({ feature: z.any(), clip: z.any() })).mutation(({ input }) => {
-    const inputData = clip(input.feature, input.clip) as ITurf;
-    const nameOnly = input.feature.name.split('.')[0];
-    const feature = { ...inputData, name: nameOnly };
+  clip: privateProcedure
+    .input(z.object({ feature: z.any(), clip: z.any() }))
+    .mutation(({ input }) => {
+      const inputData = clip(input.feature, input.clip) as ITurf;
+      const nameOnly = input.feature.name.split('.')[0];
+      const feature = { ...inputData, name: nameOnly };
 
-    return feature;
-  }),
+      return feature;
+    }),
 
-  reproject: privateProcedure.input(z.object({ feature: z.any() })).mutation(({ input }) => {
-    const feature = detectCrs(input.feature) as string;
+  reproject: privateProcedure
+    .input(z.object({ feature: z.any() }))
+    .mutation(({ input }) => {
+      const feature = detectCrs(input.feature) as string;
 
-    return feature;
-  }),
+      return feature;
+    }),
 
   regression: privateProcedure
     .input(
@@ -71,13 +77,27 @@ export const vectorAnalysisRouter = createTRPCRouter({
     .mutation(({ input }) => {
       const { row: firstRow, secondRow } = input;
 
-      const formatted: DataPoint[] = input.feature?.features?.map((obj: FeatureType) => [
-        obj.properties?.[firstRow],
-        obj.properties?.[secondRow],
-      ]);
+      const formatted: DataPoint[] = input.feature?.features?.map(
+        (obj: FeatureType) => [
+          obj.properties?.[firstRow],
+          obj.properties?.[secondRow],
+        ]
+      );
 
       const result = regression.linear(formatted);
 
       return { result };
+    }),
+
+  directionModule: privateProcedure
+    .input(z.object({ feature: z.any(), weight: z.string() }))
+    .mutation(({ input }) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      const inputData = centerMean(input.feature, { weight: input.weight });
+      const collected = featureCollection([inputData]);
+      const nameOnly = input.feature.name.split('.')[0];
+      const feature = { ...collected, name: nameOnly };
+
+      return feature;
     }),
 });

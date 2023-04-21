@@ -14,6 +14,8 @@ import {
   REPROJECT_METHOD,
   REGRESSION_CODE,
   REGRESSION_METHOD,
+  DIRECTION_METHOD,
+  DIRECTION_CODE
 } from "./types";
 import { uploadToFirebase } from "~/helpers/globalHelpers";
 
@@ -95,13 +97,27 @@ const UseAnalysisResult = () => {
       },
     });
 
+  const { mutate: directionModule, isLoading: loadingDirection } =
+    api.vectorAnalysis.directionModule.useMutation({
+      onSuccess: (data) => {
+        uploadToFirebase(data, DIRECTION_CODE, (url) => {
+          createFeature({
+            feature: url,
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            name: `${data.name}-${DIRECTION_CODE}` ?? "file",
+          });
+        });
+      },
+    });
+
   const isLoading =
     loadingCreateData ||
     loadingMeanSpatial ||
     loadingWeightedMean ||
     loadingClip ||
     loadingReproject ||
-    loadingRegression;
+    loadingRegression ||
+    loadingDirection
 
   // ---------- HANDLERS ----------
   const handleMutateData = () => {
@@ -127,6 +143,13 @@ const UseAnalysisResult = () => {
         feature: selected,
         row: propertiesSelected,
         secondRow: secondPropertiesSelected,
+      });
+      handleHideModal();
+      break;
+    case DIRECTION_METHOD:
+      directionModule({
+        feature: selected,
+        weight: propertiesSelected
       });
       handleHideModal();
       break;

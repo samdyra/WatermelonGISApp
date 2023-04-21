@@ -10,7 +10,8 @@ import {
   WEIGHTED_MEAN_SPATIAL_METHOD,
   CLIP_METHOD,
   REPROJECT_METHOD,
-  REGRESSION_METHOD
+  REGRESSION_METHOD,
+  DIRECTION_METHOD
 } from "./types";
 
 interface Props {
@@ -96,6 +97,14 @@ const AnalysisView = (props: Props) => {
           setPropertiesSelected={setPropertiesSelected}
           secondPropertiesSelected={secondPropertiesSelected}
           setSecondPropertiesSelected={setSecondPropertiesSelected}
+        />
+      );
+    case DIRECTION_METHOD:
+      return (
+        <AttributePicker
+          featureProperties={featureProperties}
+          propertiesSelected={propertiesSelected}
+          setPropertiesSelected={setPropertiesSelected}
         />
       );
     default:

@@ -100,7 +100,13 @@ const UseAnalysisResult = () => {
   const { mutate: directionModule, isLoading: loadingDirection } =
     api.vectorAnalysis.directionModule.useMutation({
       onSuccess: (data) => {
-        console.log(DIRECTION_CODE, data);
+        uploadToFirebase(data, DIRECTION_CODE, (url) => {
+          createFeature({
+            feature: url,
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            name: `${data.name}-${DIRECTION_CODE}` ?? "file",
+          });
+        });
       },
     });
 
@@ -143,7 +149,7 @@ const UseAnalysisResult = () => {
     case DIRECTION_METHOD:
       directionModule({
         feature: selected,
-        weight: propertiesSelected
+        year: propertiesSelected
       });
       handleHideModal();
       break;

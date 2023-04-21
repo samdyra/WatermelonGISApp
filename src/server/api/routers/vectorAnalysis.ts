@@ -24,17 +24,15 @@ type FeatureType = {
 };
 
 export const vectorAnalysisRouter = createTRPCRouter({
-  meanSpatial: privateProcedure
-    .input(z.object({ feature: z.any() }))
-    .mutation(({ input }) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const inputData = center(input.feature);
-      const collected = featureCollection([inputData]);
-      const nameOnly = input.feature.name.split('.')[0];
-      const feature = { ...collected, name: nameOnly };
+  meanSpatial: privateProcedure.input(z.object({ feature: z.any() })).mutation(({ input }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const inputData = center(input.feature);
+    const collected = featureCollection([inputData]);
+    const nameOnly = input.feature.name.split('.')[0];
+    const feature = { ...collected, name: nameOnly };
 
-      return feature;
-    }),
+    return feature;
+  }),
 
   weightedMeanSpatial: privateProcedure
     .input(z.object({ feature: z.any(), weight: z.string() }))
@@ -48,23 +46,19 @@ export const vectorAnalysisRouter = createTRPCRouter({
       return feature;
     }),
 
-  clip: privateProcedure
-    .input(z.object({ feature: z.any(), clip: z.any() }))
-    .mutation(({ input }) => {
-      const inputData = clip(input.feature, input.clip) as ITurf;
-      const nameOnly = input.feature.name.split('.')[0];
-      const feature = { ...inputData, name: nameOnly };
+  clip: privateProcedure.input(z.object({ feature: z.any(), clip: z.any() })).mutation(({ input }) => {
+    const inputData = clip(input.feature, input.clip) as ITurf;
+    const nameOnly = input.feature.name.split('.')[0];
+    const feature = { ...inputData, name: nameOnly };
 
-      return feature;
-    }),
+    return feature;
+  }),
 
-  reproject: privateProcedure
-    .input(z.object({ feature: z.any() }))
-    .mutation(({ input }) => {
-      const feature = detectCrs(input.feature) as string;
+  reproject: privateProcedure.input(z.object({ feature: z.any() })).mutation(({ input }) => {
+    const feature = detectCrs(input.feature) as string;
 
-      return feature;
-    }),
+    return feature;
+  }),
 
   regression: privateProcedure
     .input(
@@ -77,47 +71,43 @@ export const vectorAnalysisRouter = createTRPCRouter({
     .mutation(({ input }) => {
       const { row: firstRow, secondRow } = input;
 
-      const formatted: DataPoint[] = input.feature?.features?.map(
-        (obj: FeatureType) => [
-          obj.properties?.[firstRow],
-          obj.properties?.[secondRow],
-        ]
-      );
+      const formatted: DataPoint[] = input.feature?.features?.map((obj: FeatureType) => [
+        obj.properties?.[firstRow],
+        obj.properties?.[secondRow],
+      ]);
 
       const result = regression.linear(formatted);
 
       return { result };
     }),
 
-  directionModule: privateProcedure
-    .input(z.object({ feature: z.any(), weight: z.string() }))
-    .mutation(({ input }) => {
-      const results = [];
-      const uniqueTahuns = Array.from(
-        new Set(
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          input.feature.features.map(
-            (feature: { properties: { tahun: number } }) =>
-              feature.properties.tahun
-          )
-        )
-      ).sort();
+  directionModule: privateProcedure.input(z.object({ feature: z.any(), year: z.string() })).mutation(({ input }) => {
+    const { year } = input;
+    const results = [];
+    const uniqueTahuns = Array.from(
+      new Set(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        input.feature.features.map((feature: FeatureType) => feature.properties?.[year])
+      )
+    ).sort();
 
-      for (let i = 0; i < uniqueTahuns.length; i++) {
-        const currentTahun = uniqueTahuns[i] as number;
-        const features = input.feature.features.filter(
-          (feature: { properties: { tahun: number } }) =>
-            feature.properties.tahun <= currentTahun
-        );
-        const centroidResult = center({
-          type: 'FeatureCollection',
-          features,
-        });
+    for (let i = 0; i < uniqueTahuns.length; i = i + 1) {
+      const currentTahun = uniqueTahuns[i] as number;
+      const features = input.feature.features.filter(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (feature: { properties: any }) => feature.properties?.[year] <= currentTahun
+      );
+      const centroidResult = center({
+        type: 'FeatureCollection',
+        features,
+      });
 
-        const collectionResult = featureCollection([centroidResult]);
-        results.push({ ...collectionResult, tahun: currentTahun });
-      }
+      results.push({ ...centroidResult, tahun: currentTahun });
+    }
 
-      return results;
-    }),
+    const collection = featureCollection(results);
+    const nameOnly = input.feature.name.split('.')[0];
+
+    return { ...collection, name: nameOnly };
+  }),
 });

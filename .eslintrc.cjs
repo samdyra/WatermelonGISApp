@@ -5,9 +5,7 @@ const path = require('path');
 const config = {
   overrides: [
     {
-      extends: [
-        'plugin:@typescript-eslint/recommended-requiring-type-checking',
-      ],
+      extends: ['plugin:@typescript-eslint/recommended-requiring-type-checking'],
       files: ['*.ts', '*.tsx'],
       parserOptions: { project: path.join(__dirname, 'tsconfig.json') },
     },
@@ -44,7 +42,6 @@ const config = {
     // "react/jsx-indent-props": [ "warn", 2 ],
     'brace-style': ['warn', 'stroustrup'],
     'object-curly-spacing': ['warn', 'always'],
-    'object-curly-newline': [2, { multiline: true, minProperties: 3 }],
     'arrow-body-style': 'off',
     'consistent-return': 'off',
     'no-nested-ternary': 'warn',

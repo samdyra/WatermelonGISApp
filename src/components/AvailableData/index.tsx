@@ -2,12 +2,20 @@ import React, { memo } from 'react';
 import Image from 'next/image';
 import dbImage from '../../../public/db.png';
 import downloadImage from '../../../public/download.png';
+import infoImage from '../../../public/info.png';
 
 const AvailableData = () => {
   return (
     <div>
       <div className="mb-[-3.5px] ml-6 w-fit rounded-t-md bg-gray-600 px-3 py-[2px] text-sm text-slate-200">
-        Available Data
+        <div className="flex items-center gap-2">
+          <h1>Remote Data</h1>
+          <Image
+            src={infoImage}
+            alt="download"
+            className="h-[12px] w-[12px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+          />
+        </div>
       </div>
 
       <div className="mx-6 flex h-48 flex-col rounded-md bg-gray-600 px-4 py-3">

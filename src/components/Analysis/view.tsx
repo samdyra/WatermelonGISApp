@@ -1,18 +1,20 @@
-import { memo } from "react";
-import FeaturePicker from "./components/FeaturePicker";
-import AttributePicker from "./components/AttributePicker";
-import ClipPicker from "./components/ClipPicker";
-import TwoAttributePicker from "./components/TwoAttributePicker";
-import { Modal, NLoading } from "~/components";
-import { type GeoJson } from "./types";
-import React from "react";
+import { memo } from 'react';
+import FeaturePicker from './components/FeaturePicker';
+import AttributePicker from './components/AttributePicker';
+import ClipPicker from './components/ClipPicker';
+import TwoAttributePicker from './components/TwoAttributePicker';
+import { Modal, NLoading } from '~/components';
+import { type GeoJson } from './types';
+import React from 'react';
+import infoImage from '../../../public/info.png';
+import Image from 'next/image';
 import {
   WEIGHTED_MEAN_SPATIAL_METHOD,
   CLIP_METHOD,
   REPROJECT_METHOD,
   REGRESSION_METHOD,
-  DIRECTION_METHOD
-} from "./types";
+  DIRECTION_METHOD,
+} from './types';
 
 interface Props {
   handleHideModal: () => void;
@@ -65,50 +67,38 @@ const AnalysisView = (props: Props) => {
 
   const Complementary = () => {
     switch (modalName) {
-    case WEIGHTED_MEAN_SPATIAL_METHOD:
-      return (
-        <AttributePicker
-          featureProperties={featureProperties}
-          propertiesSelected={propertiesSelected}
-          setPropertiesSelected={setPropertiesSelected}
-        />
-      );
-    case CLIP_METHOD:
-      return (
-        <ClipPicker
-          selected={clipFeature}
-          data={data}
-          setSelected={setClipFeature}
-        />
-      );
-    case REPROJECT_METHOD:
-      return (
-        <FeaturePicker
-          selected={selected}
-          data={data}
-          setSelected={setSelected}
-        />
-      );
-    case REGRESSION_METHOD:
-      return (
-        <TwoAttributePicker
-          featureProperties={featureProperties}
-          propertiesSelected={propertiesSelected}
-          setPropertiesSelected={setPropertiesSelected}
-          secondPropertiesSelected={secondPropertiesSelected}
-          setSecondPropertiesSelected={setSecondPropertiesSelected}
-        />
-      );
-    case DIRECTION_METHOD:
-      return (
-        <AttributePicker
-          featureProperties={featureProperties}
-          propertiesSelected={propertiesSelected}
-          setPropertiesSelected={setPropertiesSelected}
-        />
-      );
-    default:
-      return null;
+      case WEIGHTED_MEAN_SPATIAL_METHOD:
+        return (
+          <AttributePicker
+            featureProperties={featureProperties}
+            propertiesSelected={propertiesSelected}
+            setPropertiesSelected={setPropertiesSelected}
+          />
+        );
+      case CLIP_METHOD:
+        return <ClipPicker selected={clipFeature} data={data} setSelected={setClipFeature} />;
+      case REPROJECT_METHOD:
+        return <FeaturePicker selected={selected} data={data} setSelected={setSelected} />;
+      case REGRESSION_METHOD:
+        return (
+          <TwoAttributePicker
+            featureProperties={featureProperties}
+            propertiesSelected={propertiesSelected}
+            setPropertiesSelected={setPropertiesSelected}
+            secondPropertiesSelected={secondPropertiesSelected}
+            setSecondPropertiesSelected={setSecondPropertiesSelected}
+          />
+        );
+      case DIRECTION_METHOD:
+        return (
+          <AttributePicker
+            featureProperties={featureProperties}
+            propertiesSelected={propertiesSelected}
+            setPropertiesSelected={setPropertiesSelected}
+          />
+        );
+      default:
+        return null;
     }
   };
 
@@ -116,7 +106,14 @@ const AnalysisView = (props: Props) => {
     <>
       {isLoading && <NLoading />}
       <div className="mb-[-3.5px] ml-5 w-fit rounded-t-md bg-gray-600 px-3 py-[2px] text-sm text-slate-200">
-        Analysis Tools
+        <div className="flex items-center gap-2">
+          <h1>Basemaps</h1>
+          <Image
+            src={infoImage}
+            alt="download"
+            className="h-[12px] w-[12px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+          />
+        </div>
       </div>
       <div className="h-[60%] w-full px-5 pb-5">
         <Modal
@@ -127,11 +124,7 @@ const AnalysisView = (props: Props) => {
           y={position[0]}
         >
           {modalName !== REPROJECT_METHOD && (
-            <FeaturePicker
-              selected={selected}
-              data={data}
-              setSelected={setSelected}
-            />
+            <FeaturePicker selected={selected} data={data} setSelected={setSelected} />
           )}
           <Complementary />
         </Modal>
@@ -150,9 +143,7 @@ const AnalysisView = (props: Props) => {
                 >
                   <h1 className="flex text-slate-200">{option.name}</h1>
                   {option.beta && (
-                    <h1 className="rounded-md bg-red-700 px-2 text-center text-[10px] text-slate-300">
-                      beta
-                    </h1>
+                    <h1 className="rounded-md bg-red-700 px-2 text-center text-[10px] text-slate-300">beta</h1>
                   )}
                 </div>
               ))}

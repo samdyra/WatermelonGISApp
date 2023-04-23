@@ -6,6 +6,7 @@ import dbImage from '../../../public/db.png';
 import downloadImage from '../../../public/download.png';
 import trashImage from '../../../public/trash.png';
 import infoImage from '../../../public/info.png';
+import { WORDING_TUTORIAL } from '~/constants/texts';
 
 interface Props {
   handleUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -13,6 +14,7 @@ interface Props {
   handleDelete: (id: string) => void;
   isLoading: boolean;
   handleShowModal: (data: GeoJson) => void;
+  handleShowModalInfo: (desc: string) => void;
 }
 
 const AddFeature = (props: Props) => {
@@ -36,7 +38,7 @@ const AddFeature = (props: Props) => {
           name="file"
           id="file"
           className="hidden"
-          accept={'.zip, .geojson, .json, .kml, .kmz'}
+          accept={'.geojson, .json'}
           onChange={(event) => {
             props.handleUpload(event);
           }}
@@ -48,6 +50,7 @@ const AddFeature = (props: Props) => {
               src={infoImage}
               alt="download"
               className="h-[12px] w-[12px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+              onClick={() => props.handleShowModalInfo(WORDING_TUTORIAL.ADD_LAYER)}
             />
           </div>
           <label

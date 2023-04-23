@@ -1,10 +1,11 @@
-import React, { memo } from "react";
-import { type GeoJson } from "./types";
-import View from "./view";
-import UseAnalysisResult from "./useAnalysisResult";
+import React, { memo } from 'react';
+import { type GeoJson } from './types';
+import View from './view';
+import UseAnalysisResult from './useAnalysisResult';
 
 interface Props {
-  data?: GeoJson[]
+  data?: GeoJson[];
+  handleShowModalInfo: (desc: string) => void;
 }
 
 const Analysis = (props: Props) => {
@@ -26,7 +27,7 @@ const Analysis = (props: Props) => {
     setClipFeature,
     position,
     secondPropertiesSelected,
-    setSecondPropertiesSelected
+    setSecondPropertiesSelected,
   } = UseAnalysisResult();
 
   return (
@@ -50,6 +51,7 @@ const Analysis = (props: Props) => {
       position={position}
       secondPropertiesSelected={secondPropertiesSelected}
       setSecondPropertiesSelected={setSecondPropertiesSelected}
+      handleShowModalInfo={props.handleShowModalInfo}
     />
   );
 };

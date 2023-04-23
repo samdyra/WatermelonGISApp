@@ -3,17 +3,23 @@ import Image from 'next/image';
 import dbImage from '../../../public/db.png';
 import downloadImage from '../../../public/download.png';
 import infoImage from '../../../public/info.png';
+import { WORDING_TUTORIAL } from '~/constants/texts';
 
-const AvailableData = () => {
+interface Props {
+  handleShowModalInfo: (desc: string) => void;
+}
+
+const AvailableData = (props: Props) => {
   return (
     <div>
-      <div className="mb-[-3.5px] ml-6 w-fit rounded-t-md bg-gray-600 px-3 py-[2px] text-sm text-slate-200">
+      <div className="mb-[-3.5px] ml-6 w-fit rounded-t-md bg-gray-600 px-5 py-[2px] pt-[5px] text-sm text-slate-200">
         <div className="flex items-center gap-2">
           <h1>Remote Data</h1>
           <Image
             src={infoImage}
             alt="download"
             className="h-[12px] w-[12px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+            onClick={() => props.handleShowModalInfo(WORDING_TUTORIAL.REMOTE_DATA)}
           />
         </div>
       </div>

@@ -1,5 +1,5 @@
-import React, { memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { memo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface IProps {
   isModalVisible: boolean;
@@ -7,7 +7,7 @@ interface IProps {
   children: React.ReactNode;
   callback: () => void;
   modalName: string;
-  y: string
+  y: string;
 }
 
 function Modal(props: IProps) {
@@ -27,9 +27,7 @@ function Modal(props: IProps) {
               <div className="flex h-full w-60 flex-col rounded-lg border-0 bg-[#1F2937] shadow-lg ">
                 {/*header*/}
                 <div className="flex items-center justify-between rounded-t border-b border-solid border-slate-400 px-5 pb-1 pt-2">
-                  <h3 className="text-sm font-semibold text-slate-200">
-                    {props.modalName}
-                  </h3>
+                  <h3 className="text-sm font-semibold text-slate-200">{props.modalName}</h3>
                   <button
                     className="opacity-4 float-right border-0 bg-transparent p-1 text-3xl font-semibold leading-none text-slate-200 outline-none focus:outline-none"
                     onClick={props.handleHideModal}
@@ -38,9 +36,7 @@ function Modal(props: IProps) {
                   </button>
                 </div>
                 {/*body*/}
-                <div className="relative flex-auto px-6 py-4">
-                  {props.children}
-                </div>
+                <div className="relative flex-auto px-6 py-4">{props.children}</div>
                 {/*footer*/}
                 <div className="flex items-center justify-center rounded-b border-t border-solid border-slate-400 p-2">
                   <button
@@ -59,6 +55,7 @@ function Modal(props: IProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.25 }}
             exit={{ opacity: 0 }}
+            onClick={props.handleHideModal}
           />
         </>
       ) : null}

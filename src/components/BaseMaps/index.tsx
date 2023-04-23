@@ -2,22 +2,25 @@ import React, { memo } from 'react';
 import { Basemaps as bm } from '../../constants/basemaps';
 import infoImage from '../../../public/info.png';
 import Image from 'next/image';
+import { WORDING_TUTORIAL } from '~/constants/texts';
 
 interface Props {
   setBm: (bm: string) => void;
   bm: string;
+  handleShowModalInfo: (desc: string) => void;
 }
 
 const Basemaps = (props: Props) => {
   return (
     <>
       <div className="mb-[-3.5px] ml-6 w-fit rounded-t-md bg-gray-600 px-3 py-[2px] text-sm text-slate-200">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 py-[4px]">
           <h1>Basemaps</h1>
           <Image
             src={infoImage}
             alt="download"
             className="h-[12px] w-[12px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+            onClick={() => props.handleShowModalInfo(WORDING_TUTORIAL.BASEMAP_OPTIONS)}
           />
         </div>
       </div>

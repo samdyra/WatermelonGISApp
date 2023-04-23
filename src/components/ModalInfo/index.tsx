@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 interface IProps {
   isModalVisible: boolean;
-  type: string;
+  desc: string;
   handleHideModal: () => void;
 }
 
@@ -14,13 +14,13 @@ function ModalInfo(props: IProps) {
         {props.isModalVisible ? (
           <div className="overflow-hidden">
             <motion.div
-              className="absolute left-[28%] z-50 flex h-full w-1/2 items-center overflow-hidden"
+              className="absolute left-[38%] top-[15%] z-50 flex h-1/2 w-1/4 items-center overflow-hidden"
               style={{ overflow: 'hidden' }}
               initial={{ x: -700 }}
               animate={{ x: 0 }}
               exit={{ opacity: 0 }}
             >
-              <div className="h-5/8 w-full">
+              <div className="h-1/2 w-full">
                 {/*content*/}
                 <div className="flex w-full flex-col rounded-xl border-0 bg-[#1F2937] shadow-lg">
                   {/*header*/}
@@ -34,7 +34,9 @@ function ModalInfo(props: IProps) {
                     </button>
                   </div>
                   {/*body*/}
-                  <div className="h-96 p-5"></div>
+                  <div className="h-96 p-5">
+                    <p className="text-md text-slate-200">{props.desc}</p>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -43,6 +45,7 @@ function ModalInfo(props: IProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.25 }}
               exit={{ opacity: 0 }}
+              onClick={props.handleHideModal}
             />
           </div>
         ) : null}

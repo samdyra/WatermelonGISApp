@@ -8,6 +8,7 @@ import { type GeoJson } from './types';
 import React from 'react';
 import infoImage from '../../../public/info.png';
 import Image from 'next/image';
+import { WORDING_TUTORIAL } from '~/constants/texts';
 import {
   WEIGHTED_MEAN_SPATIAL_METHOD,
   CLIP_METHOD,
@@ -40,6 +41,7 @@ interface Props {
   position: [string, React.Dispatch<React.SetStateAction<string>>];
   secondPropertiesSelected: string;
   setSecondPropertiesSelected: React.Dispatch<React.SetStateAction<string>>;
+  handleShowModalInfo: (desc: string) => void;
 }
 
 const AnalysisView = (props: Props) => {
@@ -106,12 +108,13 @@ const AnalysisView = (props: Props) => {
     <>
       {isLoading && <NLoading />}
       <div className="mb-[-3.5px] ml-5 w-fit rounded-t-md bg-gray-600 px-3 py-[2px] text-sm text-slate-200">
-        <div className="flex items-center gap-2">
-          <h1>Basemaps</h1>
+        <div className="flex items-center gap-2 py-[4px]">
+          <h1>Analysis Tools</h1>
           <Image
             src={infoImage}
             alt="download"
             className="h-[12px] w-[12px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+            onClick={() => props.handleShowModalInfo(WORDING_TUTORIAL.ANALYSIS_TOOLS)}
           />
         </div>
       </div>

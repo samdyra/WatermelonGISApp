@@ -1,14 +1,14 @@
-import React from "react";
-import { type GeoJson } from "../types";
+import React from 'react';
+import { type GeoJson } from '../types';
 
 interface Props {
-    data?: GeoJson[];
-    setSelected : React.Dispatch<React.SetStateAction<GeoJson | null>>
-    selected: GeoJson | null
+  data?: GeoJson[];
+  setSelected: React.Dispatch<React.SetStateAction<GeoJson | null>>;
+  selected: GeoJson | null;
 }
 
 const FeaturePicker = (props: Props) => (
-  <div className="flex border-b border-slate-400 pb-1 mb-5">
+  <div className="mb-5 flex border-b border-slate-400 pb-1">
     <div className="flex w-full items-center">
       <select
         id="countries"
@@ -19,25 +19,16 @@ const FeaturePicker = (props: Props) => (
         }}
       >
         <option defaultValue="Choose Your Feature" className="font-semibold">
-            Choose Your Feature
+          Choose Your Feature
         </option>
         {props.data &&
-            props.data.map((data) => (
-              <>
-                <option
-                  id="countries"
-                  key={data.id}
-                  value={JSON.stringify(data)}
-                  className="font-semibold"
-                >
-                  {data.name}
-                </option>
-              </>
-            ))}
+          props.data.map((data) => (
+            <option id="countries" key={data.id} value={JSON.stringify(data)} className="font-semibold">
+              {data.name}
+            </option>
+          ))}
       </select>
-      <h1 className="ml-1 text-xs text-slate-300">
-        {props.selected?.name ?? "Choose Your Feature"}
-      </h1>
+      <h1 className="ml-1 text-xs text-slate-300">{props.selected?.name ?? 'Choose Your Feature'}</h1>
     </div>
   </div>
 );

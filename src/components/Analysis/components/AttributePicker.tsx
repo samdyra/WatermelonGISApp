@@ -1,11 +1,10 @@
-import React from "react";
+import React from 'react';
 
 interface Props {
-    setPropertiesSelected: React.Dispatch<React.SetStateAction<string>>
-    featureProperties: () => string[]
-    propertiesSelected: string
+  setPropertiesSelected: React.Dispatch<React.SetStateAction<string>>;
+  featureProperties: () => string[];
+  propertiesSelected: string;
 }
-
 
 const AttributePicker = (props: Props) => (
   <div className="mb-2  flex border-b border-slate-400 pb-1">
@@ -16,27 +15,19 @@ const AttributePicker = (props: Props) => (
         onChange={(sel) => props.setPropertiesSelected(sel.currentTarget.value)}
       >
         <option defaultValue="Choose The Weight Field" className="font-semibold">
-            Choose The Weight Field
+          Choose The Weight Field
         </option>
-        {
-          props.featureProperties().map((data) => {
-            const r = (Math.random() + 1).toString(36).substring(7);
-            return (
-              <>
-                <option
-                  id="countries"
-                  key={r}
-                  value={data}
-                  className="font-semibold"
-                >
-                  {data}
-                </option>
-              </>
-            );
-          })}
+        {props.featureProperties().map((data) => {
+          const r = (Math.random() + 1).toString(36).substring(7);
+          return (
+            <option id="countries" key={r} value={data} className="font-semibold">
+              {data}
+            </option>
+          );
+        })}
       </select>
       <h1 className="ml-1 text-xs text-slate-300">
-        {props.propertiesSelected === "" ? "Choose The Weight Field" : props.propertiesSelected}
+        {props.propertiesSelected === '' ? 'Choose The Weight Field' : props.propertiesSelected}
       </h1>
     </div>
   </div>

@@ -16,6 +16,7 @@ import {
   REGRESSION_METHOD,
   DIRECTION_METHOD,
   DIRECTION_CODE,
+  DIRECTION_CODE_LINE,
 } from './types';
 import { uploadToFirebase } from '~/helpers/globalHelpers';
 
@@ -89,6 +90,19 @@ const UseAnalysisResult = () => {
     },
   });
 
+  const { mutate: createLine } = api.vectorAnalysis.createDirectionLine.useMutation({
+    onSuccess: (data) => {
+      console.log(data);
+      uploadToFirebase(data, DIRECTION_CODE_LINE, (url) => {
+        createFeature({
+          feature: url,
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+          name: `${data.name}-${DIRECTION_CODE_LINE}` ?? 'file',
+        });
+      });
+    },
+  });
+
   const { mutate: directionModule, isLoading: loadingDirection } = api.vectorAnalysis.directionModule.useMutation({
     onSuccess: (data) => {
       uploadToFirebase(data, DIRECTION_CODE, (url) => {
@@ -98,6 +112,9 @@ const UseAnalysisResult = () => {
           name: `${data.name}-${DIRECTION_CODE}` ?? 'file',
         });
       });
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      createLine({ feature: data, name: data?.name });
     },
   });
 

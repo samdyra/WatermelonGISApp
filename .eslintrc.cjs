@@ -36,7 +36,6 @@ const config = {
     eqeqeq: 'off',
     radix: 'warn',
     indent: [1, 2, { SwitchCase: 1 }],
-    'brace-style': ['warn', 'stroustrup'],
     'object-curly-spacing': ['warn', 'always'],
     'arrow-body-style': 'off',
     'consistent-return': 'off',

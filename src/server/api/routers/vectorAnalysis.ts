@@ -12,10 +12,12 @@ import { detectCrs } from 'reproject';
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { z } from 'zod';
 import center from '@turf/center';
-import { featureCollection, centerMean } from '@turf/turf';
+import { featureCollection, centerMean, lineString } from '@turf/turf';
 import { type ITurf } from '~/components/Analysis/types';
 import regression from 'regression';
 import { type DataPoint } from 'regression';
+import LatLngTuple = L.LatLngTuple;
+import { type Position } from '@turf/turf';
 
 type FeatureType = {
   properties: {
@@ -102,7 +104,7 @@ export const vectorAnalysisRouter = createTRPCRouter({
         features,
       });
 
-      results.push({ ...centroidResult, tahun: currentTahun });
+      results.push({ ...centroidResult, year: currentTahun });
     }
 
     const collection = featureCollection(results);
@@ -110,4 +112,30 @@ export const vectorAnalysisRouter = createTRPCRouter({
 
     return { ...collection, name: nameOnly };
   }),
+
+  createDirectionLine: privateProcedure
+    .input(z.object({ feature: z.any(), name: z.string() }))
+    .mutation(({ input }) => {
+      const { feature } = input;
+
+      const sortedFeatures = feature.features.sort((a: { year: number }, b: { year: number }) => {
+        if (a.year && b.year) {
+          return a.year - b.year;
+        }
+        return 0;
+      });
+
+      // Extract the coordinates for each feature
+      const coordinates: Position[] = sortedFeatures.map(
+        (feature: { geometry: { coordinates: LatLngTuple } }) => feature.geometry.coordinates
+      );
+
+      // Pass the coordinates to the multiPoint function
+      const result = lineString(coordinates);
+      const collected = featureCollection([result]);
+
+      const namedResult = { ...collected, name: input.name };
+
+      return namedResult;
+    }),
 });

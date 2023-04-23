@@ -1,9 +1,4 @@
-import {
-  type Feature,
-  type Point,
-  type Properties,
-  type BBox,
-} from '@turf/helpers';
+import { type Feature, type Point, type Properties, type BBox, type LineString } from '@turf/helpers';
 import LatLngTuple = L.LatLngTuple;
 export interface GeoJson {
   type: string;
@@ -28,7 +23,7 @@ export interface GeoJson {
 export interface ITurf {
   name: string;
   type: 'FeatureCollection';
-  features: Feature<Point, Properties>[];
+  features: Feature<Point, Properties>[] | Feature<LineString, Properties>[];
   bbox?: BBox | undefined;
 }
 
@@ -43,7 +38,8 @@ export const REPROJECT_CODE = 'Reprojected';
 export const REGRESSION_METHOD = 'Linear Regression';
 export const REGRESSION_CODE = 'Regression';
 export const DIRECTION_METHOD = 'Direction Module';
-export const DIRECTION_CODE = 'Direction';
+export const DIRECTION_CODE = 'Direction-Point';
+export const DIRECTION_CODE_LINE = 'Direction-Line';
 
 export const AnalysisOptions = [
   {

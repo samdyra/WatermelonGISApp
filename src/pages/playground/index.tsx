@@ -9,16 +9,14 @@ import {
   Map,
   Analysis,
   BaseMaps,
-  Table
+  Table,
+  AvailableData
 } from "~/components";
 import { api } from "~/utils/api";
 import toast from "react-hot-toast";
 import { handleUploadData, deleteFirebaseData } from "~/helpers/globalHelpers";
 import useModalState from "~/hooks/useModalState";
 import { type GeoJson } from "~/helpers/types";
-import center from '@turf/center';
-import { featureCollection } from '@turf/turf';
-
 
 const Playground: NextPage = () => {
 
@@ -86,6 +84,7 @@ const Playground: NextPage = () => {
           size="large"
         >
           <AddFeature handleUpload={handleUpload} data={data} handleDelete={handleDelete} isLoading={isLoading} handleShowModal={handleTableData}/>
+          <AvailableData />
         </Layerbar>
         <Layerbar isOpen={isAnalysisOpen} position="right" size="small" handleShowLayerbar={handleShowAnalysisbar}>
           <Analysis data={data} />

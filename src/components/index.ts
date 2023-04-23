@@ -10,3 +10,4 @@ export { default as NLoading } from './UIBase/NLoading';
 export { default as BaseMaps } from './BaseMaps';
 export { default as Table } from './TableAttribute';
 export { default as AvailableData } from './AvailableData';
+export { default as ModalInfo } from './ModalInfo';

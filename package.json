@@ -21,6 +21,7 @@
     "@turf/turf": "^6.5.0",
     "@types/geojson": "^7946.0.10",
     "@types/regression": "^2.0.2",
+    "eslint-config-prettier": "^8.8.0",
     "firebase": "^9.19.1",
     "framer-motion": "^10.12.4",
     "gridjs": "^6.0.6",

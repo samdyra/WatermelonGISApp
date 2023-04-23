@@ -5,6 +5,7 @@ import Image from 'next/image';
 import dbImage from '../../../public/db.png';
 import downloadImage from '../../../public/download.png';
 import trashImage from '../../../public/trash.png';
+import infoImage from '../../../public/info.png';
 
 interface Props {
   handleUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -41,8 +42,13 @@ const AddFeature = (props: Props) => {
           }}
         />
         <div className="flex">
-          <div className="mb-[-3.5px] w-[60%] rounded-tl-md rounded-tr-sm bg-gray-600 pl-5 pt-[6.5px] text-sm text-slate-200">
-            Added Layers
+          <div className="mb-[-3.5px] flex w-[60%] items-center gap-2 rounded-tl-md rounded-tr-sm bg-gray-600 pl-5 text-sm text-slate-200">
+            <h1>Added Layers</h1>
+            <Image
+              src={infoImage}
+              alt="download"
+              className="h-[12px] w-[12px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+            />
           </div>
           <label
             htmlFor="file"

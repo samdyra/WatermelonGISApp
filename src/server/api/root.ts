@@ -1,8 +1,10 @@
-import { createTRPCRouter } from "~/server/api/trpc";
-import { postRouter } from "./routers/posts";
-import { profileRouter } from "./routers/profile";
-import { featureRouter } from "./routers/features";
-import { vectorAnalysisRouter } from "./routers/vectorAnalysis";
+import { createTRPCRouter } from '~/server/api/trpc';
+import { postRouter } from './routers/posts';
+import { profileRouter } from './routers/profile';
+import { featureRouter } from './routers/features';
+import { vectorAnalysisRouter } from './routers/vectorAnalysis';
+import { directionRouter } from './routers/directions';
+import { statisticsRouter } from './routers/statistics';
 
 /**
  * This is the primary router for your server.
@@ -15,6 +17,8 @@ export const appRouter = createTRPCRouter({
   profile: profileRouter,
   features: featureRouter,
   vectorAnalysis: vectorAnalysisRouter,
+  direction: directionRouter,
+  stats: statisticsRouter,
 });
 
 // export type definition of API

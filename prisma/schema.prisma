@@ -26,3 +26,20 @@ model Feature {
     color String
     @@index([authorId], name: "authorId")
 }
+
+model Direction {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    feature  String @db.VarChar(255)
+    authorId    String
+    name String
+    @@index([authorId], name: "authorId")
+}
+model Statistics {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    stats  String @db.VarChar(255)
+    authorId    String
+    name String
+    @@index([authorId], name: "authorId")
+}

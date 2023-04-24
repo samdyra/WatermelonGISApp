@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { NLoading } from '~/components';
-import { type GeoJson } from '~/helpers/types';
+import { type GeoJson, type dataStats } from '~/helpers/types';
 import Image from 'next/image';
 import dbImage from '../../../public/db.png';
 import downloadImage from '../../../public/download.png';
@@ -11,14 +11,16 @@ import { WORDING_TUTORIAL } from '~/constants/texts';
 interface Props {
   handleUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   data?: GeoJson[];
+  dataStats?: dataStats[];
   handleDelete: (id: string) => void;
   isLoading: boolean;
   handleShowModal: (data: GeoJson) => void;
   handleShowModalInfo: (desc: string) => void;
+  handleDeleteStats: (id: string) => void;
 }
 
 const AddFeature = (props: Props) => {
-  const downloadData = (data: GeoJson) => {
+  const downloadData = (data: GeoJson | dataStats) => {
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -87,6 +89,31 @@ const AddFeature = (props: Props) => {
                     alt="download"
                     className="h-[11px] w-[11px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
                     onClick={() => props.handleDelete(item.id)}
+                  />
+                </div>
+              </div>
+            );
+          })}
+          {props.dataStats?.map((item) => {
+            const r = (Math.random() + 1).toString(36).substring(7);
+            return (
+              <div className="mb-2 flex items-center justify-between rounded-md bg-red-950 px-3  py-2" key={r}>
+                <div className="flex items-center">
+                  {/* <Shape color={item.color} /> */}
+                  <p className="text-xs text-slate-200">{item.name}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Image
+                    src={downloadImage}
+                    alt="download"
+                    className="h-[16px] w-[16px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+                    onClick={() => downloadData(item)}
+                  />
+                  <Image
+                    src={trashImage}
+                    alt="download"
+                    className="h-[11px] w-[11px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+                    onClick={() => props.handleDeleteStats(item.id)}
                   />
                 </div>
               </div>

@@ -29,3 +29,14 @@ export interface stats {
   r2: number;
   string: string;
 }
+
+export type dataStats = {
+  id: string;
+  link: string;
+  name: string | undefined;
+  string: string;
+  // points: readonly DataPoint[];
+  // predict: (x: number) => DataPoint;
+  equation: number[];
+  r2: number;
+};

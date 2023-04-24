@@ -24,7 +24,6 @@ const Playground: NextPage = () => {
   const ctx = api.useContext();
   const { data } = api.features.getFeaturesByUserId.useQuery();
   const { data: dataStats } = api.stats.getStatsByUserId.useQuery();
-
   const [isOpen, setIsOpen] = useState(false);
   const [isLayerOpen, setIsLayerOpen] = useState(true);
   const [isAnalysisOpen, setIsAnalysisOpen] = useState(true);
@@ -55,7 +54,17 @@ const Playground: NextPage = () => {
     },
   });
 
-  const isLoading = loadingCreateData || loadingDeleteData;
+  const { mutate: deleteStats, isLoading: loadingDeleteStats } = api.stats.delete.useMutation({
+    onSuccess: async ({ stats }) => {
+      void ctx.stats.getStatsByUserId.invalidate();
+      await deleteFirebaseData(stats);
+    },
+    onError: () => {
+      toast.error('Something Went Wrong!');
+    },
+  });
+
+  const isLoading = loadingCreateData || loadingDeleteData || loadingDeleteStats;
 
   // ---------- HANDLERS ----------
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +76,7 @@ const Playground: NextPage = () => {
   };
 
   const handleDelete = (id: string) => deleteFeature({ id });
+  const handleDeleteStats = (id: string) => deleteStats({ id });
   const handleShowSidebar = () => setIsOpen(!isOpen);
   const handleShowLayerbar = () => setIsLayerOpen(!isLayerOpen);
   const handleShowAnalysisbar = () => setIsAnalysisOpen(!isAnalysisOpen);
@@ -100,6 +110,8 @@ const Playground: NextPage = () => {
             isLoading={isLoading}
             handleShowModal={handleTableData}
             handleShowModalInfo={handleShowModalInfo}
+            dataStats={dataStats}
+            handleDeleteStats={handleDeleteStats}
           />
           <AvailableData handleShowModalInfo={handleShowModalInfo} />
         </Layerbar>

@@ -48,7 +48,7 @@ export const statisticsRouter = createTRPCRouter({
     }),
 
   delete: privateProcedure.input(z.object({ id: z.string() })).mutation(async ({ ctx, input }) => {
-    const features = await ctx.prisma.feature.delete({ where: { id: input.id } });
+    const features = await ctx.prisma.statistics.delete({ where: { id: input.id } });
 
     return features;
   }),

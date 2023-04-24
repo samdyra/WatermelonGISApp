@@ -1,7 +1,7 @@
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { z } from 'zod';
 import { getRandomHexColor } from '~/helpers/globalHelpers';
-import { type GeoJson } from '~/helpers/types';
+import { type GeoJson, stats } from '~/helpers/types';
 
 export const directionRouter = createTRPCRouter({
   getFeaturesByUserId: privateProcedure.query(async ({ ctx }) => {

@@ -1,64 +1,50 @@
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { z } from 'zod';
-import { getRandomHexColor } from '~/helpers/globalHelpers';
-import { type GeoJson } from '~/helpers/types';
+import { type stats } from '~/helpers/types';
 
 export const statisticsRouter = createTRPCRouter({
   getFeaturesByUserId: privateProcedure.query(async ({ ctx }) => {
     const authorId = ctx.userId;
-    const data = await ctx.prisma.feature.findMany({
+    const data = await ctx.prisma.statistics.findMany({
       where: { authorId: authorId },
       take: 100,
       orderBy: [{ createdAt: 'desc' }],
     });
 
-    const featureData = await Promise.all(
-      data.map(async (featureObj) => {
-        const featureLink: string = featureObj.feature;
-        const response = await fetch(featureLink);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const json: GeoJson = await response.json();
-        const featuresWithColor = json.features.map((feature) => ({
-          ...feature,
-          color: featureObj.color,
-        }));
+    const statData = await Promise.all(
+      data.map(async (statObj) => {
+        const statsLink: string = statObj.stats;
+        const response = await fetch(statsLink);
+        const json = (await response.json()) as stats;
 
-        const updatedJson = {
+        const nameOnly = statObj.name.split('.')[0];
+        const statistics = {
           ...json,
-          features: featuresWithColor,
-        };
-
-        const nameOnly = featureObj.name.split('.')[0];
-        const feature = {
-          ...updatedJson,
           name: nameOnly,
-          id: featureObj.id,
-          link: featureLink,
-          color: featureObj.color,
+          id: statObj.id,
+          link: statsLink,
         };
 
-        return feature;
+        return statistics;
       })
     );
 
-    return featureData;
+    return statData;
   }),
 
   create: privateProcedure
-    .input(z.object({ feature: z.string(), name: z.string() }))
+    .input(z.object({ statsLink: z.string(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const getColor = getRandomHexColor();
       const authorId = ctx.userId;
-      const features = await ctx.prisma.feature.create({
+      const stats = await ctx.prisma.statistics.create({
         data: {
           authorId,
-          feature: input.feature,
+          stats: input.statsLink,
           name: input.name,
-          color: getColor,
         },
       });
 
-      return features;
+      return stats;
     }),
 
   delete: privateProcedure.input(z.object({ id: z.string() })).mutation(async ({ ctx, input }) => {

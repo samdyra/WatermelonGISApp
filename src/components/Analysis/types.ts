@@ -1,5 +1,7 @@
 import { type Feature, type Point, type Properties, type BBox, type LineString } from '@turf/helpers';
 import LatLngTuple = L.LatLngTuple;
+import type regression from 'regression';
+
 export interface GeoJson {
   type: string;
   features: {
@@ -27,6 +29,11 @@ export interface ITurf {
   bbox?: BBox | undefined;
 }
 
+export interface IStats {
+  name: string;
+  result: regression.Result;
+}
+
 export const MEAN_SPATIAL_METHOD = 'Mean Spatial';
 export const WEIGHTED_MEAN_SPATIAL_METHOD = 'Weighted Mean Spatial';
 export const MEAN_SPATIAL_CODE = 'MeanSpatial';
@@ -40,6 +47,7 @@ export const REGRESSION_CODE = 'Regression';
 export const DIRECTION_METHOD = 'Direction Module';
 export const DIRECTION_CODE = 'Direction-Point';
 export const DIRECTION_CODE_LINE = 'Direction-Line';
+export const STATS_CODE = 'Stats-Regression';
 
 export const AnalysisOptions = [
   {

@@ -72,6 +72,7 @@ export const vectorAnalysisRouter = createTRPCRouter({
     )
     .mutation(({ input }) => {
       const { row: firstRow, secondRow } = input;
+      const nameOnly = input.feature.name.split('.')[0] as string;
 
       const formatted: DataPoint[] = input.feature?.features?.map((obj: FeatureType) => [
         obj.properties?.[firstRow],
@@ -80,7 +81,7 @@ export const vectorAnalysisRouter = createTRPCRouter({
 
       const result = regression.linear(formatted);
 
-      return { result };
+      return { result, name: nameOnly };
     }),
 
   directionModule: privateProcedure.input(z.object({ feature: z.any(), year: z.string() })).mutation(({ input }) => {

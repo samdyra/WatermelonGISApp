@@ -17,6 +17,7 @@ import {
   DIRECTION_METHOD,
   DIRECTION_CODE,
   DIRECTION_CODE_LINE,
+  STATS_CODE,
 } from './types';
 import { uploadToFirebase } from '~/helpers/globalHelpers';
 
@@ -35,6 +36,15 @@ const UseAnalysisResult = () => {
   const { mutate: createFeature, isLoading: loadingCreateData } = api.features.create.useMutation({
     onSuccess: () => {
       void ctx.features.getFeaturesByUserId.invalidate();
+    },
+    onError: () => {
+      toast.error('Something Went Wrong!');
+    },
+  });
+
+  const { mutate: createStats, isLoading: statsCreateLoading } = api.stats.create.useMutation({
+    onSuccess: () => {
+      void ctx.stats.getStatsByUserId.invalidate();
     },
     onError: () => {
       toast.error('Something Went Wrong!');
@@ -86,13 +96,18 @@ const UseAnalysisResult = () => {
 
   const { mutate: regression, isLoading: loadingRegression } = api.vectorAnalysis.regression.useMutation({
     onSuccess: (data) => {
-      console.log(REGRESSION_CODE, data);
+      uploadToFirebase(data, STATS_CODE, (url) => {
+        createStats({
+          statsLink: url,
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+          name: `${data.name}-${STATS_CODE}` ?? 'file',
+        });
+      });
     },
   });
 
   const { mutate: createLine } = api.vectorAnalysis.createDirectionLine.useMutation({
     onSuccess: (data) => {
-      console.log(data);
       uploadToFirebase(data, DIRECTION_CODE_LINE, (url) => {
         createFeature({
           feature: url,
@@ -125,7 +140,8 @@ const UseAnalysisResult = () => {
     loadingClip ||
     loadingReproject ||
     loadingRegression ||
-    loadingDirection;
+    loadingDirection ||
+    statsCreateLoading;
 
   // ---------- HANDLERS ----------
   const handleMutateData = () => {

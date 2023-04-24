@@ -1,10 +1,10 @@
 import toast from 'react-hot-toast';
 import { storage } from '~/constants/firebase';
 import { getDownloadURL, uploadBytesResumable } from 'firebase/storage';
-import { type ITurf } from '../components/Analysis/types';
+import { type ITurf, type IStats } from '../components/Analysis/types';
 import { deleteObject, ref } from 'firebase/storage';
 
-export const uploadToFirebase = (data: ITurf, storageName = 'output', callback: (url: string) => void) => {
+export const uploadToFirebase = (data: ITurf | IStats, storageName = 'output', callback: (url: string) => void) => {
   const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   const storageRef = ref(storage, `/features/${data.name}-${storageName}`);

@@ -1,9 +1,9 @@
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { z } from 'zod';
-import { type stats } from '~/helpers/types';
+import type regression from 'regression';
 
 export const statisticsRouter = createTRPCRouter({
-  getFeaturesByUserId: privateProcedure.query(async ({ ctx }) => {
+  getStatsByUserId: privateProcedure.query(async ({ ctx }) => {
     const authorId = ctx.userId;
     const data = await ctx.prisma.statistics.findMany({
       where: { authorId: authorId },
@@ -15,14 +15,14 @@ export const statisticsRouter = createTRPCRouter({
       data.map(async (statObj) => {
         const statsLink: string = statObj.stats;
         const response = await fetch(statsLink);
-        const json = (await response.json()) as stats;
-
+        const json = (await response.json()) as regression.Result;
         const nameOnly = statObj.name.split('.')[0];
+
         const statistics = {
           ...json,
-          name: nameOnly,
           id: statObj.id,
           link: statsLink,
+          name: nameOnly,
         };
 
         return statistics;

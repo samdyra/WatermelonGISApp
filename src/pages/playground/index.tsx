@@ -23,6 +23,8 @@ const Playground: NextPage = () => {
   // ---------- HOOKS ----------
   const ctx = api.useContext();
   const { data } = api.features.getFeaturesByUserId.useQuery();
+  const { data: dataStats } = api.stats.getStatsByUserId.useQuery();
+
   const [isOpen, setIsOpen] = useState(false);
   const [isLayerOpen, setIsLayerOpen] = useState(true);
   const [isAnalysisOpen, setIsAnalysisOpen] = useState(true);

@@ -12,11 +12,13 @@ interface Props {
   handleUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   data?: GeoJson[];
   dataStats?: dataStats[];
+  dataDirection?: GeoJson[];
   handleDelete: (id: string) => void;
   isLoading: boolean;
   handleShowModal: (data: GeoJson) => void;
   handleShowModalInfo: (desc: string) => void;
   handleDeleteStats: (id: string) => void;
+  handleDeleteDirection: (id: string) => void;
 }
 
 const AddFeature = (props: Props) => {
@@ -114,6 +116,31 @@ const AddFeature = (props: Props) => {
                     alt="download"
                     className="h-[11px] w-[11px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
                     onClick={() => props.handleDeleteStats(item.id)}
+                  />
+                </div>
+              </div>
+            );
+          })}
+          {props.dataDirection?.map((item) => {
+            const r = (Math.random() + 1).toString(36).substring(7);
+            return (
+              <div className="mb-2 flex items-center justify-between rounded-md bg-yellow-900 px-3  py-2" key={r}>
+                <div className="flex items-center">
+                  {/* <Shape color={item.color} /> */}
+                  <p className="text-xs text-slate-200">{item.name}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Image
+                    src={downloadImage}
+                    alt="download"
+                    className="h-[16px] w-[16px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+                    onClick={() => downloadData(item)}
+                  />
+                  <Image
+                    src={trashImage}
+                    alt="download"
+                    className="h-[11px] w-[11px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+                    onClick={() => props.handleDeleteDirection(item.id)}
                   />
                 </div>
               </div>

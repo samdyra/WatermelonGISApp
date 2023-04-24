@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { type GeoJson } from '~/helpers/types';
 
 export const directionRouter = createTRPCRouter({
-  getStatsByUserId: privateProcedure.query(async ({ ctx }) => {
+  getDirectionByUserId: privateProcedure.query(async ({ ctx }) => {
     const authorId = ctx.userId;
     const data = await ctx.prisma.direction.findMany({
       where: { authorId: authorId },
@@ -12,15 +12,15 @@ export const directionRouter = createTRPCRouter({
     });
 
     const directions = await Promise.all(
-      data.map(async (statObj) => {
-        const directionLink: string = statObj.feature;
+      data.map(async (directionObj) => {
+        const directionLink: string = directionObj.feature;
         const response = await fetch(directionLink);
         const json = (await response.json()) as GeoJson;
-        const nameOnly = statObj.name.split('.')[0];
+        const nameOnly = directionObj.name.split('.')[0];
 
         const direction = {
           ...json,
-          id: statObj.id,
+          id: directionObj.id,
           link: directionLink,
           name: nameOnly,
         };

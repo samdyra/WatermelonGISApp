@@ -24,6 +24,7 @@ const Playground: NextPage = () => {
   const ctx = api.useContext();
   const { data } = api.features.getFeaturesByUserId.useQuery();
   const { data: dataStats } = api.stats.getStatsByUserId.useQuery();
+  const { data: dataDirection } = api.direction.getDirectionByUserId.useQuery();
   const [isOpen, setIsOpen] = useState(false);
   const [isLayerOpen, setIsLayerOpen] = useState(true);
   const [isAnalysisOpen, setIsAnalysisOpen] = useState(true);
@@ -64,7 +65,17 @@ const Playground: NextPage = () => {
     },
   });
 
-  const isLoading = loadingCreateData || loadingDeleteData || loadingDeleteStats;
+  const { mutate: deleteDirection, isLoading: loadingDeleteDirection } = api.direction.delete.useMutation({
+    onSuccess: async ({ feature }) => {
+      void ctx.direction.getDirectionByUserId.invalidate();
+      await deleteFirebaseData(feature);
+    },
+    onError: () => {
+      toast.error('Something Went Wrong!');
+    },
+  });
+
+  const isLoading = loadingCreateData || loadingDeleteData || loadingDeleteStats || loadingDeleteDirection;
 
   // ---------- HANDLERS ----------
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,6 +88,7 @@ const Playground: NextPage = () => {
 
   const handleDelete = (id: string) => deleteFeature({ id });
   const handleDeleteStats = (id: string) => deleteStats({ id });
+  const handleDeleteDirection = (id: string) => deleteDirection({ id });
   const handleShowSidebar = () => setIsOpen(!isOpen);
   const handleShowLayerbar = () => setIsLayerOpen(!isLayerOpen);
   const handleShowAnalysisbar = () => setIsAnalysisOpen(!isAnalysisOpen);
@@ -112,6 +124,8 @@ const Playground: NextPage = () => {
             handleShowModalInfo={handleShowModalInfo}
             dataStats={dataStats}
             handleDeleteStats={handleDeleteStats}
+            dataDirection={dataDirection}
+            handleDeleteDirection={handleDeleteDirection}
           />
           <AvailableData handleShowModalInfo={handleShowModalInfo} />
         </Layerbar>

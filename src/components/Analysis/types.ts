@@ -47,6 +47,7 @@ export const REGRESSION_CODE = 'Regression';
 export const DIRECTION_METHOD = 'Direction Module';
 export const DIRECTION_CODE = 'Direction-Point';
 export const DIRECTION_CODE_LINE = 'Direction-Line';
+export const DIRECTION_CODE_STATS = 'Direction-Stats';
 export const STATS_CODE = 'Stats-Regression';
 
 export const AnalysisOptions = [

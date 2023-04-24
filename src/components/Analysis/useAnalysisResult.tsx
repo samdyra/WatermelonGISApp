@@ -17,6 +17,7 @@ import {
   DIRECTION_CODE,
   DIRECTION_CODE_LINE,
   STATS_CODE,
+  DIRECTION_CODE_STATS,
 } from './types';
 import { uploadToFirebase } from '~/helpers/globalHelpers';
 
@@ -44,6 +45,15 @@ const UseAnalysisResult = () => {
   const { mutate: createStats, isLoading: statsCreateLoading } = api.stats.create.useMutation({
     onSuccess: () => {
       void ctx.stats.getStatsByUserId.invalidate();
+    },
+    onError: () => {
+      toast.error('Something Went Wrong!');
+    },
+  });
+
+  const { mutate: createDirection, isLoading: directionCreateLoading } = api.direction.create.useMutation({
+    onSuccess: () => {
+      void ctx.direction.getDirectionByUserId.invalidate();
     },
     onError: () => {
       toast.error('Something Went Wrong!');
@@ -114,6 +124,14 @@ const UseAnalysisResult = () => {
           name: `${data.name}-${DIRECTION_CODE_LINE}` ?? 'file',
         });
       });
+
+      uploadToFirebase(data, DIRECTION_CODE_STATS, (url) => {
+        createDirection({
+          directionLink: url,
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+          name: `${data.name}-${DIRECTION_CODE_STATS}` ?? 'file',
+        });
+      });
     },
   });
 
@@ -140,7 +158,8 @@ const UseAnalysisResult = () => {
     loadingReproject ||
     loadingRegression ||
     loadingDirection ||
-    statsCreateLoading;
+    statsCreateLoading ||
+    directionCreateLoading;
 
   // ---------- HANDLERS ----------
   const handleMutateData = () => {

@@ -127,7 +127,7 @@ const Playground: NextPage = () => {
         )}
         <ModalInfo handleHideModal={handleHideModalInfo} desc={modalInfo.desc} isModalVisible={modalInfo.isOpen} />
         <Navbar handleShowSidebar={handleShowSidebar} />
-        <Map data={data} bm={bm} />
+        <Map data={data} bm={bm} size={['100%', '100%']} isDirection={false} />
         <Layerbar isOpen={isLayerOpen} handleShowLayerbar={handleShowLayerbar} position="left" size="large">
           <AddFeature
             handleUpload={handleUpload}

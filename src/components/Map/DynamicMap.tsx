@@ -6,15 +6,53 @@ import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import { useEffect, useRef } from 'react';
 import LatLngTuple = L.LatLngTuple;
 import { type GeoJson } from '~/helpers/types';
-import { marker, Icon } from 'leaflet';
+import { marker, Icon, type LatLngExpression } from 'leaflet';
+import L from 'leaflet';
+import { center } from '@turf/turf';
+import 'leaflet-polylinedecorator';
 
 interface Props {
   data?: GeoJson[];
   bm: string;
+  size: [string, string];
+  isDirection: boolean;
 }
 
 type IFlyTo = {
   data: GeoJson;
+};
+
+const FeatureDirection = (props: IFlyTo) => {
+  const map = useMap();
+  const lineString = props.data.features[0]?.geometry.coordinates as unknown as LatLngExpression[][];
+
+  if (lineString && lineString.length > 0) {
+    for (let i = 0; i < lineString.length; i++) {
+      if (lineString[i] !== undefined) {
+        if (lineString[i] !== undefined && lineString[i] !== null) {
+          lineString[i]?.reverse();
+        }
+      }
+    }
+  }
+
+  let getCenter;
+  if (props.data) {
+    getCenter = center(props.data);
+    const getCoord = getCenter.geometry.coordinates;
+    const getCoordReverse = [...getCoord].reverse() as LatLngTuple;
+    map.flyTo(getCoordReverse, 15, { animate: true });
+  }
+
+  const line = L.polyline(lineString, { fillColor: 'red', color: 'red', opacity: 1 }).addTo(map);
+  L.polylineDecorator(line, {
+    patterns: [
+      // defines a pattern of 10px-wide dashes, repeated every 20px on the line
+      { offset: 0, repeat: 20, symbol: L.Symbol.arrowHead({ pixelSize: 20 }) },
+    ],
+  }).addTo(map);
+
+  return null;
 };
 
 const PanTo = (props: IFlyTo) => {
@@ -110,12 +148,16 @@ const Map = (props: Props) => {
   };
 
   const style = (feature: GeoJson) => {
+    let color = feature.color;
+    if (color == undefined) {
+      color = '#ff7800';
+    }
     return {
-      fillColor: feature.color,
+      fillColor: color,
       weight: 2,
       opacity: 1,
       border: 'solid',
-      color: feature.color,
+      color: color,
       dashArray: '',
       fillOpacity: 0.6,
     };
@@ -127,7 +169,8 @@ const Map = (props: Props) => {
         center={[-6.918759110120172, 107.6165053230779]}
         zoom={13}
         style={{
-          height: '100%',
+          height: props.size[0],
+          width: props.size[1],
           position: 'relative',
           zIndex: 0,
           boxShadow: '-2px 3px 5px 0 rgba(0,.9,0,.4)',
@@ -139,8 +182,10 @@ const Map = (props: Props) => {
           url={props.bm}
           ref={ref}
         />
-        {props.data && props.data[0] && <PanTo data={props.data[0]} />}
-        {props.data &&
+        {props.data && props.data[0] && props.isDirection && <FeatureDirection data={props.data[0]} />}
+        {!props.isDirection && props.data && props.data[0] && <PanTo data={props.data[0]} />}
+        {!props.isDirection &&
+          props.data &&
           props.data.map((el: GeoJson) => {
             const r = (Math.random() + 1).toString(36).substring(7);
             return <GeoJSON data={el} key={r} style={style} pointToLayer={pointToLayer} />;

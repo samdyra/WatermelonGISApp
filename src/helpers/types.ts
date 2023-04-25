@@ -36,8 +36,6 @@ export type dataStats = {
   link: string;
   name: string | undefined;
   string: string;
-  // points: readonly DataPoint[];
-  // predict: (x: number) => DataPoint;
   equation: number[];
   r2: number;
 };

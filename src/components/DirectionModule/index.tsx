@@ -3,16 +3,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { type GeoJson } from '~/helpers/types';
 import { Map } from '~/components';
 import { toMercator } from '@turf/projection';
+import {
+  calculateWindDirection,
+  calculateWindDirections,
+  combineYearAndDirection,
+} from '~/helpers/directionModuleHelper';
 
 interface IProps {
   isModalVisible: boolean;
   handleHideModal: () => void;
   feature: GeoJson;
-}
-
-interface Result {
-  year: string;
-  direction: number;
 }
 
 function DirectionModule(props: IProps) {
@@ -21,8 +21,6 @@ function DirectionModule(props: IProps) {
   const yearsInArray = years?.split(',');
   const firstCoord = coordInMeter?.geometry.coordinates.at(0) as unknown as number[];
   const lastCoord = coordInMeter?.geometry.coordinates.at(-1) as unknown as number[];
-
-  // ---------- GET DIRECTION RESULTAN ----------
   const coordsForFunction = {
     coord1: {
       x: firstCoord[1] as number,
@@ -34,55 +32,15 @@ function DirectionModule(props: IProps) {
     },
   };
 
-  function calculateWindDirection(coord1: { x: number; y: number }, coord2: { x: number; y: number }): number {
-    const dx = coord2.x - coord1.x;
-    const dy = coord2.y - coord1.y;
-    const radians = Math.atan2(dy, dx);
-    let degrees = (radians * 180) / Math.PI;
-    if (degrees < 0) {
-      degrees += 360;
-    }
-    return degrees;
-  }
-
+  // ---------- GET DIRECTION RESULTAN ----------
   const windDirectionTotal = calculateWindDirection(coordsForFunction.coord1, coordsForFunction.coord2);
 
   // ---------- GET DIRECTION ON EACH YEAR ----------
-  function calculateWindDirections(coordinates: number[][]): number[] {
-    const windDirections: number[] = [];
-
-    for (let i = 0; i < coordinates.length - 1; i++) {
-      const coord1 = { x: coordinates[i]?.[1] as number, y: coordinates?.[i]?.[0] as number };
-      const coord2 = { x: coordinates[i + 1]?.[1] as number, y: coordinates[i + 1]?.[0] as number };
-      const windDirection = calculateWindDirection(coord1, coord2);
-      windDirections.push(windDirection);
-    }
-
-    return windDirections;
-  }
-
   const coordinatesInMeters = coordInMeter && (coordInMeter?.geometry.coordinates as unknown as number[][]);
   const windDirections = coordinatesInMeters && calculateWindDirections(coordinatesInMeters);
 
-  function combineYearAndDirection(yearArray: string[], direction: number[]): Result[] {
-    const result: Result[] = [];
-
-    for (let i = 0; i < yearArray.length - 1; i++) {
-      const yearStart = yearArray[i];
-      const yearEnd = yearArray[i + 1];
-      const dir = direction[i];
-      const obj: Result = {
-        year: `${yearStart ?? 'noyear'} - ${yearEnd ?? 'noyear'}`,
-        direction: dir ?? 0,
-      };
-      result.push(obj);
-    }
-
-    return result;
-  }
-
+  // ---------- COMBINE YEAR AND DIRECTION ----------
   const result = combineYearAndDirection(yearsInArray as string[], windDirections as number[]);
-  console.log(result);
 
   return (
     <div className="overflow-hidden">
@@ -110,21 +68,47 @@ function DirectionModule(props: IProps) {
                     </button>
                   </div>
                   {/*body*/}
-                  <div className="h-96 p-5">
-                    <h1>Feature Name: {name}</h1>
-                    <h1>id: {id}</h1>
-                    <h1>type: {type}</h1>
+                  <div className="h-[650px] overflow-x-hidden overflow-y-scroll scroll-auto p-5">
+                    <h1 className="text-sm font-bold">Layer Properties:</h1>
+                    <div className="mb-2 text-sm">
+                      <h1>Feature Name: {name}</h1>
+                      <h1>id: {id}</h1>
+                      <h1>type: {type}</h1>
+                    </div>
 
-                    <div className="h-1/2 w-1/2">
+                    <h1 className="text-sm font-bold">Total Direction:</h1>
+                    <div className="mb-2 text-sm">
+                      <h1>total (in degrees): {Math.round(windDirectionTotal * 100) / 100}</h1>
+                    </div>
+
+                    <h1 className="text-sm font-bold">Direction on each year:</h1>
+                    <div className="mb-2 text-sm">
+                      {result?.map((el) => {
+                        const r = (Math.random() + 1).toString(36).substring(7);
+
+                        return (
+                          <h1 key={r}>
+                            in year {el.year}, direction (in degrees) is: {Math.round(el.direction * 100) / 100}
+                          </h1>
+                        );
+                      })}
+                    </div>
+
+                    <h1 className="text-sm font-bold">Direction on maps:</h1>
+
+                    <div className="h-1/2 w-1/2 ">
                       <Map
                         data={[props.feature]}
                         bm={
                           'https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=cm12mCvBTIOBGz4tb8FTAoubM28MtIRzTmxkCcVplrCbgz20duEVixioH3HT8OMw'
                         }
-                        size={['50%', '37%']}
+                        size={['30%', '37%']}
                         isDirection={true}
                       />
                     </div>
+                  </div>
+                  <div className="z-50 flex items-center justify-between rounded-b border-t border-solid border-gray-900 px-5 pb-1 pt-2 text-xl">
+                    <h1 className="h-8"></h1>
                   </div>
                 </div>
               </div>

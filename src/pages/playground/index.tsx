@@ -12,6 +12,7 @@ import {
   Table,
   AvailableData,
   ModalInfo,
+  DirectionModule,
 } from '~/components';
 import { api } from '~/utils/api';
 import toast from 'react-hot-toast';
@@ -32,6 +33,7 @@ const Playground: NextPage = () => {
     'https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=cm12mCvBTIOBGz4tb8FTAoubM28MtIRzTmxkCcVplrCbgz20duEVixioH3HT8OMw'
   );
   const [isModalVisible, handleShowModal, handleHideModal] = useModalState();
+  const [isModalDirectionVisible, handleShowModalDirection, handleHideModalDirection] = useModalState();
   const [tableData, setTableData] = useState<GeoJson | undefined>(data?.[0]);
   const [modalInfo, setModalInfo] = useState({ isOpen: false, desc: '' });
 
@@ -86,6 +88,11 @@ const Playground: NextPage = () => {
     handleShowModal();
   };
 
+  const handleDirectionModule = (data: GeoJson) => {
+    setTableData(data);
+    handleShowModalDirection();
+  };
+
   const handleDelete = (id: string) => deleteFeature({ id });
   const handleDeleteStats = (id: string) => deleteStats({ id });
   const handleDeleteDirection = (id: string) => deleteDirection({ id });
@@ -111,6 +118,13 @@ const Playground: NextPage = () => {
             table={tableData}
           />
         )}
+        {tableData && (
+          <DirectionModule
+            handleHideModal={handleHideModalDirection}
+            isModalVisible={isModalDirectionVisible}
+            feature={tableData}
+          />
+        )}
         <ModalInfo handleHideModal={handleHideModalInfo} desc={modalInfo.desc} isModalVisible={modalInfo.isOpen} />
         <Navbar handleShowSidebar={handleShowSidebar} />
         <Map data={data} bm={bm} />
@@ -126,6 +140,7 @@ const Playground: NextPage = () => {
             handleDeleteStats={handleDeleteStats}
             dataDirection={dataDirection}
             handleDeleteDirection={handleDeleteDirection}
+            handleShowModalDirection={handleDirectionModule}
           />
           <AvailableData handleShowModalInfo={handleShowModalInfo} />
         </Layerbar>

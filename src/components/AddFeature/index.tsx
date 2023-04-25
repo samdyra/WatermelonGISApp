@@ -16,6 +16,7 @@ interface Props {
   handleDelete: (id: string) => void;
   isLoading: boolean;
   handleShowModal: (data: GeoJson) => void;
+  handleShowModalDirection: (data: GeoJson) => void;
   handleShowModalInfo: (desc: string) => void;
   handleDeleteStats: (id: string) => void;
   handleDeleteDirection: (id: string) => void;
@@ -68,7 +69,10 @@ const AddFeature = (props: Props) => {
           {props.data?.map((item) => {
             const r = (Math.random() + 1).toString(36).substring(7);
             return (
-              <div className="mb-2 flex items-center justify-between rounded-md bg-gray-800 px-3  py-2" key={r}>
+              <div
+                className="mb-2 flex cursor-pointer items-center justify-between rounded-md bg-gray-800  px-3 py-2 transition-all duration-150 ease-linear active:opacity-60 "
+                key={r}
+              >
                 <div className="flex items-center">
                   <Shape color={item.color} />
                   <p className="text-xs text-slate-200">{item.name}</p>
@@ -99,7 +103,10 @@ const AddFeature = (props: Props) => {
           {props.dataStats?.map((item) => {
             const r = (Math.random() + 1).toString(36).substring(7);
             return (
-              <div className="mb-2 flex items-center justify-between rounded-md bg-red-950 px-3  py-2" key={r}>
+              <div
+                className="mb-2 flex cursor-pointer items-center justify-between rounded-md bg-red-950  px-3 py-2 transition-all duration-150 ease-linear active:opacity-60 "
+                key={r}
+              >
                 <div className="flex items-center">
                   {/* <Shape color={item.color} /> */}
                   <p className="text-xs text-slate-200">{item.name}</p>
@@ -124,7 +131,11 @@ const AddFeature = (props: Props) => {
           {props.dataDirection?.map((item) => {
             const r = (Math.random() + 1).toString(36).substring(7);
             return (
-              <div className="mb-2 flex items-center justify-between rounded-md bg-yellow-900 px-3  py-2" key={r}>
+              <div
+                className="mb-2 flex cursor-pointer items-center justify-between rounded-md bg-yellow-900  px-3 py-2 transition-all duration-150 ease-linear active:opacity-60"
+                key={r}
+                onClick={() => props.handleShowModalDirection(item)}
+              >
                 <div className="flex items-center">
                   {/* <Shape color={item.color} /> */}
                   <p className="text-xs text-slate-200">{item.name}</p>

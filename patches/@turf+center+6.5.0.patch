@@ -1,0 +1,37 @@
+diff --git a/node_modules/@turf/center/dist/js/index.d.ts b/node_modules/@turf/center/dist/js/index.d.ts
+index b5f973e..d71ded2 100755
+--- a/node_modules/@turf/center/dist/js/index.d.ts
++++ b/node_modules/@turf/center/dist/js/index.d.ts
+@@ -23,7 +23,31 @@ import { BBox, Id, AllGeoJSON, Feature, Point, Properties } from "@turf/helpers"
+  * center.properties['marker-size'] = 'large';
+  * center.properties['marker-color'] = '#000';
+  */
+-declare function center<P = Properties>(geojson: AllGeoJSON, options?: {
++interface GeoJson {
++    type: string;
++    features: {
++      type: string;
++      color: string;
++      geometry: {
++        type: string;
++        coordinates: LatLngTuple | LatLngTuple[][] | LatLngTuple[][][];
++      };
++      properties: object;
++    }[];
++    crs: {
++      type: string;
++      properties: {
++        name: string;
++      };
++    };
++    name?: string;
++    color: string;
++    id: string;
++    years?: string;
++  }
++  [];
++  
++declare function center<P = Properties>(geojson: AllGeoJSON | GeoJson, options?: {
+     properties?: P;
+     bbox?: BBox;
+     id?: Id;

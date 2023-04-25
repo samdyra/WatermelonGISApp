@@ -150,7 +150,7 @@ const AddFeature = (props: Props) => {
                   <Image
                     src={trashImage}
                     alt="download"
-                    className="h-[11px] w-[11px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+                    className="z-50 h-[11px] w-[11px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
                     onClick={() => props.handleDeleteDirection(item.id)}
                   />
                 </div>

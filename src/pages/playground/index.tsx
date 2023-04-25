@@ -35,6 +35,7 @@ const Playground: NextPage = () => {
   const [isModalVisible, handleShowModal, handleHideModal] = useModalState();
   const [isModalDirectionVisible, handleShowModalDirection, handleHideModalDirection] = useModalState();
   const [tableData, setTableData] = useState<GeoJson | undefined>(data?.[0]);
+  const [directionData, setDirectionData] = useState<GeoJson | undefined>(dataDirection?.[0]);
   const [modalInfo, setModalInfo] = useState({ isOpen: false, desc: '' });
 
   // ---------- MUTATIONS ----------
@@ -89,7 +90,7 @@ const Playground: NextPage = () => {
   };
 
   const handleDirectionModule = (data: GeoJson) => {
-    setTableData(data);
+    setDirectionData(data);
     handleShowModalDirection();
   };
 
@@ -118,11 +119,11 @@ const Playground: NextPage = () => {
             table={tableData}
           />
         )}
-        {tableData && (
+        {directionData && (
           <DirectionModule
             handleHideModal={handleHideModalDirection}
             isModalVisible={isModalDirectionVisible}
-            feature={tableData}
+            feature={directionData}
           />
         )}
         <ModalInfo handleHideModal={handleHideModalInfo} desc={modalInfo.desc} isModalVisible={modalInfo.isOpen} />

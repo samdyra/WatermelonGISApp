@@ -92,7 +92,7 @@ export const vectorAnalysisRouter = createTRPCRouter({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         input.feature.features.map((feature: FeatureType) => feature.properties?.[year])
       )
-    ).sort();
+    ).sort() as number[];
 
     for (let i = 0; i < uniqueTahuns.length; i = i + 1) {
       const currentTahun = uniqueTahuns[i] as number;
@@ -111,11 +111,11 @@ export const vectorAnalysisRouter = createTRPCRouter({
     const collection = featureCollection(results);
     const nameOnly = input.feature.name.split('.')[0];
 
-    return { ...collection, name: nameOnly };
+    return { ...collection, name: nameOnly, uniqueTahuns };
   }),
 
   createDirectionLine: privateProcedure
-    .input(z.object({ feature: z.any(), name: z.string() }))
+    .input(z.object({ feature: z.any(), name: z.string(), years: z.array(z.number()) }))
     .mutation(({ input }) => {
       const { feature } = input;
 
@@ -135,7 +135,7 @@ export const vectorAnalysisRouter = createTRPCRouter({
       const result = lineString(coordinates);
       const collected = featureCollection([result]);
 
-      const namedResult = { ...collected, name: input.name };
+      const namedResult = { ...collected, name: input.name, years: input.years };
 
       return namedResult;
     }),

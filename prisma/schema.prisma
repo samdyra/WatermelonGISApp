@@ -33,6 +33,7 @@ model Direction {
     feature  String @db.VarChar(255)
     authorId    String
     name String
+    years String
     @@index([authorId], name: "authorId")
 }
 model Statistics {

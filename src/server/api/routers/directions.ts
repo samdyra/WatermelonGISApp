@@ -23,6 +23,7 @@ export const directionRouter = createTRPCRouter({
           id: directionObj.id,
           link: directionLink,
           name: nameOnly,
+          years: directionObj.years,
         };
 
         return direction;
@@ -33,14 +34,16 @@ export const directionRouter = createTRPCRouter({
   }),
 
   create: privateProcedure
-    .input(z.object({ directionLink: z.string(), name: z.string() }))
+    .input(z.object({ directionLink: z.string(), name: z.string(), years: z.array(z.number()) }))
     .mutation(async ({ ctx, input }) => {
       const authorId = ctx.userId;
+      const yearsInString = input.years.toString();
       const direction = await ctx.prisma.direction.create({
         data: {
           authorId,
           feature: input.directionLink,
           name: input.name,
+          years: yearsInString,
         },
       });
 

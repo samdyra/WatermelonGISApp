@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { type GeoJson } from '~/helpers/types';
 import { Map } from '~/components';
+import { toMercator } from '@turf/projection';
 
 interface IProps {
   isModalVisible: boolean;
@@ -9,9 +10,79 @@ interface IProps {
   feature: GeoJson;
 }
 
+interface Result {
+  year: string;
+  direction: number;
+}
+
 function DirectionModule(props: IProps) {
-  const { name, type, id, features } = props.feature;
-  console.log(features[0]);
+  const { name, type, id, years } = props.feature;
+  const coordInMeter = toMercator(props.feature.features[0]);
+  const yearsInArray = years?.split(',');
+  const firstCoord = coordInMeter?.geometry.coordinates.at(0) as unknown as number[];
+  const lastCoord = coordInMeter?.geometry.coordinates.at(-1) as unknown as number[];
+
+  // ---------- GET DIRECTION RESULTAN ----------
+  const coordsForFunction = {
+    coord1: {
+      x: firstCoord[1] as number,
+      y: firstCoord[0] as number,
+    },
+    coord2: {
+      x: lastCoord[1] as number,
+      y: lastCoord[0] as number,
+    },
+  };
+
+  function calculateWindDirection(coord1: { x: number; y: number }, coord2: { x: number; y: number }): number {
+    const dx = coord2.x - coord1.x;
+    const dy = coord2.y - coord1.y;
+    const radians = Math.atan2(dy, dx);
+    let degrees = (radians * 180) / Math.PI;
+    if (degrees < 0) {
+      degrees += 360;
+    }
+    return degrees;
+  }
+
+  const windDirectionTotal = calculateWindDirection(coordsForFunction.coord1, coordsForFunction.coord2);
+
+  // ---------- GET DIRECTION ON EACH YEAR ----------
+  function calculateWindDirections(coordinates: number[][]): number[] {
+    const windDirections: number[] = [];
+
+    for (let i = 0; i < coordinates.length - 1; i++) {
+      const coord1 = { x: coordinates[i]?.[1] as number, y: coordinates?.[i]?.[0] as number };
+      const coord2 = { x: coordinates[i + 1]?.[1] as number, y: coordinates[i + 1]?.[0] as number };
+      const windDirection = calculateWindDirection(coord1, coord2);
+      windDirections.push(windDirection);
+    }
+
+    return windDirections;
+  }
+
+  const coordinatesInMeters = coordInMeter && (coordInMeter?.geometry.coordinates as unknown as number[][]);
+  const windDirections = coordinatesInMeters && calculateWindDirections(coordinatesInMeters);
+
+  function combineYearAndDirection(yearArray: string[], direction: number[]): Result[] {
+    const result: Result[] = [];
+
+    for (let i = 0; i < yearArray.length - 1; i++) {
+      const yearStart = yearArray[i];
+      const yearEnd = yearArray[i + 1];
+      const dir = direction[i];
+      const obj: Result = {
+        year: `${yearStart ?? 'noyear'} - ${yearEnd ?? 'noyear'}`,
+        direction: dir ?? 0,
+      };
+      result.push(obj);
+    }
+
+    return result;
+  }
+
+  const result = combineYearAndDirection(yearsInArray as string[], windDirections as number[]);
+  console.log(result);
 
   return (
     <div className="overflow-hidden">

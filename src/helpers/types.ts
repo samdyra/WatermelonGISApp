@@ -20,6 +20,7 @@ export interface GeoJson {
   name?: string;
   color: string;
   id: string;
+  years?: string;
 }
 [];
 

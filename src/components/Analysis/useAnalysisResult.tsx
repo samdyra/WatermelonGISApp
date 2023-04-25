@@ -117,6 +117,7 @@ const UseAnalysisResult = () => {
 
   const { mutate: createLine } = api.vectorAnalysis.createDirectionLine.useMutation({
     onSuccess: (data) => {
+      console.log('data', data);
       uploadToFirebase(data, DIRECTION_CODE_LINE, (url) => {
         createFeature({
           feature: url,
@@ -130,6 +131,7 @@ const UseAnalysisResult = () => {
           directionLink: url,
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           name: `${data.name}-${DIRECTION_CODE_STATS}` ?? 'file',
+          years: data.years,
         });
       });
     },
@@ -146,7 +148,7 @@ const UseAnalysisResult = () => {
       });
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      createLine({ feature: data, name: data?.name });
+      createLine({ feature: data, name: data?.name, years: data.uniqueTahuns });
     },
   });
 

@@ -1,5 +1,7 @@
 import LatLngTuple = L.LatLngTuple;
 
+import type regression from 'regression';
+
 export interface GeoJson {
   type: string;
   features: {
@@ -35,7 +37,5 @@ export type dataStats = {
   id: string;
   link: string;
   name: string | undefined;
-  string: string;
-  equation: number[];
-  r2: number;
+  result: regression.Result;
 };

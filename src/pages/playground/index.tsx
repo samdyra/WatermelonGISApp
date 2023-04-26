@@ -13,12 +13,13 @@ import {
   AvailableData,
   ModalInfo,
   DirectionModule,
+  RegressionModule,
 } from '~/components';
 import { api } from '~/utils/api';
 import toast from 'react-hot-toast';
 import { handleUploadData, deleteFirebaseData } from '~/helpers/globalHelpers';
 import useModalState from '~/hooks/useModalState';
-import { type GeoJson } from '~/helpers/types';
+import { type dataStats, type GeoJson } from '~/helpers/types';
 
 const Playground: NextPage = () => {
   // ---------- HOOKS ----------
@@ -34,8 +35,10 @@ const Playground: NextPage = () => {
   );
   const [isModalVisible, handleShowModal, handleHideModal] = useModalState();
   const [isModalDirectionVisible, handleShowModalDirection, handleHideModalDirection] = useModalState();
+  const [isModalStatsVisible, handleShowModalStats, handleHideModalStats] = useModalState();
   const [tableData, setTableData] = useState<GeoJson | undefined>(data?.[0]);
   const [directionData, setDirectionData] = useState<GeoJson | undefined>(dataDirection?.[0]);
+  const [statsData, setStatsData] = useState<dataStats | undefined>(dataStats?.[0]);
   const [modalInfo, setModalInfo] = useState({ isOpen: false, desc: '' });
 
   // ---------- MUTATIONS ----------
@@ -94,6 +97,11 @@ const Playground: NextPage = () => {
     handleShowModalDirection();
   };
 
+  const handleStatsModule = (data: dataStats) => {
+    setStatsData(data);
+    handleShowModalStats();
+  };
+
   const handleDelete = (id: string) => deleteFeature({ id });
   const handleDeleteStats = (id: string) => deleteStats({ id });
   const handleDeleteDirection = (id: string) => deleteDirection({ id });
@@ -126,6 +134,13 @@ const Playground: NextPage = () => {
             feature={directionData}
           />
         )}
+        {statsData && (
+          <RegressionModule
+            handleHideModal={handleHideModalStats}
+            isModalVisible={isModalStatsVisible}
+            stats={statsData}
+          />
+        )}
         <ModalInfo handleHideModal={handleHideModalInfo} desc={modalInfo.desc} isModalVisible={modalInfo.isOpen} />
         <Navbar handleShowSidebar={handleShowSidebar} />
         <Map data={data} bm={bm} size={['100%', '100%']} isDirection={false} />
@@ -142,6 +157,7 @@ const Playground: NextPage = () => {
             dataDirection={dataDirection}
             handleDeleteDirection={handleDeleteDirection}
             handleShowModalDirection={handleDirectionModule}
+            handleStatsModule={handleStatsModule}
           />
           <AvailableData handleShowModalInfo={handleShowModalInfo} />
         </Layerbar>

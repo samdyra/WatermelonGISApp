@@ -11,7 +11,7 @@ export function combineYearAndDirection(yearArray: string[], direction: number[]
     const yearEnd = yearArray[i + 1];
     const dir = direction[i];
     const obj: Result = {
-      year: `${yearStart ?? 'noyear'} - ${yearEnd ?? 'noyear'}`,
+      year: `${yearStart ?? 'noyear'} until ${yearEnd ?? 'noyear'}`,
       direction: dir ?? 0,
     };
     result.push(obj);

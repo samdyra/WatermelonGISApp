@@ -2,6 +2,10 @@ import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { z } from 'zod';
 import type regression from 'regression';
 
+type result = {
+  result: regression.Result;
+};
+
 export const statisticsRouter = createTRPCRouter({
   getStatsByUserId: privateProcedure.query(async ({ ctx }) => {
     const authorId = ctx.userId;
@@ -15,7 +19,7 @@ export const statisticsRouter = createTRPCRouter({
       data.map(async (statObj) => {
         const statsLink: string = statObj.stats;
         const response = await fetch(statsLink);
-        const json = (await response.json()) as regression.Result;
+        const json = (await response.json()) as result;
         const nameOnly = statObj.name.split('.')[0];
 
         const statistics = {

@@ -20,6 +20,7 @@ interface Props {
   handleShowModalInfo: (desc: string) => void;
   handleDeleteStats: (id: string) => void;
   handleDeleteDirection: (id: string) => void;
+  handleStatsModule: (data: dataStats) => void;
 }
 
 const AddFeature = (props: Props) => {
@@ -106,6 +107,7 @@ const AddFeature = (props: Props) => {
               <div
                 className="mb-2 flex cursor-pointer items-center justify-between rounded-md bg-red-950  px-3 py-2 transition-all duration-150 ease-linear active:opacity-60 "
                 key={r}
+                onClick={() => props.handleStatsModule(item)}
               >
                 <div className="flex items-center">
                   {/* <Shape color={item.color} /> */}

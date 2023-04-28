@@ -107,11 +107,12 @@ const AddFeature = (props: Props) => {
               <div
                 className="mb-2 flex cursor-pointer items-center justify-between rounded-md bg-red-950  px-3 py-2 transition-all duration-150 ease-linear active:opacity-60 "
                 key={r}
-                onClick={() => props.handleStatsModule(item)}
               >
                 <div className="flex items-center">
                   {/* <Shape color={item.color} /> */}
-                  <p className="text-xs text-slate-200">{item.name}</p>
+                  <p className="text-xs text-slate-200" onClick={() => props.handleStatsModule(item)}>
+                    {item.name}
+                  </p>
                 </div>
                 <div className="flex items-center gap-3">
                   <Image
@@ -136,11 +137,12 @@ const AddFeature = (props: Props) => {
               <div
                 className="mb-2 flex cursor-pointer items-center justify-between rounded-md bg-yellow-900  px-3 py-2 transition-all duration-150 ease-linear active:opacity-60"
                 key={r}
-                onClick={() => props.handleShowModalDirection(item)}
               >
                 <div className="flex items-center">
                   {/* <Shape color={item.color} /> */}
-                  <p className="text-xs text-slate-200">{item.name}</p>
+                  <p className="text-xs text-slate-200" onClick={() => props.handleShowModalDirection(item)}>
+                    {item.name}
+                  </p>
                 </div>
                 <div className="flex items-center gap-3">
                   <Image

@@ -110,7 +110,7 @@ export const vectorAnalysisRouter = createTRPCRouter({
           {
             weight: input.weight,
             properties: {
-              id: i,
+              id: i + 1,
               year: currentTahun,
             },
           }
@@ -128,26 +128,51 @@ export const vectorAnalysisRouter = createTRPCRouter({
   createDirectionLine: privateProcedure
     .input(z.object({ feature: z.any(), name: z.string(), years: z.array(z.number()) }))
     .mutation(({ input }) => {
+      // TO DO: DELETE THIS LATER IF NOT NEEDED ANYMORE
+
+      // const sortedFeatures = feature.features.sort((a: { year: number }, b: { year: number }) => {
+      //   if (a.year && b.year) {
+      //     return a.year - b.year;
+      //   }
+      //   return 0;
+      // });
+
+      // // Extract the coordinates for each feature
+      // const coordinates: Position[] = sortedFeatures.map(
+      //   (feature: { geometry: { coordinates: LatLngTuple } }) => feature.geometry.coordinates
+      // );
+
+      // // Pass the coordinates to the multiPoint function
+      // const result = lineString(coordinates);
+      // const collected = featureCollection([result]);
+
       const { feature } = input;
 
-      const sortedFeatures = feature.features.sort((a: { year: number }, b: { year: number }) => {
-        if (a.year && b.year) {
-          return a.year - b.year;
+      function getLineStrings(data: {
+        features: { geometry: { coordinates: Position[] }; properties: { year: number } }[];
+      }) {
+        const features = data.features;
+        const lineStrings = [];
+
+        for (let i = 0; i < features.length - 1; i++) {
+          const geometry = features[i]?.geometry;
+          const properties = features[i]?.properties;
+          const year = properties?.year;
+          const secondYear = features?.[i + 1]?.properties.year;
+          const coords = [geometry?.coordinates, features[i + 1]?.geometry.coordinates] as unknown as Position[];
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+          const lineStringProps = { id: i + 1, year: `${year} - ${secondYear}` };
+          const lineStringResult = lineString(coords, lineStringProps);
+          lineStrings.push(lineStringResult);
         }
-        return 0;
-      });
 
-      // Extract the coordinates for each feature
-      const coordinates: Position[] = sortedFeatures.map(
-        (feature: { geometry: { coordinates: LatLngTuple } }) => feature.geometry.coordinates
-      );
+        return lineStrings;
+      }
 
-      // Pass the coordinates to the multiPoint function
-      const result = lineString(coordinates);
-      const collected = featureCollection([result]);
-
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      const lineStrings = getLineStrings(feature);
+      const collected = featureCollection(lineStrings);
       const namedResult = { ...collected, name: input.name, years: input.years };
-
       return namedResult;
     }),
 });

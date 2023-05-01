@@ -117,7 +117,6 @@ const UseAnalysisResult = () => {
 
   const { mutate: createLine } = api.vectorAnalysis.createDirectionLine.useMutation({
     onSuccess: (data) => {
-      console.log('data', data);
       uploadToFirebase(data, DIRECTION_CODE_LINE, (url) => {
         createFeature({
           feature: url,

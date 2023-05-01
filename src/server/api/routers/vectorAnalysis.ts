@@ -12,7 +12,7 @@ import { detectCrs } from 'reproject';
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { z } from 'zod';
 import center from '@turf/center';
-import { featureCollection, centerMean, lineString } from '@turf/turf';
+import { featureCollection, centerMean, lineString, MultiLineString, multiLineString } from '@turf/turf';
 import { type ITurf } from '~/components/Analysis/types';
 import regression from 'regression';
 import { type DataPoint } from 'regression';
@@ -109,6 +109,10 @@ export const vectorAnalysisRouter = createTRPCRouter({
           },
           {
             weight: input.weight,
+            properties: {
+              id: i,
+              year: currentTahun,
+            },
           }
         );
 

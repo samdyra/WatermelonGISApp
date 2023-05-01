@@ -130,7 +130,7 @@ const Map = (props: Props) => {
 
   const ref = useRef(null);
 
-  const pointToLayer = (feature: GeoJson, latlng: LatLngTuple) => {
+  const pointToLayer = (feature: { color: string; properties: object }, latlng: LatLngTuple) => {
     const color = feature.color.substring(1);
     const greenIcon = new Icon({
       iconUrl: `http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|${color}&chf=a,s,ee00FFFF`,
@@ -141,8 +141,14 @@ const Map = (props: Props) => {
       shadowSize: [41, 41],
     });
 
+    let popupContent = '';
+    for (const [key, value] of Object.entries(feature.properties)) {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      popupContent += `<b>${key}</b>: ${value}<br/>`;
+    }
+
     const markerView = marker(latlng, { icon: greenIcon });
-    markerView.bindPopup('test');
+    markerView.bindPopup(popupContent);
 
     return markerView;
   };

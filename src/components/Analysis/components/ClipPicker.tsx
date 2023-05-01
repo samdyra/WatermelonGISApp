@@ -18,8 +18,8 @@ const ClipPicker = (props: Props) => (
           props.setSelected(JSON.parse(sel.currentTarget.value));
         }}
       >
-        <option defaultValue="Choose Your Feature" className="font-semibold">
-          Choose Your Feature
+        <option defaultValue="Clip Boundary Feature" className="font-semibold">
+          Clip Boundary Feature
         </option>
         {props.data &&
           props.data.map((data) => (
@@ -28,7 +28,7 @@ const ClipPicker = (props: Props) => (
             </option>
           ))}
       </select>
-      <h1 className="ml-1 text-xs text-slate-300">{props.selected?.name ?? 'Choose Your Feature'}</h1>
+      <h1 className="ml-1 text-xs text-slate-300">{props.selected?.name ?? 'Clip Boundary Feature'}</h1>
     </div>
   </div>
 );

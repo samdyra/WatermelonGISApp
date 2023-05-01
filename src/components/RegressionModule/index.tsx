@@ -75,9 +75,20 @@ function RegressionModule(props: IProps) {
                     <h1 className="text-sm font-bold">Equation Result:</h1>
                     <div className="mb-2 text-sm">
                       <h1>Equation: {string} </h1>
-                      <h1>r²: {r2} </h1>
+                      <h1>R²: {r2} </h1>
                     </div>
                     <ScatterView />
+                    <h1 className="my-2 text-sm font-bold">R² is always between 0 and 1:</h1>
+                    <div className="mb-2 text-sm">
+                      <ul>
+                        - 0 represents a model that does not explain any of the variation in the response variable
+                        around its mean. The mean of the dependent variable predicts the dependent variable as well as
+                        the regression model.
+                      </ul>
+                      <ul>
+                        - 1 represents a model that explains all the variation in the response variable around its mean.
+                      </ul>
+                    </div>
                   </div>
                   <div className="z-50 flex items-center justify-between rounded-b border-t border-solid border-gray-900 px-5 pb-1 pt-2 text-xl">
                     <h1 className="h-8"></h1>

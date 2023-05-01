@@ -89,6 +89,8 @@ const AnalysisView = (props: Props) => {
             setPropertiesSelected={setPropertiesSelected}
             secondPropertiesSelected={secondPropertiesSelected}
             setSecondPropertiesSelected={setSecondPropertiesSelected}
+            firstFieldName="X Variable"
+            secondFieldName="Y Variable"
           />
         );
       case DIRECTION_METHOD:
@@ -99,6 +101,8 @@ const AnalysisView = (props: Props) => {
             setPropertiesSelected={setPropertiesSelected}
             secondPropertiesSelected={secondPropertiesSelected}
             setSecondPropertiesSelected={setSecondPropertiesSelected}
+            firstFieldName="Years Field"
+            secondFieldName="Weight Field"
           />
         );
       default:

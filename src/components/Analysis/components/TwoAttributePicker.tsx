@@ -41,14 +41,15 @@ const TwoAttributePicker = (props: Props) => (
         <option defaultValue="Choose The Second Field" className="font-semibold">
           Choose The Second Field
         </option>
+        <option id="countries" value="" className="font-semibold">
+          none
+        </option>
         {props.featureProperties().map((data) => {
           const r = (Math.random() + 1).toString(36).substring(7);
           return (
-            <>
-              <option id="countries" key={r} value={data} className="font-semibold">
-                {data}
-              </option>
-            </>
+            <option id="countries" key={r} value={data} className="font-semibold">
+              {data}
+            </option>
           );
         })}
       </select>

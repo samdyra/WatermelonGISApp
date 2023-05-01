@@ -66,7 +66,7 @@ const AddFeature = (props: Props) => {
             +
           </label>
         </div>
-        <div className="flex h-full flex-col rounded-md bg-gray-600 px-4 py-3">
+        <div className="flex h-full flex-col overflow-y-scroll rounded-md bg-gray-600 px-4 py-3">
           {props.data?.map((item) => {
             const r = (Math.random() + 1).toString(36).substring(7);
             return (

@@ -194,6 +194,7 @@ const UseAnalysisResult = () => {
         directionModule({
           feature: selected,
           year: propertiesSelected,
+          weight: secondPropertiesSelected,
         });
         handleHideModal();
         break;

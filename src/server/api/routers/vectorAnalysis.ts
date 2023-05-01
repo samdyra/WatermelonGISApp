@@ -84,35 +84,42 @@ export const vectorAnalysisRouter = createTRPCRouter({
       return { result, name: nameOnly };
     }),
 
-  directionModule: privateProcedure.input(z.object({ feature: z.any(), year: z.string() })).mutation(({ input }) => {
-    const { year } = input;
-    const results = [];
-    const uniqueTahuns = Array.from(
-      new Set(
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        input.feature.features.map((feature: FeatureType) => feature.properties?.[year])
-      )
-    ).sort() as number[];
+  directionModule: privateProcedure
+    .input(z.object({ feature: z.any(), year: z.string(), weight: z.string() }))
+    .mutation(({ input }) => {
+      const { year } = input;
+      const results = [];
+      const uniqueTahuns = Array.from(
+        new Set(
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          input.feature.features.map((feature: FeatureType) => feature.properties?.[year])
+        )
+      ).sort() as number[];
 
-    for (let i = 0; i < uniqueTahuns.length; i = i + 1) {
-      const currentTahun = uniqueTahuns[i] as number;
-      const features = input.feature.features.filter(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (feature: { properties: any }) => feature.properties?.[year] <= currentTahun
-      );
-      const centroidResult = center({
-        type: 'FeatureCollection',
-        features,
-      });
+      for (let i = 0; i < uniqueTahuns.length; i = i + 1) {
+        const currentTahun = uniqueTahuns[i] as number;
+        const features = input.feature.features.filter(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (feature: { properties: any }) => feature.properties?.[year] <= currentTahun
+        );
+        const centroidResult = centerMean(
+          {
+            type: 'FeatureCollection',
+            features,
+          },
+          {
+            weight: input.weight,
+          }
+        );
 
-      results.push({ ...centroidResult, year: currentTahun });
-    }
+        results.push({ ...centroidResult, year: currentTahun });
+      }
 
-    const collection = featureCollection(results);
-    const nameOnly = input.feature.name.split('.')[0];
+      const collection = featureCollection(results);
+      const nameOnly = input.feature.name.split('.')[0];
 
-    return { ...collection, name: nameOnly, uniqueTahuns };
-  }),
+      return { ...collection, name: nameOnly, uniqueTahuns };
+    }),
 
   createDirectionLine: privateProcedure
     .input(z.object({ feature: z.any(), name: z.string(), years: z.array(z.number()) }))

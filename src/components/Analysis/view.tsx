@@ -93,10 +93,12 @@ const AnalysisView = (props: Props) => {
         );
       case DIRECTION_METHOD:
         return (
-          <AttributePicker
+          <TwoAttributePicker
             featureProperties={featureProperties}
             propertiesSelected={propertiesSelected}
             setPropertiesSelected={setPropertiesSelected}
+            secondPropertiesSelected={secondPropertiesSelected}
+            setSecondPropertiesSelected={setSecondPropertiesSelected}
           />
         );
       default:

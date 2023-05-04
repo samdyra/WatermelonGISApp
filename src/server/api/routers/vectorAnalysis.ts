@@ -17,7 +17,6 @@ import { calculateWindDirection } from '~/helpers/directionModuleHelper';
 import { type ITurf } from '~/components/Analysis/types';
 import regression from 'regression';
 import { type DataPoint } from 'regression';
-import LatLngTuple = L.LatLngTuple;
 import { type Position } from '@turf/turf';
 
 type FeatureType = {
@@ -166,8 +165,8 @@ export const vectorAnalysisRouter = createTRPCRouter({
             id: i + 1,
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             year: `${year} - ${secondYear}`,
-            direction: direction,
-            distance: distance,
+            direction: Math.round(direction * 1000) / 1000,
+            distance: Math.round(distance * 1000) / 1000,
           };
           const lineStringResult = lineString(coords, lineStringProps);
           lineStrings.push(lineStringResult);

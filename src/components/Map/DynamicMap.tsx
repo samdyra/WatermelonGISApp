@@ -188,7 +188,10 @@ const Map = (props: Props) => {
           url={props.bm}
           ref={ref}
         />
-        {props.data && props.data[0] && props.isDirection && <FeatureDirection data={props.data[0]} />}
+        {props.data && props.data[0] && props.isDirection && <GeoJSON data={props.data[0]} style={style} />}
+        {props.data && props.data[0] && props.isDirection && <PanTo data={props.data[0]} />}
+
+        {/* // <FeatureDirection data={props.data[0]} */}
         {!props.isDirection && props.data && props.data[0] && <PanTo data={props.data[0]} />}
         {!props.isDirection &&
           props.data &&

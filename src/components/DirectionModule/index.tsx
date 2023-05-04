@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { type GeoJson } from '~/helpers/types';
 import { Map } from '~/components';
+import { Grid } from 'gridjs-react';
 
 interface IProps {
   isModalVisible: boolean;
@@ -11,6 +12,10 @@ interface IProps {
 
 function DirectionModule(props: IProps) {
   const { name, type, id, direction } = props.feature;
+  const tableHeader = props.feature.features[0] && Object.keys(props.feature.features[0].properties);
+  const tableBody = props.feature.features.map((feature) => {
+    return Object.values(feature.properties) as [];
+  });
 
   return (
     <div className="overflow-hidden">
@@ -18,7 +23,7 @@ function DirectionModule(props: IProps) {
         {props.isModalVisible ? (
           <div className="overflow-hidden">
             <motion.div
-              className="absolute left-[32%] top-[10%] z-50 flex h-4/5 w-2/5 items-center overflow-hidden "
+              className="absolute left-[32%] top-[5%] z-50 flex h-[90%] w-2/5 items-center overflow-hidden "
               style={{ overflow: 'hidden' }}
               initial={{ x: -700 }}
               animate={{ x: 0 }}
@@ -69,7 +74,7 @@ function DirectionModule(props: IProps) {
 
                     <h1 className="text-sm font-bold">Direction on maps:</h1>
 
-                    <div className="h-1/2 w-1/2 ">
+                    <div className="h-[40%] w-1/2">
                       <Map
                         data={[props.feature]}
                         bm={
@@ -78,6 +83,10 @@ function DirectionModule(props: IProps) {
                         size={['30%', '37%']}
                         isDirection={true}
                       />
+                    </div>
+                    <h1 className="text-sm font-bold">Result Table:</h1>
+                    <div className="h-48 w-full">
+                      <Grid data={tableBody} columns={tableHeader} pagination={{ limit: 3 }} />
                     </div>
                   </div>
                   <div className="z-50 flex items-center justify-between rounded-b border-t border-solid border-gray-900 px-5 pb-1 pt-2 text-xl">

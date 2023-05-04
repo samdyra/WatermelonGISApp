@@ -11,7 +11,11 @@ export interface GeoJson {
       type: string;
       coordinates: LatLngTuple | LatLngTuple[][] | LatLngTuple[][][];
     };
-    properties: object;
+    properties: {
+      year?: string;
+      direction?: number;
+      distance?: number;
+    };
   }[];
   crs: {
     type: string;
@@ -23,6 +27,7 @@ export interface GeoJson {
   color: string;
   id: string;
   years?: string;
+  direction?: number;
 }
 [];
 

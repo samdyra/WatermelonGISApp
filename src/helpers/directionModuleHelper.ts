@@ -28,6 +28,7 @@ export function calculateWindDirection(coord1: { x: number; y: number }, coord2:
   if (degrees < 0) {
     degrees += 360;
   }
+
   return degrees;
 }
 

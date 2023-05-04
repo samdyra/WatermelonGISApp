@@ -12,7 +12,8 @@ import { detectCrs } from 'reproject';
 import { createTRPCRouter, privateProcedure } from '~/server/api/trpc';
 import { z } from 'zod';
 import center from '@turf/center';
-import { featureCollection, centerMean, lineString, MultiLineString, multiLineString } from '@turf/turf';
+import { featureCollection, centerMean, lineString, toMercator, distance as distanceHelper } from '@turf/turf';
+import { calculateWindDirection } from '~/helpers/directionModuleHelper';
 import { type ITurf } from '~/components/Analysis/types';
 import regression from 'regression';
 import { type DataPoint } from 'regression';
@@ -128,24 +129,6 @@ export const vectorAnalysisRouter = createTRPCRouter({
   createDirectionLine: privateProcedure
     .input(z.object({ feature: z.any(), name: z.string(), years: z.array(z.number()) }))
     .mutation(({ input }) => {
-      // TO DO: DELETE THIS LATER IF NOT NEEDED ANYMORE
-
-      // const sortedFeatures = feature.features.sort((a: { year: number }, b: { year: number }) => {
-      //   if (a.year && b.year) {
-      //     return a.year - b.year;
-      //   }
-      //   return 0;
-      // });
-
-      // // Extract the coordinates for each feature
-      // const coordinates: Position[] = sortedFeatures.map(
-      //   (feature: { geometry: { coordinates: LatLngTuple } }) => feature.geometry.coordinates
-      // );
-
-      // // Pass the coordinates to the multiPoint function
-      // const result = lineString(coordinates);
-      // const collected = featureCollection([result]);
-
       const { feature } = input;
 
       function getLineStrings(data: {
@@ -155,13 +138,37 @@ export const vectorAnalysisRouter = createTRPCRouter({
         const lineStrings = [];
 
         for (let i = 0; i < features.length - 1; i++) {
+          const converToMeter = toMercator(features[i]);
+          const converToMeterSecondFeature = toMercator(features[i + 1]);
+          const firstCoord = converToMeter?.geometry.coordinates as unknown as number[];
+          const lastCoord = converToMeterSecondFeature?.geometry.coordinates as unknown as number[];
+          const coordsForFunction = {
+            coord1: {
+              x: firstCoord[1] as number,
+              y: firstCoord[0] as number,
+            },
+            coord2: {
+              x: lastCoord[1] as number,
+              y: lastCoord[0] as number,
+            },
+          };
+
+          const direction = calculateWindDirection(coordsForFunction.coord1, coordsForFunction.coord2);
+          const distance = distanceHelper(firstCoord, lastCoord, { units: 'kilometers' });
+
           const geometry = features[i]?.geometry;
           const properties = features[i]?.properties;
           const year = properties?.year;
           const secondYear = features?.[i + 1]?.properties.year;
           const coords = [geometry?.coordinates, features[i + 1]?.geometry.coordinates] as unknown as Position[];
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-          const lineStringProps = { id: i + 1, year: `${year} - ${secondYear}` };
+          const lineStringProps = {
+            id: i + 1,
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            year: `${year} - ${secondYear}`,
+            direction: direction,
+            distance: distance,
+          };
           const lineStringResult = lineString(coords, lineStringProps);
           lineStrings.push(lineStringResult);
         }
@@ -172,7 +179,23 @@ export const vectorAnalysisRouter = createTRPCRouter({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       const lineStrings = getLineStrings(feature);
       const collected = featureCollection(lineStrings);
-      const namedResult = { ...collected, name: input.name, years: input.years };
+      const converToMeter = toMercator(collected);
+      const firstCoord = converToMeter.features.at(0)?.geometry.coordinates.at(-1) as unknown as number[];
+      const lastCoord = converToMeter.features.at(-1)?.geometry.coordinates.at(-1) as unknown as number[];
+
+      const coordsForFunction = {
+        coord1: {
+          x: firstCoord[1] as number,
+          y: firstCoord[0] as number,
+        },
+        coord2: {
+          x: lastCoord[1] as number,
+          y: lastCoord[0] as number,
+        },
+      };
+
+      const direction = calculateWindDirection(coordsForFunction.coord1, coordsForFunction.coord2);
+      const namedResult = { ...collected, name: input.name, years: input.years, direction: direction };
       return namedResult;
     }),
 });

@@ -24,6 +24,19 @@ function RegressionModule(props: IProps) {
     return data.map(([x, y]) => ({ x: x ?? 0, y: y ?? 0 }));
   };
 
+  function getStrengthLevel(number: number) {
+    switch (true) {
+      case number > 0.67:
+        return 'Strongly';
+      case number > 0.33:
+        return 'Moderately';
+      case number > 0.19:
+        return 'Weakly';
+      default:
+        return 'Very Weakly';
+    }
+  }
+
   const data = {
     datasets: [
       {
@@ -77,6 +90,10 @@ function RegressionModule(props: IProps) {
                       <h1>Equation: {string} </h1>
                       <h1>R²: {r2} </h1>
                     </div>
+                    <h1 className="text-sm ">
+                      The implication is that the model <span className="font-bold">{getStrengthLevel(r2)}</span>{' '}
+                      defines the data variances
+                    </h1>
                     <ScatterView />
                     <h1 className="my-2 text-sm font-bold">R² is always between 0 and 1:</h1>
                     <div className="mb-2 text-sm">

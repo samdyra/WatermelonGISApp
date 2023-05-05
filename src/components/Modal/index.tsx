@@ -50,13 +50,6 @@ function Modal(props: IProps) {
               </div>
             </div>
           </motion.div>
-          <motion.div
-            className="fixed inset-0 z-40 bg-black"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.25 }}
-            exit={{ opacity: 0 }}
-            onClick={props.handleHideModal}
-          />
         </>
       ) : null}
     </AnimatePresence>

@@ -42,13 +42,15 @@ export const CLIP_METHOD = 'Clip Feature';
 export const CLIP_CODE = 'Clipped';
 export const REPROJECT_METHOD = 'Reproject Feature';
 export const REPROJECT_CODE = 'Reprojected';
-export const REGRESSION_METHOD = 'Linear Regression';
+export const REGRESSION_METHOD = 'Simple Linear Regression';
 export const REGRESSION_CODE = 'Regression';
-export const DIRECTION_METHOD = 'Direction Module';
+export const DIRECTION_METHOD = 'Direction Automation Module';
 export const DIRECTION_CODE = 'Direction-Point';
 export const DIRECTION_CODE_LINE = 'Direction-Line';
 export const DIRECTION_CODE_STATS = 'Direction-Stats';
 export const STATS_CODE = 'Stats-Regression';
+export const REGRESSION_MODULE_METHOD = 'Regression Automation Module';
+export const REGRESSION_MODULE_CODE = 'Regression-Module';
 
 export const AnalysisOptions = [
   {
@@ -69,12 +71,12 @@ export const AnalysisOptions = [
     beta: false,
     position: '90px',
   },
-  {
-    name: REPROJECT_METHOD,
-    code: REPROJECT_CODE,
-    beta: true,
-    position: '120px',
-  },
+  // {
+  //   name: REPROJECT_METHOD,
+  //   code: REPROJECT_CODE,
+  //   beta: true,
+  //   position: '120px',
+  // },
   {
     name: REGRESSION_METHOD,
     code: REGRESSION_CODE,
@@ -86,5 +88,11 @@ export const AnalysisOptions = [
     code: DIRECTION_CODE,
     beta: false,
     position: '180px',
+  },
+  {
+    name: REGRESSION_MODULE_METHOD,
+    code: REGRESSION_MODULE_CODE,
+    beta: false,
+    position: '210px',
   },
 ];

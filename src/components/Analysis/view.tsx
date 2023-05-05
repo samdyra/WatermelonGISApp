@@ -2,6 +2,7 @@ import { memo } from 'react';
 import FeaturePicker from './components/FeaturePicker';
 import AttributePicker from './components/AttributePicker';
 import ClipPicker from './components/ClipPicker';
+import RegressionModalPicker from '../RegressionModalPicker';
 import TwoAttributePicker from './components/TwoAttributePicker';
 import { Modal, NLoading } from '~/components';
 import { type GeoJson } from './types';
@@ -9,12 +10,14 @@ import React from 'react';
 import infoImage from '../../../public/info.png';
 import Image from 'next/image';
 import { WORDING_TUTORIAL } from '~/constants/texts';
+import useModalState from '~/hooks/useModalState';
 import {
   WEIGHTED_MEAN_SPATIAL_METHOD,
   CLIP_METHOD,
   REPROJECT_METHOD,
   REGRESSION_METHOD,
   DIRECTION_METHOD,
+  REGRESSION_MODULE_METHOD,
 } from './types';
 
 interface Props {
@@ -66,6 +69,7 @@ const AnalysisView = (props: Props) => {
     secondPropertiesSelected,
     setSecondPropertiesSelected,
   } = props;
+  const [isModalDirectionVisible, handleShowModalDirection, handleHideModalDirection] = useModalState();
 
   const Complementary = () => {
     switch (modalName) {
@@ -105,6 +109,18 @@ const AnalysisView = (props: Props) => {
             secondFieldName="Weight Field"
           />
         );
+      case REGRESSION_MODULE_METHOD:
+        return (
+          <div className="flex justify-center ">
+            <button
+              className="rounded bg-yellow-700 px-2 py-2 text-xs font-semibold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-blue-800"
+              type="button"
+              onClick={handleShowModalDirection}
+            >
+              Select Field
+            </button>
+          </div>
+        );
       default:
         return null;
     }
@@ -112,6 +128,13 @@ const AnalysisView = (props: Props) => {
 
   return (
     <>
+      {selected && (
+        <RegressionModalPicker
+          handleHideModal={handleHideModalDirection}
+          isModalVisible={isModalDirectionVisible}
+          feature={selected}
+        />
+      )}
       {isLoading && <NLoading />}
       <div className="mb-[-3.5px] ml-5 w-fit rounded-t-md bg-gray-600 px-3 py-[2px] text-sm text-slate-200">
         <div className="flex items-center gap-2 py-[4px]">

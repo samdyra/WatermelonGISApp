@@ -128,11 +128,12 @@ const AnalysisView = (props: Props) => {
 
   return (
     <>
-      {selected && (
+      {isModalVisible && selected && modalName === REGRESSION_MODULE_METHOD && (
         <RegressionModalPicker
           handleHideModal={handleHideModalDirection}
           isModalVisible={isModalDirectionVisible}
           feature={selected}
+          featureProperties={featureProperties}
         />
       )}
       {isLoading && <NLoading />}

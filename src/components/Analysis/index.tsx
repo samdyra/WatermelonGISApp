@@ -28,6 +28,8 @@ const Analysis = (props: Props) => {
     position,
     secondPropertiesSelected,
     setSecondPropertiesSelected,
+    variableCollectionSource,
+    setVariableCollectionSource,
   } = UseAnalysisResult();
 
   return (
@@ -52,6 +54,8 @@ const Analysis = (props: Props) => {
       secondPropertiesSelected={secondPropertiesSelected}
       setSecondPropertiesSelected={setSecondPropertiesSelected}
       handleShowModalInfo={props.handleShowModalInfo}
+      variableCollectionSource={variableCollectionSource}
+      setVariableCollectionSource={setVariableCollectionSource}
     />
   );
 };

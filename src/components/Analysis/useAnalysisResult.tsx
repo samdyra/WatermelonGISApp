@@ -30,6 +30,8 @@ const UseAnalysisResult = () => {
   const [clipFeature, setClipFeature] = React.useState<GeoJson | null>(null);
   const [modalName, setModalName] = React.useState('');
   const [isModalVisible, handleShowModal, handleHideModal] = useModalState(false);
+  const [variableCollectionSource, setVariableCollectionSource] = React.useState<{ x: string; y: string }[]>([]);
+
   const position = React.useState('0px');
 
   // ---------- MUTATIONS ----------
@@ -228,6 +230,8 @@ const UseAnalysisResult = () => {
     position,
     secondPropertiesSelected,
     setSecondPropertiesSelected,
+    variableCollectionSource,
+    setVariableCollectionSource,
   };
 };
 

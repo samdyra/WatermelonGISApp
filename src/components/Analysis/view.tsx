@@ -45,6 +45,8 @@ interface Props {
   secondPropertiesSelected: string;
   setSecondPropertiesSelected: React.Dispatch<React.SetStateAction<string>>;
   handleShowModalInfo: (desc: string) => void;
+  variableCollectionSource: { x: string; y: string }[];
+  setVariableCollectionSource: React.Dispatch<React.SetStateAction<{ x: string; y: string }[]>>;
 }
 
 const AnalysisView = (props: Props) => {
@@ -111,15 +113,20 @@ const AnalysisView = (props: Props) => {
         );
       case REGRESSION_MODULE_METHOD:
         return (
-          <div className="flex justify-center ">
-            <button
-              className="rounded bg-yellow-700 px-2 py-2 text-xs font-semibold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-blue-800"
-              type="button"
-              onClick={handleShowModalDirection}
-            >
-              Select Field
-            </button>
-          </div>
+          <>
+            <div className="flex justify-center ">
+              <button
+                className="mb-3 rounded bg-yellow-700 px-2 py-2 text-xs font-semibold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-blue-800"
+                type="button"
+                onClick={handleShowModalDirection}
+              >
+                Select Field
+              </button>
+            </div>
+            {props.variableCollectionSource.length > 0 && (
+              <h1 className="text-center text-sm text-white">{props.variableCollectionSource.length} field selected</h1>
+            )}
+          </>
         );
       default:
         return null;
@@ -134,6 +141,7 @@ const AnalysisView = (props: Props) => {
           isModalVisible={isModalDirectionVisible}
           feature={selected}
           featureProperties={featureProperties}
+          setVariableCollectionSource={props.setVariableCollectionSource}
         />
       )}
       {isLoading && <NLoading />}

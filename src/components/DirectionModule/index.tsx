@@ -72,9 +72,9 @@ function DirectionModule(props: IProps) {
                       })}
                     </div>
 
-                    <h1 className="text-sm font-bold">Direction on maps:</h1>
+                    {/* <h1 className="text-sm font-bold">Direction on maps:</h1> */}
 
-                    <div className="h-[40%] w-1/2">
+                    {/* <div className="h-[40%] w-1/2">
                       <Map
                         data={[props.feature]}
                         bm={
@@ -83,7 +83,7 @@ function DirectionModule(props: IProps) {
                         size={['30%', '37%']}
                         isDirection={true}
                       />
-                    </div>
+                    </div> */}
                     <h1 className="text-sm font-bold">Result Table:</h1>
                     <div className="h-48 w-full">
                       <Grid data={tableBody} columns={tableHeader} pagination={{ limit: 3 }} />

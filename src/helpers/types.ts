@@ -15,6 +15,7 @@ export interface GeoJson {
       year?: string;
       direction?: number;
       distance?: number;
+      r2?: number;
     };
   }[];
   crs: {
@@ -30,6 +31,21 @@ export interface GeoJson {
   direction?: number;
 }
 [];
+
+export interface GeoJsonSingle {
+  type: string;
+  color: string;
+  geometry: {
+    type: string;
+    coordinates: LatLngTuple | LatLngTuple[][] | LatLngTuple[][][];
+  };
+  properties: {
+    year?: string;
+    direction?: number;
+    distance?: number;
+    r2?: number;
+  };
+}
 
 export interface stats {
   points: [number, number][];

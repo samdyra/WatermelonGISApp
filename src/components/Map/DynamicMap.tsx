@@ -3,13 +3,13 @@ import 'leaflet/dist/leaflet.css';
 import { TileLayer, MapContainer, GeoJSON, useMap } from 'react-leaflet';
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import LatLngTuple = L.LatLngTuple;
-import { type GeoJson } from '~/helpers/types';
-import { marker, Icon, type LatLngExpression } from 'leaflet';
+import { type GeoJson, type GeoJsonSingle } from '~/helpers/types';
+import { marker, Icon } from 'leaflet';
 import L from 'leaflet';
-import { center } from '@turf/turf';
 import 'leaflet-polylinedecorator';
+import * as ReactDOMServer from 'react-dom/server';
 
 interface Props {
   data?: GeoJson[];
@@ -22,37 +22,20 @@ type IFlyTo = {
   data: GeoJson;
 };
 
-const FeatureDirection = (props: IFlyTo) => {
-  const map = useMap();
-  const lineString = props.data.features[0]?.geometry.coordinates as unknown as LatLngExpression[][];
+type ISetUrl = (url: string) => void;
 
-  if (lineString && lineString.length > 0) {
-    for (let i = 0; i < lineString.length; i++) {
-      if (lineString[i] !== undefined) {
-        if (lineString[i] !== undefined && lineString[i] !== null) {
-          lineString[i]?.reverse();
-        }
-      }
-    }
-  }
+type ICurrent = {
+  setUrl: ISetUrl;
+};
 
-  let getCenter;
-  if (props.data) {
-    getCenter = center(props.data);
-    const getCoord = getCenter.geometry.coordinates;
-    const getCoordReverse = [...getCoord].reverse() as LatLngTuple;
-    map.flyTo(getCoordReverse, 15, { animate: true });
-  }
-
-  const line = L.polyline(lineString, { fillColor: 'red', color: 'red', opacity: 1 }).addTo(map);
-  L.polylineDecorator(line, {
-    patterns: [
-      // defines a pattern of 10px-wide dashes, repeated every 20px on the line
-      { offset: 0, repeat: 20, symbol: L.Symbol.arrowHead({ pixelSize: 20 }) },
-    ],
-  }).addTo(map);
-
-  return null;
+type FeatureType = {
+  properties: {
+    place: string;
+    r2: number;
+    equation: string;
+    id: string | number;
+    points: [number, number][];
+  };
 };
 
 const PanTo = (props: IFlyTo) => {
@@ -74,7 +57,7 @@ const PanTo = (props: IFlyTo) => {
         if (firstCoord == undefined) return;
         const unreversedCoord = [firstCoord[0], firstCoord[1]];
         const reverseCoord = [...unreversedCoord].reverse() as LatLngTuple;
-        map.flyTo(reverseCoord, 17, { animate: true });
+        map.flyTo(reverseCoord, 12, { animate: true });
       }
 
       if (type === TYPE_POLYGON) {
@@ -85,7 +68,7 @@ const PanTo = (props: IFlyTo) => {
         const firstCoord = [...setCoord[0]];
         const unreversedCoord = [firstCoord[0], firstCoord[1]];
         const reverseCoord = unreversedCoord.reverse() as LatLngTuple;
-        map.flyTo(reverseCoord, 17, { animate: true });
+        map.flyTo(reverseCoord, 12, { animate: true });
       }
 
       if (type === TYPE_POINT) {
@@ -94,7 +77,7 @@ const PanTo = (props: IFlyTo) => {
         if (coord == undefined) return;
         const coordUnreversed = [coord[0], coord[1]];
         const reverseCoord: LatLngTuple = [...coordUnreversed].reverse() as LatLngTuple;
-        map.flyTo(reverseCoord, 17, { animate: true });
+        map.flyTo(reverseCoord, 12, { animate: true });
       }
 
       if (type === TYPE_LINESTRING) {
@@ -103,7 +86,7 @@ const PanTo = (props: IFlyTo) => {
         const unreversedCoord = [coord[0], coord[1]];
         if (unreversedCoord == undefined) return;
         const reverseCoord = unreversedCoord.reverse() as unknown as LatLngTuple;
-        map.flyTo(reverseCoord, 17, { animate: true });
+        map.flyTo(reverseCoord, 12, { animate: true });
       }
     }
   };
@@ -115,20 +98,63 @@ const PanTo = (props: IFlyTo) => {
   return null;
 };
 
-type ISetUrl = (url: string) => void;
-
-type ICurrent = {
-  setUrl: ISetUrl;
-};
-
 const Map = (props: Props) => {
+  const ref = useRef(null);
+  const [mapData, setMapData] = useState<FeatureType>();
+  console.log(mapData);
+
   useEffect(() => {
     if (ref.current) {
       (ref.current as ICurrent).setUrl(props.bm);
     }
   }, [props.bm]);
 
-  const ref = useRef(null);
+  const Popup = ({ feature }: { feature: FeatureType }) => {
+    function getStrengthLevel(number: number) {
+      switch (true) {
+        case number > 0.67:
+          return 'Strongly';
+        case number > 0.33:
+          return 'Moderately';
+        case number > 0.19:
+          return 'Weakly';
+        default:
+          return 'Very Weakly';
+      }
+    }
+    return (
+      <div className="h-[350px] w-[320px] pt-2 ">
+        <div className="mb-2 text-[15px] ">
+          <h2 className="text-[16px] font-bold">Feature Properties:</h2>
+          <h2>id: {feature.properties.id}</h2>
+          <h2>Location: {feature.properties.place}</h2>
+        </div>
+        <div className="mb-1 text-[15px]">
+          <h2 className="text-[16px] font-bold">Statistics:</h2>
+          <h2>
+            <span className="font-bold">Equation</span>: {feature.properties.equation}
+          </h2>
+          <h2>
+            <span className="font-bold">R²</span>: {feature.properties.r2}
+          </h2>
+        </div>
+        <div className="mb-2 text-[15px] ">
+          <div>
+            The implication is that the model{' '}
+            <span className="font-bold">{getStrengthLevel(feature.properties.r2)}</span> defines the data variances
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const onEachPolygons = (feature: FeatureType, layer: L.Layer) => {
+    layer.on({
+      click: () => {
+        setMapData(feature);
+      },
+    });
+  };
 
   const pointToLayer = (feature: { color: string; properties: object }, latlng: LatLngTuple) => {
     const color = feature.color.substring(1);
@@ -153,7 +179,31 @@ const Map = (props: Props) => {
     return markerView;
   };
 
-  const style = (feature: GeoJson) => {
+  const style = (feature: GeoJsonSingle) => {
+    function getStrengthLevel(number: number) {
+      switch (true) {
+        case number > 0.67:
+          return '#00ff00';
+        case number > 0.33:
+          return '#ffff00';
+        case number > 0.19:
+          return '#ff7800';
+        default:
+          return '#ff0000';
+      }
+    }
+    if (feature.properties.r2) {
+      return {
+        fillColor: getStrengthLevel(feature.properties.r2),
+        weight: 2,
+        opacity: 1,
+        border: 'solid',
+        color: getStrengthLevel(feature.properties.r2),
+        dashArray: '',
+        fillOpacity: 0.6,
+      };
+    }
+
     let color = feature.color;
     if (color == undefined) {
       color = '#ff7800';
@@ -197,7 +247,9 @@ const Map = (props: Props) => {
           props.data &&
           props.data.map((el: GeoJson) => {
             const r = (Math.random() + 1).toString(36).substring(7);
-            return <GeoJSON data={el} key={r} style={style} pointToLayer={pointToLayer} />;
+            return (
+              <GeoJSON data={el} key={r} style={style} pointToLayer={pointToLayer} onEachFeature={onEachPolygons} />
+            );
           })}
       </MapContainer>
     </div>

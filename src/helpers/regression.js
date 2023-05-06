@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 function determinationCoefficient(data, results) {
   const predictions = [];
   const observations = [];

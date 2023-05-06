@@ -14,10 +14,10 @@ import { z } from 'zod';
 import center from '@turf/center';
 import { featureCollection, centerMean, lineString, toMercator, distance as distanceHelper } from '@turf/turf';
 import { calculateWindDirection } from '~/helpers/directionModuleHelper';
-import { type ITurf, type GeoJsonRegression } from '~/components/Analysis/types';
+import { type ITurf } from '~/components/Analysis/types';
 import type regression from 'regression';
 import { type DataPoint } from 'regression';
-import { type Position, type Feature, type Geometry, type Properties } from '@turf/turf';
+import { type Position, type Feature } from '@turf/turf';
 import { linear } from '~/helpers/regression';
 
 type FeatureType = {
@@ -113,12 +113,13 @@ export const vectorAnalysisRouter = createTRPCRouter({
           const newFeature = { ...feature, properties: { ...feature.properties } };
           const data = fields.map(({ x, y }) => [feature.properties[x], feature.properties[y]]);
           const regressResult = linear(data);
-          const { r2, string } = regressResult;
+          const { r2, string, points } = regressResult;
           newFeature.properties = {
             id: index + 1,
             place: feature?.properties?.[place] ?? '',
             r2,
             equation: string,
+            points,
           };
 
           return newFeature as unknown as Feature;

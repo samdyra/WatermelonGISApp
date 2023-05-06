@@ -124,8 +124,16 @@ const AnalysisView = (props: Props) => {
               </button>
             </div>
             {props.variableCollectionSource.length > 0 && (
-              <h1 className="text-center text-sm text-white">{props.variableCollectionSource.length} field selected</h1>
+              <h1 className="mb-4 text-center text-sm text-white">
+                {props.variableCollectionSource.length} field selected
+              </h1>
             )}
+            <AttributePicker
+              featureProperties={featureProperties}
+              propertiesSelected={propertiesSelected}
+              setPropertiesSelected={setPropertiesSelected}
+              fieldName="Location Identifier"
+            />
           </>
         );
       default:

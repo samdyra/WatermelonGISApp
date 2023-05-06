@@ -1,4 +1,12 @@
-import { type Feature, type Point, type Properties, type BBox, type LineString } from '@turf/helpers';
+import {
+  type Feature,
+  type Point,
+  type Properties,
+  type BBox,
+  type LineString,
+  type GeometryCollection,
+  type Geometry,
+} from '@turf/helpers';
 import LatLngTuple = L.LatLngTuple;
 import type regression from 'regression';
 
@@ -25,7 +33,10 @@ export interface GeoJson {
 export interface ITurf {
   name: string;
   type: 'FeatureCollection';
-  features: Feature<Point, Properties>[] | Feature<LineString, Properties>[];
+  features:
+    | Feature<Point, Properties>[]
+    | Feature<LineString, Properties>[]
+    | Feature<Geometry | GeometryCollection, Properties>[];
   bbox?: BBox | undefined;
 }
 

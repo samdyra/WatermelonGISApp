@@ -19,6 +19,7 @@ import {
   STATS_CODE,
   DIRECTION_CODE_STATS,
   REGRESSION_MODULE_METHOD,
+  REGRESSION_MODULE_CODE,
 } from './types';
 import { uploadToFirebase } from '~/helpers/globalHelpers';
 
@@ -156,7 +157,13 @@ const UseAnalysisResult = () => {
   const { mutate: regressionModule, isLoading: loadingRegressionModule } =
     api.vectorAnalysis.regressionModule.useMutation({
       onSuccess: (data) => {
-        console.log('result', data);
+        uploadToFirebase(data, REGRESSION_MODULE_CODE, (url) => {
+          createFeature({
+            feature: url,
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            name: `${data.name}-${REGRESSION_MODULE_CODE}` ?? 'file',
+          });
+        });
       },
     });
 
@@ -211,6 +218,7 @@ const UseAnalysisResult = () => {
         regressionModule({
           feature: selected,
           regressionModuleInput: variableCollectionSource,
+          place: propertiesSelected,
         });
         handleHideModal();
         break;

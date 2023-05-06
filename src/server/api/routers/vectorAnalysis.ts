@@ -25,6 +25,13 @@ type FeatureType = {
   };
 };
 
+const regressionModuleInput = z.array(
+  z.object({
+    x: z.string(),
+    y: z.string(),
+  })
+);
+
 export const vectorAnalysisRouter = createTRPCRouter({
   meanSpatial: privateProcedure.input(z.object({ feature: z.any() })).mutation(({ input }) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -82,6 +89,19 @@ export const vectorAnalysisRouter = createTRPCRouter({
       const result = regression.linear(formatted);
 
       return { result, name: nameOnly };
+    }),
+
+  regressionModule: privateProcedure
+    .input(
+      z.object({
+        feature: z.any(),
+        regressionModuleInput: regressionModuleInput,
+      })
+    )
+    .mutation(({ input }) => {
+      const { regressionModuleInput: regressionInput, feature } = input;
+
+      return 'response';
     }),
 
   directionModule: privateProcedure

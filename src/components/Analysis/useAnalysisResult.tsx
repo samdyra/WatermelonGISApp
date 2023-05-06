@@ -18,6 +18,7 @@ import {
   DIRECTION_CODE_LINE,
   STATS_CODE,
   DIRECTION_CODE_STATS,
+  REGRESSION_MODULE_METHOD,
 } from './types';
 import { uploadToFirebase } from '~/helpers/globalHelpers';
 
@@ -31,7 +32,6 @@ const UseAnalysisResult = () => {
   const [modalName, setModalName] = React.useState('');
   const [isModalVisible, handleShowModal, handleHideModal] = useModalState(false);
   const [variableCollectionSource, setVariableCollectionSource] = React.useState<{ x: string; y: string }[]>([]);
-
   const position = React.useState('0px');
 
   // ---------- MUTATIONS ----------
@@ -153,6 +153,13 @@ const UseAnalysisResult = () => {
     },
   });
 
+  const { mutate: regressionModule, isLoading: loadingRegressionModule } =
+    api.vectorAnalysis.regressionModule.useMutation({
+      onSuccess: (data) => {
+        console.log(data);
+      },
+    });
+
   const isLoading =
     loadingCreateData ||
     loadingMeanSpatial ||
@@ -162,7 +169,8 @@ const UseAnalysisResult = () => {
     loadingRegression ||
     loadingDirection ||
     statsCreateLoading ||
-    directionCreateLoading;
+    directionCreateLoading ||
+    loadingRegressionModule;
 
   // ---------- HANDLERS ----------
   const handleMutateData = () => {
@@ -196,6 +204,13 @@ const UseAnalysisResult = () => {
           feature: selected,
           year: propertiesSelected,
           weight: secondPropertiesSelected,
+        });
+        handleHideModal();
+        break;
+      case REGRESSION_MODULE_METHOD:
+        regressionModule({
+          feature: selected,
+          regressionModuleInput: variableCollectionSource,
         });
         handleHideModal();
         break;

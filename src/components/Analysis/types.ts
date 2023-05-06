@@ -29,6 +29,22 @@ export interface ITurf {
   bbox?: BBox | undefined;
 }
 
+export interface GeoJsonRegression {
+  type: string;
+  features: {
+    type: string;
+    geometry: {
+      type: string;
+      coordinates: LatLngTuple | LatLngTuple[][] | LatLngTuple[][][];
+    };
+    properties: {
+      [key: string]: string | number;
+    };
+  }[];
+  color: string;
+  id: string;
+}
+
 export interface IStats {
   name: string;
   result: regression.Result;

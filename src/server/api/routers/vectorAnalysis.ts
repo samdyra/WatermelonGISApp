@@ -14,7 +14,7 @@ import { z } from 'zod';
 import center from '@turf/center';
 import { featureCollection, centerMean, lineString, toMercator, distance as distanceHelper } from '@turf/turf';
 import { calculateWindDirection } from '~/helpers/directionModuleHelper';
-import { type ITurf } from '~/components/Analysis/types';
+import { type ITurf, type GeoJsonRegression } from '~/components/Analysis/types';
 import type regression from 'regression';
 import { type DataPoint } from 'regression';
 import { type Position } from '@turf/turf';
@@ -97,6 +97,29 @@ export const vectorAnalysisRouter = createTRPCRouter({
       return { result, name: nameOnly };
     }),
 
+  // regressionModule: privateProcedure
+  //   .input(
+  //     z.object({
+  //       feature: z.any(),
+  //       regressionModuleInput: regressionModuleInput,
+  //     })
+  //   )
+  //   .mutation(({ input }) => {
+  //     const { regressionModuleInput: regressionInput, feature } = input;
+
+  //     function regressionMultipleFeatures(input1: regressionType[], input2: any) {
+  //       const results = input2.features.map((feature: FeatureType) => {
+  //         const data = input1.map(({ x, y }) => [feature.properties[x], feature.properties[y]]);
+  //         const regressResult = linear(data);
+  //         return { regressResult, place: feature.properties.WADMKC };
+  //       });
+
+  //       return results as regression.Result[];
+  //     }
+
+  //     const result = regressionMultipleFeatures(regressionInput, feature);
+  //     return result;
+  //   }),
   regressionModule: privateProcedure
     .input(
       z.object({
@@ -107,14 +130,22 @@ export const vectorAnalysisRouter = createTRPCRouter({
     .mutation(({ input }) => {
       const { regressionModuleInput: regressionInput, feature } = input;
 
-      function regressionMultipleFeatures(input1: regressionType[], input2: any) {
-        const results = input2.features.map((feature: FeatureType) => {
-          const data = input1.map(({ x, y }) => [feature.properties[x], feature.properties[y]]);
+      function regressionMultipleFeatures(fields: regressionType[], feature: any) {
+        const results = feature.features.map((feature: FeatureType): GeoJsonRegression => {
+          const newFeature = { ...feature, properties: { ...feature.properties } };
+          const data = fields.map(({ x, y }) => [feature.properties[x], feature.properties[y]]);
           const regressResult = linear(data);
-          return { regressResult, place: feature.properties.WADMKC };
+          const { r2, string } = regressResult;
+          newFeature.properties = {
+            r2,
+            equation: string,
+            place: feature?.properties?.WADMKC ?? '',
+          };
+
+          return newFeature as unknown as GeoJsonRegression;
         });
 
-        return results as regression.Result[];
+        return results as GeoJsonRegression[];
       }
 
       const result = regressionMultipleFeatures(regressionInput, feature);

@@ -72,7 +72,6 @@ const AnalysisView = (props: Props) => {
     setSecondPropertiesSelected,
   } = props;
   const [isModalDirectionVisible, handleShowModalDirection, handleHideModalDirection] = useModalState();
-  console.log(props.variableCollectionSource);
 
   const Complementary = () => {
     switch (modalName) {

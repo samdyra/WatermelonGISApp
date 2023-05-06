@@ -15,9 +15,10 @@ import center from '@turf/center';
 import { featureCollection, centerMean, lineString, toMercator, distance as distanceHelper } from '@turf/turf';
 import { calculateWindDirection } from '~/helpers/directionModuleHelper';
 import { type ITurf } from '~/components/Analysis/types';
-import regression from 'regression';
+import type regression from 'regression';
 import { type DataPoint } from 'regression';
 import { type Position } from '@turf/turf';
+import { linear } from '~/helpers/regression';
 
 type FeatureType = {
   properties: {
@@ -31,6 +32,11 @@ const regressionModuleInput = z.array(
     y: z.string(),
   })
 );
+
+interface regressionType {
+  x: string;
+  y: string;
+}
 
 export const vectorAnalysisRouter = createTRPCRouter({
   meanSpatial: privateProcedure.input(z.object({ feature: z.any() })).mutation(({ input }) => {
@@ -86,7 +92,7 @@ export const vectorAnalysisRouter = createTRPCRouter({
         obj.properties?.[secondRow],
       ]);
 
-      const result = regression.linear(formatted);
+      const result = linear(formatted) as regression.Result;
 
       return { result, name: nameOnly };
     }),
@@ -101,7 +107,18 @@ export const vectorAnalysisRouter = createTRPCRouter({
     .mutation(({ input }) => {
       const { regressionModuleInput: regressionInput, feature } = input;
 
-      return 'response';
+      function regressionMultipleFeatures(input1: regressionType[], input2: any) {
+        const results = input2.features.map((feature: FeatureType) => {
+          const data = input1.map(({ x, y }) => [feature.properties[x], feature.properties[y]]);
+          const regressResult = linear(data);
+          return { regressResult, place: feature.properties.WADMKC };
+        });
+
+        return results as regression.Result[];
+      }
+
+      const result = regressionMultipleFeatures(regressionInput, feature);
+      return result;
     }),
 
   directionModule: privateProcedure

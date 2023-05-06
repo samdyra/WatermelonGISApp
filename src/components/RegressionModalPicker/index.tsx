@@ -112,7 +112,7 @@ function RegressionModalPicker(props: IProps) {
             </button>
           </div>
           <div className="h-[280px] w-full px-5 ">
-            <div className=" h-full w-full rounded-md  bg-gray-600 py-[2px] text-slate-200">
+            <div className=" h-full w-full overflow-y-scroll  rounded-md bg-gray-600 py-[2px] text-slate-200">
               {variableCollection.map((variable) => {
                 const r = (Math.random() + 1).toString(36).substring(7);
                 return (

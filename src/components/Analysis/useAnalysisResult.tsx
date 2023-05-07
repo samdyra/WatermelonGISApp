@@ -179,6 +179,81 @@ const UseAnalysisResult = () => {
     directionCreateLoading ||
     loadingRegressionModule;
 
+  const sampleData = [
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2000',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2000',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2001',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2001',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2002',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2002',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2003',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2003',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2004',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2004',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2005',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2005',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2006',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2006',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2007',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2007',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2008',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2008',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2009',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2009',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2010',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2010',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2011',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2011',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2012',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2012',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2013',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2013',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2014',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2014',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2015',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2015',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2016',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2016',
+    },
+    {
+      y: 'att_pdk._kbbxlsx — Sheet1_pdk_2017',
+      x: 'att_pdk._kbbxlsx — Sheet1_bgn__2017',
+    },
+  ];
+
   // ---------- HANDLERS ----------
   const handleMutateData = () => {
     switch (modalName) {
@@ -217,7 +292,7 @@ const UseAnalysisResult = () => {
       case REGRESSION_MODULE_METHOD:
         regressionModule({
           feature: selected,
-          regressionModuleInput: variableCollectionSource,
+          regressionModuleInput: sampleData,
           place: propertiesSelected,
         });
         handleHideModal();

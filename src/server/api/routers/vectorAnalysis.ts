@@ -15,7 +15,7 @@ import center from '@turf/center';
 import { featureCollection, centerMean, lineString, toMercator, distance as distanceHelper } from '@turf/turf';
 import { calculateWindDirection } from '~/helpers/directionModuleHelper';
 import { type ITurf } from '~/components/Analysis/types';
-import type regression from 'regression';
+import { linear as linearModule } from 'regression';
 import { type DataPoint } from 'regression';
 import { type Position, type Feature } from '@turf/turf';
 import { linear } from '~/helpers/regression';
@@ -92,7 +92,7 @@ export const vectorAnalysisRouter = createTRPCRouter({
         obj.properties?.[secondRow],
       ]);
 
-      const result = linear(formatted) as regression.Result;
+      const result = linearModule(formatted);
 
       return { result, name: nameOnly };
     }),
@@ -113,12 +113,14 @@ export const vectorAnalysisRouter = createTRPCRouter({
           const newFeature = { ...feature, properties: { ...feature.properties } };
           const data = fields.map(({ x, y }) => [feature.properties[x], feature.properties[y]]);
           const regressResult = linear(data);
-          const { r2, string, points } = regressResult;
+          const { r2, string, points, intercept, slope } = regressResult;
           newFeature.properties = {
             id: index + 1,
             place: feature?.properties?.[place] ?? '',
             r2,
             equation: string,
+            intercept: Math.round(intercept * 100000) / 100000,
+            slope: Math.round(slope * 100000) / 100000,
             points,
           };
 

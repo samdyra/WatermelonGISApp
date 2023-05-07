@@ -24,7 +24,7 @@ function TableAttribute(props: IProps) {
         {props.isModalVisible ? (
           <div className="overflow-hidden">
             <motion.div
-              className="absolute left-[28%] z-50 flex h-full w-1/2 items-center overflow-hidden"
+              className="absolute left-[28%]  z-50 flex h-full w-1/2 items-center overflow-hidden"
               style={{ overflow: 'hidden' }}
               initial={{ x: -700 }}
               animate={{ x: 0 }}

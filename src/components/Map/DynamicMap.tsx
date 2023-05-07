@@ -8,9 +8,7 @@ import LatLngTuple = L.LatLngTuple;
 import { type GeoJson, type GeoJsonSingle } from '~/helpers/types';
 import { marker, Icon } from 'leaflet';
 import L from 'leaflet';
-import 'leaflet-polylinedecorator';
-import * as ReactDOMServer from 'react-dom/server';
-
+import RegressionModuleModal from '../RegressionModuleModal';
 interface Props {
   data?: GeoJson[];
   bm: string;
@@ -35,6 +33,8 @@ type FeatureType = {
     equation: string;
     id: string | number;
     points: [number, number][];
+    intercept: number;
+    slope: number;
   };
 };
 
@@ -100,8 +100,10 @@ const PanTo = (props: IFlyTo) => {
 
 const Map = (props: Props) => {
   const ref = useRef(null);
-  const [mapData, setMapData] = useState<FeatureType>();
-  console.log(mapData);
+  const [mapData, setMapData] = useState<{ feature: FeatureType; isModalOpen: boolean }>({
+    feature: { properties: { place: '', r2: 0, equation: '', id: '', points: [], intercept: 0, slope: 0 } },
+    isModalOpen: false,
+  });
 
   useEffect(() => {
     if (ref.current) {
@@ -109,49 +111,12 @@ const Map = (props: Props) => {
     }
   }, [props.bm]);
 
-  const Popup = ({ feature }: { feature: FeatureType }) => {
-    function getStrengthLevel(number: number) {
-      switch (true) {
-        case number > 0.67:
-          return 'Strongly';
-        case number > 0.33:
-          return 'Moderately';
-        case number > 0.19:
-          return 'Weakly';
-        default:
-          return 'Very Weakly';
-      }
-    }
-    return (
-      <div className="h-[350px] w-[320px] pt-2 ">
-        <div className="mb-2 text-[15px] ">
-          <h2 className="text-[16px] font-bold">Feature Properties:</h2>
-          <h2>id: {feature.properties.id}</h2>
-          <h2>Location: {feature.properties.place}</h2>
-        </div>
-        <div className="mb-1 text-[15px]">
-          <h2 className="text-[16px] font-bold">Statistics:</h2>
-          <h2>
-            <span className="font-bold">Equation</span>: {feature.properties.equation}
-          </h2>
-          <h2>
-            <span className="font-bold">R²</span>: {feature.properties.r2}
-          </h2>
-        </div>
-        <div className="mb-2 text-[15px] ">
-          <div>
-            The implication is that the model{' '}
-            <span className="font-bold">{getStrengthLevel(feature.properties.r2)}</span> defines the data variances
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   const onEachPolygons = (feature: FeatureType, layer: L.Layer) => {
     layer.on({
       click: () => {
-        setMapData(feature);
+        if (feature.properties.r2) {
+          setMapData({ feature, isModalOpen: true });
+        }
       },
     });
   };
@@ -220,39 +185,48 @@ const Map = (props: Props) => {
   };
 
   return (
-    <div className={s.wrapper}>
-      <MapContainer
-        center={[-6.918759110120172, 107.6165053230779]}
-        zoom={13}
-        style={{
-          height: props.size[0],
-          width: props.size[1],
-          position: 'relative',
-          zIndex: 0,
-          boxShadow: '-2px 3px 5px 0 rgba(0,.9,0,.4)',
-        }}
-        zoomControl={false}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url={props.bm}
-          ref={ref}
+    <>
+      {mapData && (
+        <RegressionModuleModal
+          isModalVisible={mapData.isModalOpen}
+          handleHideModal={() => setMapData({ ...mapData, isModalOpen: false })}
+          feature={mapData.feature}
         />
-        {props.data && props.data[0] && props.isDirection && <GeoJSON data={props.data[0]} style={style} />}
-        {props.data && props.data[0] && props.isDirection && <PanTo data={props.data[0]} />}
+      )}
+      <div className={s.wrapper}>
+        <MapContainer
+          center={[-6.918759110120172, 107.6165053230779]}
+          zoom={13}
+          style={{
+            height: props.size[0],
+            width: props.size[1],
+            position: 'relative',
+            zIndex: 0,
+            boxShadow: '-2px 3px 5px 0 rgba(0,.9,0,.4)',
+          }}
+          zoomControl={false}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url={props.bm}
+            ref={ref}
+          />
+          {props.data && props.data[0] && props.isDirection && <GeoJSON data={props.data[0]} style={style} />}
+          {props.data && props.data[0] && props.isDirection && <PanTo data={props.data[0]} />}
 
-        {/* // <FeatureDirection data={props.data[0]} */}
-        {!props.isDirection && props.data && props.data[0] && <PanTo data={props.data[0]} />}
-        {!props.isDirection &&
-          props.data &&
-          props.data.map((el: GeoJson) => {
-            const r = (Math.random() + 1).toString(36).substring(7);
-            return (
-              <GeoJSON data={el} key={r} style={style} pointToLayer={pointToLayer} onEachFeature={onEachPolygons} />
-            );
-          })}
-      </MapContainer>
-    </div>
+          {/* // <FeatureDirection data={props.data[0]} */}
+          {!props.isDirection && props.data && props.data[0] && <PanTo data={props.data[0]} />}
+          {!props.isDirection &&
+            props.data &&
+            props.data.map((el: GeoJson) => {
+              const r = (Math.random() + 1).toString(36).substring(7);
+              return (
+                <GeoJSON data={el} key={r} style={style} pointToLayer={pointToLayer} onEachFeature={onEachPolygons} />
+              );
+            })}
+        </MapContainer>
+      </div>
+    </>
   );
 };
 

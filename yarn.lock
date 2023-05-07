@@ -2055,14 +2055,7 @@
   resolved "https://registry.npmjs.org/@types/keygrip/-/keygrip-1.0.2.tgz"
   integrity sha512-GJhpTepz2udxGexqos8wgaBx4I/zWIDPh/KOGEwAqtuGDkOUJu5eFvwmdBX4AmB8Odsr+9pHCQqiAqDL/yKMKw==
 
-"@types/leaflet-polylinedecorator@^1.6.1":
-  version "1.6.1"
-  resolved "https://registry.npmjs.org/@types/leaflet-polylinedecorator/-/leaflet-polylinedecorator-1.6.1.tgz"
-  integrity sha512-9etweJ2U4SWqcV/AR3i0NdWJByeMn6+zMUNlO6jVbpL8UI6qrMKybu8v9/s6UR4oXvsV4lZT6vzAsNAAMq5Ssg==
-  dependencies:
-    "@types/leaflet" "*"
-
-"@types/leaflet@*", "@types/leaflet@^1.9.3":
+"@types/leaflet@^1.9.3":
   version "1.9.3"
   resolved "https://registry.npmjs.org/@types/leaflet/-/leaflet-1.9.3.tgz"
   integrity sha512-Caa1lYOgKVqDkDZVWkto2Z5JtVo09spEaUt2S69LiugbBpoqQu92HYFMGUbYezZbnBkyOxMNPXHSgRrRY5UyIA==
@@ -4004,18 +3997,6 @@ leaflet-defaulticon-compatibility@^0.1.1:
   resolved "https://registry.npmjs.org/leaflet-defaulticon-compatibility/-/leaflet-defaulticon-compatibility-0.1.1.tgz"
   integrity sha512-vDBFdlUAwjSEGep9ih8kfJilf6yN8V9zTbF5NC/1ZwLeGko3RUQepspPnGCRMFV51dY3Lb3hziboicrFz+rxQA==
 
-leaflet-polylinedecorator@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.npmjs.org/leaflet-polylinedecorator/-/leaflet-polylinedecorator-1.6.0.tgz"
-  integrity sha512-kn3krmZRetgvN0wjhgYL8kvyLS0tUogAl0vtHuXQnwlYNjbl7aLQpkoFUo8UB8gVZoB0dhI4Tb55VdTJAcYzzQ==
-  dependencies:
-    leaflet-rotatedmarker "^0.2.0"
-
-leaflet-rotatedmarker@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/leaflet-rotatedmarker/-/leaflet-rotatedmarker-0.2.0.tgz#4467f49f98d1bfd56959bd9c6705203dd2601277"
-  integrity sha512-yc97gxLXwbZa+Gk9VCcqI0CkvIBC9oNTTjFsHqq4EQvANrvaboib4UdeQLyTnEqDpaXHCqzwwVIDHtvz2mUiDg==
-
 leaflet@^1.9.3:
   version "1.9.3"
   resolved "https://registry.npmjs.org/leaflet/-/leaflet-1.9.3.tgz"
@@ -5045,11 +5026,6 @@ side-channel@^1.0.4:
     call-bind "^1.0.0"
     get-intrinsic "^1.0.2"
     object-inspect "^1.9.0"
-
-simple-statistics@^7.8.3:
-  version "7.8.3"
-  resolved "https://registry.yarnpkg.com/simple-statistics/-/simple-statistics-7.8.3.tgz#62998dd7786ba14fa27b07f4f3cd498466f7961a"
-  integrity sha512-JFvMY00t6SBGtwMuJ+nqgsx9ylkMiJ5JlK9bkj8AdvniIe5615wWQYkKHXe84XtSuc40G/tlrPu0A5/NlJvv8A==
 
 skmeans@0.9.7:
   version "0.9.7"

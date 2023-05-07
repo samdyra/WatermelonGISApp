@@ -62,5 +62,7 @@ export const linear = (data) => {
     predict,
     r2: determinationCoefficient(data, points2),
     string: intercept === 0 ? `y = ${slope}x` : `y = ${slope}x + ${intercept}`,
+    slope,
+    intercept,
   };
 };

@@ -1,23 +1,25 @@
-import React, { useState, memo } from "react";
-import s from "./navbar.module.scss";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useUser } from "@clerk/nextjs";
-import { SignInButton, UserButton } from "@clerk/nextjs";
+import React, { useState, memo } from 'react';
+import s from './navbar.module.scss';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useUser } from '@clerk/nextjs';
+import { SignInButton, UserButton } from '@clerk/nextjs';
+import logo from '../../../public/logoOffice.png';
+import Image from 'next/image';
 
 interface Props {
   handleShowSidebar: () => void;
 }
 
 const Navbar = (props: Props) => {
-  const [ burgerClass, setBurgerClass ] = useState(s.burgerbar);
+  const [burgerClass, setBurgerClass] = useState(s.burgerbar);
   const handleClickBurgerbar = () => {
     setBurgerClass(burgerClass === s.burgerbar ? s.burgerbar2 : s.burgerbar);
     props.handleShowSidebar();
   };
 
   const { asPath } = useRouter();
-  const isAtHomePage = asPath === "/";
+  const isAtHomePage = asPath === '/';
   const user = useUser();
   const isSignedIn = user.isSignedIn;
 
@@ -27,7 +29,6 @@ const Navbar = (props: Props) => {
         <>
           <UserButton />
         </>
-        
       );
     }
 
@@ -63,11 +64,7 @@ const Navbar = (props: Props) => {
                 stroke="currentColor"
                 aria-hidden="true"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
               </svg>
               <svg
                 className="hidden h-6 w-6"
@@ -77,11 +74,7 @@ const Navbar = (props: Props) => {
                 stroke="currentColor"
                 aria-hidden="true"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
@@ -89,15 +82,11 @@ const Navbar = (props: Props) => {
             <div className="flex flex-shrink-0 items-center">
               <Link href="/">
                 <img
-                  className="block h-8 w-auto lg:hidden"
+                  className="block h-8 w-auto  lg:hidden"
                   src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                   alt="Your Company"
                 />
-                <img
-                  className="hidden h-8 w-auto lg:block"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                  alt="Your Company"
-                />
+                <Image className="hidden h-8 w-auto lg:block" src={logo} alt="Your Company" />
               </Link>
             </div>
             <div className="hidden sm:ml-6 sm:block">

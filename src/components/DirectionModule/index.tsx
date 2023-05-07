@@ -23,7 +23,7 @@ function DirectionModule(props: IProps) {
         {props.isModalVisible ? (
           <div className="overflow-hidden">
             <motion.div
-              className="absolute left-[32%] top-[5%] z-50 flex h-[90%] w-2/5 items-center overflow-hidden "
+              className="absolute left-[32%] top-[8%] z-50 flex h-[85%] w-2/5 items-center overflow-hidden "
               style={{ overflow: 'hidden' }}
               initial={{ x: -700 }}
               animate={{ x: 0 }}

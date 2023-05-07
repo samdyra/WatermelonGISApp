@@ -71,11 +71,24 @@ function RegressionModuleModal(props: IProps) {
     }
   }
 
+  function getColorLevel(number: number) {
+    switch (true) {
+      case number > 0.67:
+        return '#00ff00';
+      case number > 0.33:
+        return '#ffff00';
+      case number > 0.19:
+        return '#ff7800';
+      default:
+        return '#ff0000';
+    }
+  }
+
   const data = {
     datasets: [
       {
         type: 'scatter' as const,
-        label: 'Scatter Dataset',
+        label: 'Data Distributions',
         data: convertData(points),
         borderWidth: 1,
         backgroundColor: 'rgba(255, 99, 132, 1)',
@@ -83,7 +96,7 @@ function RegressionModuleModal(props: IProps) {
       },
       {
         type: 'line' as const,
-        label: 'Line Dataset',
+        label: 'Regression Line',
         borderWidth: 1,
         data: findHighestLowest(points),
         backgroundColor: '#36A2EB',
@@ -136,7 +149,10 @@ function RegressionModuleModal(props: IProps) {
                       <h1>R²: {r2} </h1>
                     </div>
                     <h1 className="text-sm ">
-                      The implication is that the model <span className="font-bold">{getStrengthLevel(r2)}</span>{' '}
+                      The implication is that the model{' '}
+                      <span style={{ backgroundColor: getColorLevel(r2), padding: 1 }} className="font-bold">
+                        {getStrengthLevel(r2)}
+                      </span>{' '}
                       defines the data variances
                     </h1>
                     <ScatterView />

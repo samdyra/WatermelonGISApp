@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { type GeoJson } from '~/helpers/types';
-import { Map } from '~/components';
 import { Grid } from 'gridjs-react';
 
 interface IProps {

@@ -26,7 +26,22 @@ const AvailableData = (props: Props) => {
 
       <div className="mx-6 flex h-48 flex-col rounded-md bg-gray-600 px-4 py-3">
         <div className="mb-2 flex items-center justify-between rounded-md bg-gray-800 px-3 py-2">
-          <p className="text-xs text-slate-200">test</p>
+          <p className="text-xs text-slate-200">Tsinghua&apos;s Urban Area Data</p>
+          <div className="flex items-center gap-3">
+            <Image
+              src={dbImage}
+              alt="download"
+              className="mt-[2px] h-[11px] w-[11px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+            />
+            <Image
+              src={downloadImage}
+              alt="download"
+              className="h-[16px] w-[16px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+            />
+          </div>
+        </div>
+        <div className="mb-2 flex items-center justify-between rounded-md bg-gray-800 px-3 py-2">
+          <p className="text-xs text-slate-200">Land Surface Temperature</p>
           <div className="flex items-center gap-3">
             <Image
               src={dbImage}

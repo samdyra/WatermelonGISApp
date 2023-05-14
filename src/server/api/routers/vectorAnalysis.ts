@@ -185,6 +185,10 @@ export const vectorAnalysisRouter = createTRPCRouter({
       return { ...collection, name: nameOnly, uniqueTahuns };
     }),
 
+  weightedDirectionModule: privateProcedure.input(z.object({ feature: z.any(), fields: z.string() })).mutation(({}) => {
+    return 'response';
+  }),
+
   createDirectionLine: privateProcedure
     .input(z.object({ feature: z.any(), name: z.string(), years: z.array(z.number()) }))
     .mutation(({ input }) => {

@@ -18,6 +18,7 @@ import {
   REGRESSION_METHOD,
   DIRECTION_METHOD,
   REGRESSION_MODULE_METHOD,
+  WEIGHTED_DIRECTION_METHOD,
 } from './types';
 
 interface Props {
@@ -136,6 +137,16 @@ const AnalysisView = (props: Props) => {
             />
           </>
         );
+      case WEIGHTED_DIRECTION_METHOD:
+        return (
+          <AttributePicker
+            featureProperties={featureProperties}
+            propertiesSelected={propertiesSelected}
+            setPropertiesSelected={setPropertiesSelected}
+            fieldName="Years Field"
+          />
+        );
+
       default:
         return null;
     }

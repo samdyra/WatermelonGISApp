@@ -78,6 +78,8 @@ export const DIRECTION_CODE_STATS = 'Direction-Stats';
 export const STATS_CODE = 'Stats-Regression';
 export const REGRESSION_MODULE_METHOD = 'Regression Automation Module';
 export const REGRESSION_MODULE_CODE = 'Regression-Module';
+export const WEIGHTED_DIRECTION_METHOD = 'Weighted Direction Module';
+export const WEIGHTED_DIRECTION_CODE = 'Weighted-Direction-Module';
 
 export const AnalysisOptions = [
   {
@@ -121,5 +123,11 @@ export const AnalysisOptions = [
     code: REGRESSION_MODULE_CODE,
     beta: false,
     position: '210px',
+  },
+  {
+    name: WEIGHTED_DIRECTION_METHOD,
+    code: WEIGHTED_DIRECTION_CODE,
+    beta: false,
+    position: '240px',
   },
 ];

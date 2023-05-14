@@ -20,6 +20,7 @@ import {
   DIRECTION_CODE_STATS,
   REGRESSION_MODULE_METHOD,
   REGRESSION_MODULE_CODE,
+  WEIGHTED_DIRECTION_METHOD,
 } from './types';
 import { uploadToFirebase } from '~/helpers/globalHelpers';
 
@@ -154,6 +155,11 @@ const UseAnalysisResult = () => {
     },
   });
 
+  const { mutate: weightedDirectionModule, isLoading: loadingWeightedDirection } =
+    api.vectorAnalysis.weightedDirectionModule.useMutation({
+      onSuccess: (data) => console.log(data),
+    });
+
   const { mutate: regressionModule, isLoading: loadingRegressionModule } =
     api.vectorAnalysis.regressionModule.useMutation({
       onSuccess: (data) => {
@@ -177,7 +183,8 @@ const UseAnalysisResult = () => {
     loadingDirection ||
     statsCreateLoading ||
     directionCreateLoading ||
-    loadingRegressionModule;
+    loadingRegressionModule ||
+    loadingWeightedDirection;
 
   // ---------- HANDLERS ----------
   const handleMutateData = () => {
@@ -222,6 +229,12 @@ const UseAnalysisResult = () => {
         });
         handleHideModal();
         break;
+      case WEIGHTED_DIRECTION_METHOD:
+        weightedDirectionModule({
+          feature: selected,
+          fields: propertiesSelected,
+        });
+
       default:
     }
   };

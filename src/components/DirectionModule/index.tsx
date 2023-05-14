@@ -65,7 +65,7 @@ function DirectionModule(props: IProps) {
                           <h1 key={r}>
                             in year {el.properties.year}, direction (in degrees) is:{' '}
                             {el?.properties?.direction && Math.round(el?.properties?.direction * 100) / 100}, and the
-                            distance is: {el?.properties?.distance && Math.round(el?.properties?.distance)} km
+                            distance is: {el?.properties?.distance && Math.round(el?.properties?.distance)} m
                           </h1>
                         );
                       })}

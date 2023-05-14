@@ -199,8 +199,11 @@ export const vectorAnalysisRouter = createTRPCRouter({
         for (let i = 0; i < features.length - 1; i++) {
           const converToMeter = toMercator(features[i]);
           const converToMeterSecondFeature = toMercator(features[i + 1]);
+          const firstCoordGeo = features[i]?.geometry.coordinates as unknown as number[];
+          const lastCoordGeo = features[i + 1]?.geometry.coordinates as unknown as number[];
           const firstCoord = converToMeter?.geometry.coordinates as unknown as number[];
           const lastCoord = converToMeterSecondFeature?.geometry.coordinates as unknown as number[];
+
           const coordsForFunction = {
             coord1: {
               x: firstCoord[1] as number,
@@ -213,7 +216,7 @@ export const vectorAnalysisRouter = createTRPCRouter({
           };
 
           const direction = calculateWindDirection(coordsForFunction.coord1, coordsForFunction.coord2);
-          const distance = distanceHelper(firstCoord, lastCoord, { units: 'kilometers' });
+          const distance = distanceHelper(lastCoordGeo, firstCoordGeo, { units: 'meters' });
 
           const geometry = features[i]?.geometry;
           const properties = features[i]?.properties;

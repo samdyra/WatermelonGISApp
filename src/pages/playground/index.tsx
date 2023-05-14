@@ -114,7 +114,7 @@ const Playground: NextPage = () => {
   return (
     <>
       <Head>
-        <title>🍉Watermelon GIS App</title>
+        <title>🍉 Urban Connect</title>
         <meta name="description" content="Fruits" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

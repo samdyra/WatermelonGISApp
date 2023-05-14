@@ -21,6 +21,7 @@ import {
   REGRESSION_MODULE_METHOD,
   REGRESSION_MODULE_CODE,
   WEIGHTED_DIRECTION_METHOD,
+  WEIGHTED_DIRECTION_CODE,
 } from './types';
 import { uploadToFirebase } from '~/helpers/globalHelpers';
 
@@ -135,7 +136,7 @@ const UseAnalysisResult = () => {
           directionLink: url,
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           name: `${data.name}-${DIRECTION_CODE_STATS}` ?? 'file',
-          years: data.years,
+          years: data.years as number[],
         });
       });
     },
@@ -158,7 +159,18 @@ const UseAnalysisResult = () => {
 
   const { mutate: weightedDirectionModule, isLoading: loadingWeightedDirection } =
     api.vectorAnalysis.weightedDirectionModule.useMutation({
-      onSuccess: (data) => console.log(data),
+      onSuccess: (data) => {
+        uploadToFirebase(data, WEIGHTED_DIRECTION_CODE, (url) => {
+          createFeature({
+            feature: url,
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            name: `${data.name}-${WEIGHTED_DIRECTION_CODE}` ?? 'file',
+          });
+        });
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        createLine({ feature: data, name: data?.name, years: data.fields });
+      },
     });
 
   const { mutate: regressionModule, isLoading: loadingRegressionModule } =

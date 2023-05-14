@@ -17,7 +17,7 @@ import { calculateWindDirection } from '~/helpers/directionModuleHelper';
 import { type ITurf } from '~/components/Analysis/types';
 import { linear as linearModule } from 'regression';
 import { type DataPoint } from 'regression';
-import { type Position, type Feature } from '@turf/turf';
+import { type Position, type Feature, type Point } from '@turf/turf';
 import { linear } from '~/helpers/regression';
 
 type FeatureType = {
@@ -190,12 +190,38 @@ export const vectorAnalysisRouter = createTRPCRouter({
   weightedDirectionModule: privateProcedure
     .input(z.object({ feature: z.any(), fields: directionModuleInput }))
     .mutation(({ input }) => {
-      const { fields } = input;
-      return fields;
+      const { feature, fields } = input;
+      const results: Feature<Point>[] = [];
+      fields.map((field, index) => {
+        const features = feature.features.filter(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (feature: { properties: any }) => feature.properties?.[field] !== null
+        );
+        const centroidResult = centerMean(
+          {
+            type: 'FeatureCollection',
+            features,
+          },
+          {
+            properties: {
+              id: index + 1,
+              year: field,
+            },
+            weight: field,
+          }
+        );
+
+        results.push(centroidResult);
+      });
+
+      const collection = featureCollection(results);
+      const nameOnly = input.feature.name.split('.')[0];
+
+      return { ...collection, name: nameOnly, fields };
     }),
 
   createDirectionLine: privateProcedure
-    .input(z.object({ feature: z.any(), name: z.string(), years: z.array(z.number()) }))
+    .input(z.object({ feature: z.any(), name: z.string(), years: z.array(z.any()) }))
     .mutation(({ input }) => {
       const { feature } = input;
 

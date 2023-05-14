@@ -34,7 +34,7 @@ export const directionRouter = createTRPCRouter({
   }),
 
   create: privateProcedure
-    .input(z.object({ directionLink: z.string(), name: z.string(), years: z.array(z.number()) }))
+    .input(z.object({ directionLink: z.string(), name: z.string(), years: z.array(z.any()) }))
     .mutation(async ({ ctx, input }) => {
       const authorId = ctx.userId;
       const yearsInString = input.years.toString();

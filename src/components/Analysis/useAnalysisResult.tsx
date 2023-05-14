@@ -34,6 +34,7 @@ const UseAnalysisResult = () => {
   const [modalName, setModalName] = React.useState('');
   const [isModalVisible, handleShowModal, handleHideModal] = useModalState(false);
   const [variableCollectionSource, setVariableCollectionSource] = React.useState<{ x: string; y: string }[]>([]);
+  const [directionFieldNames, setDirectionFieldNames] = React.useState<string[]>([]);
   const position = React.useState('0px');
 
   // ---------- MUTATIONS ----------
@@ -232,7 +233,7 @@ const UseAnalysisResult = () => {
       case WEIGHTED_DIRECTION_METHOD:
         weightedDirectionModule({
           feature: selected,
-          fields: propertiesSelected,
+          fields: directionFieldNames,
         });
 
       default:
@@ -268,6 +269,8 @@ const UseAnalysisResult = () => {
     setSecondPropertiesSelected,
     variableCollectionSource,
     setVariableCollectionSource,
+    directionFieldNames,
+    setDirectionFieldNames,
   };
 };
 

@@ -4,6 +4,7 @@ import AttributePicker from './components/AttributePicker';
 import ClipPicker from './components/ClipPicker';
 import RegressionModalPicker from '../RegressionModalPicker';
 import TwoAttributePicker from './components/TwoAttributePicker';
+import DirectionModalPicker from '../../components/DirectionModalPicker';
 import { Modal, NLoading } from '~/components';
 import { type GeoJson } from './types';
 import React from 'react';
@@ -48,6 +49,8 @@ interface Props {
   handleShowModalInfo: (desc: string) => void;
   variableCollectionSource: { x: string; y: string }[];
   setVariableCollectionSource: React.Dispatch<React.SetStateAction<{ x: string; y: string }[]>>;
+  directionFieldNames: string[];
+  setDirectionFieldNames: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const AnalysisView = (props: Props) => {
@@ -73,6 +76,8 @@ const AnalysisView = (props: Props) => {
     setSecondPropertiesSelected,
   } = props;
   const [isModalDirectionVisible, handleShowModalDirection, handleHideModalDirection] = useModalState();
+  const [isModalWeightedDirectionVisible, handleShowModalWeightedDirection, handleHideModalWeightedDirection] =
+    useModalState();
 
   const Complementary = () => {
     switch (modalName) {
@@ -139,12 +144,20 @@ const AnalysisView = (props: Props) => {
         );
       case WEIGHTED_DIRECTION_METHOD:
         return (
-          <AttributePicker
-            featureProperties={featureProperties}
-            propertiesSelected={propertiesSelected}
-            setPropertiesSelected={setPropertiesSelected}
-            fieldName="Years Field"
-          />
+          <>
+            <div className="flex justify-center ">
+              <button
+                className="mb-3 rounded bg-yellow-700 px-2 py-2 text-xs font-semibold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-blue-800"
+                type="button"
+                onClick={handleShowModalWeightedDirection}
+              >
+                Select Fields
+              </button>
+            </div>
+            {props.directionFieldNames.length > 0 && (
+              <h1 className="mb-4 text-center text-sm text-white">{props.directionFieldNames.length} field selected</h1>
+            )}
+          </>
         );
 
       default:
@@ -161,6 +174,15 @@ const AnalysisView = (props: Props) => {
           feature={selected}
           featureProperties={featureProperties}
           setVariableCollectionSource={props.setVariableCollectionSource}
+        />
+      )}
+      {isModalVisible && selected && modalName === WEIGHTED_DIRECTION_METHOD && (
+        <DirectionModalPicker
+          handleHideModal={handleHideModalWeightedDirection}
+          isModalVisible={isModalWeightedDirectionVisible}
+          feature={selected}
+          featureProperties={featureProperties}
+          setVariableCollectionSource={props.setDirectionFieldNames}
         />
       )}
       {isLoading && <NLoading />}

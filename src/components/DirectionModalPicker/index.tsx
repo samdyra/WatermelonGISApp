@@ -7,12 +7,12 @@ interface IProps {
   handleHideModal: () => void;
   feature: GeoJson;
   featureProperties: () => string[];
-  setVariableCollectionSource: React.Dispatch<React.SetStateAction<{ x: string; y: string }[]>>;
+  setVariableCollectionSource: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-function DirectionModalPicker(props: IProps) {
-  const [variables, setVariables] = useState<{ x: string; y: string }>({ x: '', y: '' });
-  const [variableCollection, setVariableCollection] = useState<{ x: string; y: string }[]>([]);
+function RegressionModalPicker(props: IProps) {
+  const [variables, setVariables] = useState<string>('');
+  const [variableCollection, setVariableCollection] = useState<string[]>([]);
 
   useEffect(() => {
     props.setVariableCollectionSource(variableCollection);
@@ -38,14 +38,14 @@ function DirectionModalPicker(props: IProps) {
           </div>
           <p className="mx-5 my-3 text-white">Select the variable&apos;s field names</p>
           <div className="mx-5 my-4 flex justify-between ">
-            <div className="flex w-[40%] border-b  ">
+            <div className="flex w-[70%] border-b ">
               <select
                 id="countries"
                 className="mb-1 ml-2 mr-2 h-2 w-2 rotate-45 transform appearance-none border-4 border-[#1F2937] border-b-white border-r-white indent-[-9999px] font-semibold hover:cursor-pointer focus:border-4 focus:border-b-white focus:outline-none focus:ring-0"
-                onChange={(sel) => setVariables({ ...variables, x: sel.currentTarget.value })}
+                onChange={(sel) => setVariables(sel.currentTarget.value)}
               >
-                <option defaultValue="Choose The X variable" className="font-semibold">
-                  Choose The X variable
+                <option defaultValue="Field Name" className="font-semibold">
+                  Field Name
                 </option>
                 {props.featureProperties().map((data) => {
                   const r = (Math.random() + 1).toString(36).substring(7);
@@ -56,38 +56,17 @@ function DirectionModalPicker(props: IProps) {
                   );
                 })}
               </select>
-              <h1 className="ml-1 text-sm text-slate-300">{variables?.x === '' ? 'X Variable' : variables?.x}</h1>
-            </div>
-            <p className="text-white">with</p>
-            <div className="flex w-[40%] border-b ">
-              <select
-                id="countries"
-                className="mb-1 ml-2 mr-2 h-2 w-2 rotate-45 transform appearance-none border-4 border-[#1F2937] border-b-white border-r-white indent-[-9999px] font-semibold hover:cursor-pointer focus:border-4 focus:border-b-white focus:outline-none focus:ring-0"
-                onChange={(sel) => setVariables({ ...variables, y: sel.currentTarget.value })}
-              >
-                <option defaultValue="Choose The Y variable" className="font-semibold">
-                  Choose The Y variable
-                </option>
-                {props.featureProperties().map((data) => {
-                  const r = (Math.random() + 1).toString(36).substring(7);
-                  return (
-                    <option id="countries" key={r} value={data} className="font-semibold">
-                      {data}
-                    </option>
-                  );
-                })}
-              </select>
-              <h1 className="ml-1 text-sm text-slate-300">{variables?.y === '' ? 'Y Variable' : variables?.y}</h1>
+              <h1 className="ml-1 text-sm text-slate-300">{variables === '' ? 'Field Name' : variables}</h1>
             </div>
           </div>
           <div className="mb-5 flex w-full justify-between px-8">
-            {variables.x !== '' && variables.y !== '' ? (
+            {variables !== '' ? (
               <button
                 className=" w-[120px] rounded bg-green-700 px-2 py-2 text-xs font-semibold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-green-800"
                 type="button"
                 onClick={() => {
                   setVariableCollection([...variableCollection, variables]);
-                  setVariables({ x: '', y: '' });
+                  setVariables('');
                 }}
               >
                 Add Variable
@@ -105,7 +84,7 @@ function DirectionModalPicker(props: IProps) {
               type="button"
               onClick={() => {
                 setVariableCollection([]);
-                setVariables({ x: '', y: '' });
+                setVariables('');
               }}
             >
               Clear
@@ -120,7 +99,7 @@ function DirectionModalPicker(props: IProps) {
                     key={r}
                     className="mx-3 my-2 flex items-center justify-between rounded-md bg-gray-800 px-2 py-2 text-xs transition-all duration-150 ease-linear active:opacity-80"
                   >
-                    Field choosen: {variable.x} with {variable.y}
+                    Field choosen: {variable}
                   </h1>
                 );
               })}
@@ -131,4 +110,4 @@ function DirectionModalPicker(props: IProps) {
     </AnimatePresence>
   );
 }
-export default memo(DirectionModalPicker);
+export default memo(RegressionModalPicker);

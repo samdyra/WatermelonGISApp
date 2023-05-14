@@ -30,6 +30,8 @@ const Analysis = (props: Props) => {
     setSecondPropertiesSelected,
     variableCollectionSource,
     setVariableCollectionSource,
+    directionFieldNames,
+    setDirectionFieldNames,
   } = UseAnalysisResult();
 
   return (
@@ -56,6 +58,8 @@ const Analysis = (props: Props) => {
       handleShowModalInfo={props.handleShowModalInfo}
       variableCollectionSource={variableCollectionSource}
       setVariableCollectionSource={setVariableCollectionSource}
+      directionFieldNames={directionFieldNames}
+      setDirectionFieldNames={setDirectionFieldNames}
     />
   );
 };

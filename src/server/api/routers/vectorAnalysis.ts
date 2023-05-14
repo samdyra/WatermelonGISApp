@@ -33,6 +33,8 @@ const regressionModuleInput = z.array(
   })
 );
 
+const directionModuleInput = z.array(z.string());
+
 interface regressionType {
   x: string;
   y: string;
@@ -185,9 +187,12 @@ export const vectorAnalysisRouter = createTRPCRouter({
       return { ...collection, name: nameOnly, uniqueTahuns };
     }),
 
-  weightedDirectionModule: privateProcedure.input(z.object({ feature: z.any(), fields: z.string() })).mutation(({}) => {
-    return 'response';
-  }),
+  weightedDirectionModule: privateProcedure
+    .input(z.object({ feature: z.any(), fields: directionModuleInput }))
+    .mutation(({ input }) => {
+      const { fields } = input;
+      return fields;
+    }),
 
   createDirectionLine: privateProcedure
     .input(z.object({ feature: z.any(), name: z.string(), years: z.array(z.number()) }))

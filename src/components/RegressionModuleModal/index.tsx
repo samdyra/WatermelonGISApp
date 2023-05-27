@@ -149,7 +149,7 @@ function RegressionModuleModal(props: IProps) {
                       <h1>R²: {r2} </h1>
                     </div>
                     <h1 className="text-sm ">
-                      The implication is that the model{' '}
+                      The implication is that the data{' '}
                       <span style={{ backgroundColor: getColorLevel(r2), padding: 1 }} className="font-bold">
                         {getStrengthLevel(r2)}
                       </span>{' '}

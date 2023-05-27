@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Chart as ChartJS, LinearScale, PointElement, LineElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, LinearScale, PointElement, LineElement, Tooltip, Legend, CategoryScale } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 
 type FeatureType = {
@@ -23,7 +23,7 @@ interface IProps {
 
 function RegressionModuleModal(props: IProps) {
   const { id, place, points, r2, intercept, slope } = props.feature.properties;
-  ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
+  ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend, CategoryScale);
 
   const options = {
     scales: {},

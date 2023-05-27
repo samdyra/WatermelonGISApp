@@ -94,19 +94,19 @@ function RegressionModuleModal(props: IProps) {
         backgroundColor: 'rgba(255, 99, 132, 1)',
         borderColor: '#36A2EB',
       },
-      // {
-      //   type: 'line' as const,
-      //   label: 'Regression Line',
-      //   borderWidth: 1,
-      //   data: findHighestLowest(points),
-      //   backgroundColor: '#36A2EB',
-      //   borderColor: '#36A2EB',
-      // },
+      {
+        type: 'line' as const,
+        label: 'Regression Line',
+        borderWidth: 1,
+        data: findHighestLowest(points),
+        backgroundColor: '#36A2EB',
+        borderColor: '#36A2EB',
+      },
     ],
   };
 
   const ScatterView = () => {
-    return <Chart type="scatter" options={options} data={data} />;
+    return <Chart type="line" options={options} data={data} />;
   };
 
   return (

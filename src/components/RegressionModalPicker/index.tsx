@@ -22,7 +22,7 @@ function DirectionModalPicker(props: IProps) {
     <AnimatePresence>
       {props.isModalVisible ? (
         <motion.div
-          className="absolute right-[540px] top-16 h-[500px] w-[350px] overflow-hidden rounded-lg  bg-[#1F2937] shadow-lg"
+          className="absolute right-[540px] top-16 h-[550px] w-[350px] overflow-hidden rounded-lg  bg-[#1F2937] shadow-lg"
           initial={{ x: 200 }}
           animate={{ x: 0 }}
           exit={{ opacity: 0 }}
@@ -37,6 +37,7 @@ function DirectionModalPicker(props: IProps) {
             </button>
           </div>
           <p className="mx-5 my-3 text-white">Select the variable&apos;s field names</p>
+          <p className="mx-5 my-3 text-xs text-white">X Variable means independent variable, where as Y is dependent</p>
           <div className="mx-5 my-4 flex justify-between ">
             <div className="flex w-[40%] border-b  ">
               <select

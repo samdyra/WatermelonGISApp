@@ -10,7 +10,6 @@ import {
   Analysis,
   BaseMaps,
   Table,
-  AvailableData,
   ModalInfo,
   DirectionModule,
   RegressionModule,
@@ -30,9 +29,7 @@ const Playground: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLayerOpen, setIsLayerOpen] = useState(true);
   const [isAnalysisOpen, setIsAnalysisOpen] = useState(true);
-  const [bm, setBm] = useState(
-    'https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=cm12mCvBTIOBGz4tb8FTAoubM28MtIRzTmxkCcVplrCbgz20duEVixioH3HT8OMw'
-  );
+  const [bm, setBm] = useState('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
   const [isModalVisible, handleShowModal, handleHideModal] = useModalState();
   const [isModalDirectionVisible, handleShowModalDirection, handleHideModalDirection] = useModalState();
   const [isModalStatsVisible, handleShowModalStats, handleHideModalStats] = useModalState();

@@ -16,11 +16,7 @@ const Home: NextPage = () => {
       </Head>
       <main className="border-3 overflow-hidden">
         <Navbar handleShowSidebar={handleShowSidebar} />
-        <Map
-          bm="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
-          size={['100%', '100%']}
-          isDirection={false}
-        />
+        <Map bm="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" size={['100%', '100%']} isDirection={false} />
         <Descbar isOpen={isOpen} />
         <Sidebar />
       </main>

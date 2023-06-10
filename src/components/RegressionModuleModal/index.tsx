@@ -88,7 +88,7 @@ function RegressionModuleModal(props: IProps) {
     datasets: [
       {
         type: 'scatter' as const,
-        label: 'Data Distributions',
+        label: 'Data Plot',
         data: convertData(points),
         borderWidth: 1,
         backgroundColor: 'rgba(255, 99, 132, 1)',

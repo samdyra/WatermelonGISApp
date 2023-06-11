@@ -156,7 +156,6 @@ const Playground: NextPage = () => {
             handleShowModalDirection={handleDirectionModule}
             handleStatsModule={handleStatsModule}
           />
-          {/* <AvailableData handleShowModalInfo={handleShowModalInfo} /> */}
         </Layerbar>
         <Layerbar isOpen={isAnalysisOpen} position="right" size="small" handleShowLayerbar={handleShowAnalysisbar}>
           <Analysis data={data} handleShowModalInfo={handleShowModalInfo} />

@@ -29,7 +29,7 @@ function determinationCoefficient(data, results) {
 
 function round(number, _precision) {
   // const factor = 10 ** precision;
-  return Math.round(number * 3) / 3;
+  return Math.round(number * 1000) / 1000;
 }
 
 export const linear = (data) => {

@@ -121,8 +121,8 @@ export const vectorAnalysisRouter = createTRPCRouter({
             place: feature?.properties?.[place] ?? '',
             r2,
             equation: string,
-            intercept: Math.round(intercept * 100000) / 100000,
-            slope: Math.round(slope * 100000) / 100000,
+            intercept: intercept,
+            slope: slope,
             points,
           };
 

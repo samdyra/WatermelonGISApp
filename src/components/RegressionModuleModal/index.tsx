@@ -149,11 +149,11 @@ function RegressionModuleModal(props: IProps) {
                       <h1>R²: {r2} </h1>
                     </div>
                     <h1 className="text-sm ">
-                      The implication is that the data{' '}
+                      The implication is that the independent variable{' '}
                       <span style={{ backgroundColor: getColorLevel(r2), padding: 1 }} className="font-bold">
                         {getStrengthLevel(r2)}
                       </span>{' '}
-                      defines the data variances
+                      impact the dependent variable.
                     </h1>
                     <ScatterView />
                     <h1 className="my-2 text-sm font-bold">R² is always between 0 and 1:</h1>

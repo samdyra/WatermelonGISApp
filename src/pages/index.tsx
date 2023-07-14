@@ -7,6 +7,13 @@ const Home: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const handleShowSidebar = () => setIsOpen(!isOpen);
 
+  const menuItems = [
+    { name: 'IHO BANG', icon: 'home' },
+    { name: 'IHO IYAK', icon: 'about' },
+    { name: 'IHO BENER', icon: 'contact' },
+    { name: 'IHO ASLI', icon: 'settings' },
+  ];
+
   return (
     <>
       <Head>
@@ -18,7 +25,7 @@ const Home: NextPage = () => {
         <Navbar handleShowSidebar={handleShowSidebar} />
         <Map bm="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" size={['100%', '100%']} isDirection={false} />
         <Descbar isOpen={isOpen} />
-        <Sidebar />
+        <Sidebar menuItems={menuItems}></Sidebar>
       </main>
     </>
   );

@@ -13,7 +13,7 @@ const Select = (props: IProps) => {
   return (
     <>
       <div className="mb-4">
-        <label className="mb-2 block text-sm font-bold text-gray-700">{props.label}</label>
+        <label className="mb-2 block text-sm font-bold ">{props.label}</label>
         <select
           className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 focus:outline-none"
           id={props.label}

@@ -91,12 +91,17 @@ export const GRIDDING_METHOD_OPTIONS = [
 ];
 
 export const IHO102 = [
-  { text: 'Vertical Datum', value: VERTICAL_DATUM_OPTIONS },
-  { text: 'Data Coding Format', value: DATA_CODING_FORMAT_OPTIONS },
-  { text: 'Common Point Rule', value: COMMON_POINT_RULE_OPTIONS },
-  { text: 'Interpolation Type Datum', value: INTERPOLATION_TYPE_OPTIONS },
-  { text: 'Sequencing Rule Type', value: SEQUENCING_RULE_TYPE_OPTIONS },
-  { text: 'Gridding Method', value: GRIDDING_METHOD_OPTIONS },
+  { text: 'Vertical Datum', key: 'vertical_datum_dt_type', value: VERTICAL_DATUM_OPTIONS },
+  { text: 'Data Coding Format', key: 'data_coding_format_dt_type', value: DATA_CODING_FORMAT_OPTIONS },
+  { text: 'Common Point Rule', key: 'common_point_rule_dt_type', value: COMMON_POINT_RULE_OPTIONS },
+  { text: 'Interpolation Type Datum', key: 'interpolation_type_dt_type', value: INTERPOLATION_TYPE_OPTIONS },
+  { text: 'Sequencing Rule Type', key: 'sequencing_rule_type_dt_type', value: SEQUENCING_RULE_TYPE_OPTIONS },
 ];
 
-export const inputNames = ['Epoch', 'Geographic Identifier', 'Issue Date', 'Issue Time', 'File Name'];
+export const inputNames = [
+  { text: 'Epoch', key: 'epoch' },
+  { text: 'Geographic Identifier', key: 'geographicIdentifier' },
+  { text: 'Issue Date', key: 'issueDate' },
+  { text: 'Issue Time', key: 'issueTime' },
+  { text: 'File Name', key: 'file_name' },
+];

@@ -3,7 +3,12 @@ import s from './sidebar.module.scss';
 import Image from 'next/image';
 import openlogo from '../../../public/openlogo.svg';
 
-const SideBar = () => {
+interface IProps {
+  children?: React.ReactNode;
+  menuItems?: { name: string }[];
+}
+
+const SideBar = (props: IProps) => {
   const [isOpen2, setIsOpen2] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -20,6 +25,16 @@ const SideBar = () => {
   return (
     <>
       <div className={s.wrapper} style={{ width: isOpen2 ? '100px' : '200px' }}>
+        {props.menuItems?.map((item) => (
+          <button
+            className="text-bold flex h-10 w-full items-center justify-center text-white hover:bg-blue-500"
+            key={item.name}
+            onClick={handleOpen}
+          >
+            {item.name}
+          </button>
+        ))}
+
         <button className={s.openButton1} style={{ right: isOpen ? '-270px' : '-20px' }} onClick={handleOpen}>
           <Image
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -43,7 +58,9 @@ const SideBar = () => {
           />
         </button>
       </div>
-      <div className={s.wrapper2} style={wrapper2Style}></div>
+      <div className={s.wrapper2} style={wrapper2Style}>
+        {props.children}
+      </div>
     </>
   );
 };

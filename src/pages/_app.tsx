@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import '~/styles/globals.css';
 import Head from 'next/head';
 import 'leaflet/dist/leaflet.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 const MyApp: AppType = ({ Component, pageProps }) => (
   <ClerkProvider {...pageProps}>

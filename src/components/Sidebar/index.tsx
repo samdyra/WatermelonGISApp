@@ -2,11 +2,10 @@ import React, { memo, useState } from 'react';
 import s from './sidebar.module.scss';
 import Image from 'next/image';
 import openlogo from '../../../public/openlogo.svg';
-import { AddFeature } from '~/components';
 
 interface IProps {
-  children: React.ReactNode;
-  menuItems: { name: string }[];
+  children?: React.ReactNode;
+  menuItems?: { name: string }[];
 }
 
 const SideBar = (props: IProps) => {
@@ -26,8 +25,7 @@ const SideBar = (props: IProps) => {
   return (
     <>
       <div className={s.wrapper} style={{ width: isOpen2 ? '100px' : '200px' }}>
-        {props.children}
-        {props.menuItems.map((item) => (
+        {props.menuItems?.map((item) => (
           <button
             className="text-bold flex h-10 w-full items-center justify-center text-white hover:bg-blue-500"
             key={item.name}
@@ -61,7 +59,7 @@ const SideBar = (props: IProps) => {
         </button>
       </div>
       <div className={s.wrapper2} style={wrapper2Style}>
-        <AddFeature />
+        {props.children}
       </div>
     </>
   );

@@ -1,7 +1,8 @@
 import { type NextPage } from 'next';
 import { useState } from 'react';
 import Head from 'next/head';
-import { Navbar, Sidebar, Descbar, Map } from '~/components';
+import { Navbar, Sidebar, Descbar, Map, Form } from '~/components';
+import { IHO102, inputNames } from '~/constants/texts';
 
 const Home: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +15,8 @@ const Home: NextPage = () => {
     { name: 'IHO ASLI', icon: 'settings' },
   ];
 
+  const [formState, setFormState] = useState<{ [key: string]: string }>({});
+
   return (
     <>
       <Head>
@@ -25,7 +28,9 @@ const Home: NextPage = () => {
         <Navbar handleShowSidebar={handleShowSidebar} />
         <Map bm="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" size={['100%', '100%']} isDirection={false} />
         <Descbar isOpen={isOpen} />
-        <Sidebar menuItems={menuItems}></Sidebar>
+        <Sidebar menuItems={menuItems}>
+          <Form options={IHO102} state={formState} setState={setFormState} inputNames={inputNames} />
+        </Sidebar>
       </main>
     </>
   );

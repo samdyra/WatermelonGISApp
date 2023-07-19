@@ -13,7 +13,12 @@ const GeotiffInput: React.FC<GeotiffInputProps> = ({ setState }) => {
 
       reader.onloadend = () => {
         const base64String = reader.result as string;
-        const trimmedBase64 = base64String.split(',')[1] as string; // Remove the "data:image/tiff;base64," prefix
+        const trimmedBase64 = base64String.split(',')[1]; // Remove the "data:image/tiff;base64," prefix
+
+        if (!trimmedBase64) {
+          throw new Error('Failed to trim base64 string');
+        }
+
         setState((prevState) => ({
           ...prevState,
           tiffFile: trimmedBase64,

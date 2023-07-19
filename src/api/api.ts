@@ -22,7 +22,7 @@ interface FormData {
   tiffFile: string;
 }
 
-export const postData = async (endpoint: string, data: FormData) => {
+export const postData = async (endpoint: string, data: object) => {
   try {
     const response = await apiConfig.post(`/${endpoint}`, data);
     return response;

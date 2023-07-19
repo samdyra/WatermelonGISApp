@@ -4,7 +4,8 @@ import { type IHO102, type inputNames } from '~/constants/texts';
 import FormModal from '../FormModal';
 import useModalState from '~/hooks/useModalState';
 import GeotiffInput from './GeotiffInput';
-import { type FormState, type Metadata, type FormatData } from './types';
+import { type FormState, type FormatData } from './types';
+import { type Metadata } from './types';
 
 interface IFormProps {
   options: typeof IHO102;
@@ -43,6 +44,7 @@ const Form: React.FC<IFormProps> = (props) => {
   useEffect(() => {
     isModalEnumVisible && handleHideModal();
   }, [isModalEnumVisible]);
+
   useEffect(() => {
     isModalVisible && handleHideModalEnum();
   }, [isModalVisible]);

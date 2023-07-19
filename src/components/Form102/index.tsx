@@ -5,7 +5,6 @@ import FormModal from '../FormModal';
 import useModalState from '~/hooks/useModalState';
 import GeotiffInput from './GeotiffInput';
 import { type FormState, type Metadata, type FormatData } from './types';
-import { boolean } from 'zod';
 
 interface IFormProps {
   options: typeof IHO102;
@@ -20,8 +19,7 @@ interface IFormProps {
 }
 
 const Form: React.FC<IFormProps> = (props) => {
-  const { options, state, setState, inputNames, metadata, setMetaData, FormatData, setFormatData, handleUpload } =
-    props;
+  const { options, setState, inputNames, metadata, setMetaData, FormatData, setFormatData, handleUpload } = props;
 
   const [isModalVisible, handleShowModal, handleHideModal] = useModalState();
   const [isModalEnumVisible, handleShowModalEnum, handleHideModalEnum] = useModalState();

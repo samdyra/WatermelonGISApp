@@ -1,9 +1,19 @@
 import { type NextPage } from 'next';
 import { useState, useId } from 'react';
 import Head from 'next/head';
-import { Navbar, Sidebar, Descbar, Map, Form } from '~/components';
+import { Navbar, Sidebar, Descbar, Form } from '~/components';
 import { IHO102, inputNames } from '~/constants/texts';
 import { postData } from '~/api/api';
+import Map, {
+  MapProvider,
+  NavigationControl,
+  FullscreenControl,
+  GeolocateControl,
+  AttributionControl,
+  Source,
+  Layer,
+} from 'react-map-gl';
+import sampleData from '../../sample-data.json';
 
 interface FormState {
   [key: string]: string;
@@ -88,7 +98,42 @@ const Home: NextPage = () => {
       </Head>
       <main className="border-3 overflow-hidden">
         <Navbar handleShowSidebar={handleShowSidebar} />
-        <Map bm="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" size={['100%', '100%']} isDirection={false} />
+        <MapProvider>
+          <Map
+            initialViewState={{
+              longitude: 116.5925,
+              latitude: -8.2775,
+              zoom: 13,
+            }}
+            mapboxAccessToken="pk.eyJ1IjoiZHdpcHV0cmFzYW0iLCJhIjoiY2xlMDRxZDU2MTU3dTNxb2Fkc3Q0NWFpciJ9.M-nfqnbgrf7QQdXHAXn07Q"
+            style={{
+              width: '100vw',
+              height: '92vh',
+            }}
+            mapStyle="mapbox://styles/mapbox/streets-v11"
+            attributionControl={false}
+          >
+            <AttributionControl customAttribution="Made with love by Sam X Datasintesa" style={{ color: 'black' }} />
+            <NavigationControl position="bottom-right" />
+            <FullscreenControl />
+            <GeolocateControl />
+            <Source id="polygonlayer" type="geojson" data={sampleData as string}>
+              <Layer
+                id="polygonlayer"
+                type="line"
+                source="my-data"
+                layout={{
+                  'line-join': 'round',
+                  'line-cap': 'round',
+                }}
+                paint={{
+                  'line-color': 'rgba(230, 0, 0, 1)',
+                  'line-width': 2,
+                }}
+              />
+            </Source>
+          </Map>
+        </MapProvider>
         <Descbar isOpen={isOpen} />
         <Sidebar menuItems={menuItems}>
           <Form

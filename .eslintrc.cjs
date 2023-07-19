@@ -50,6 +50,12 @@ const config = {
     'no-unneeded-ternary': 'warn',
     'class-methods-use-this': 'warn',
     'no-lone-blocks': 'warn',
+    '@typescript-eslint/no-misused-promises': [
+      'error',
+      {
+        checksVoidReturn: false,
+      },
+    ],
   },
 };
 

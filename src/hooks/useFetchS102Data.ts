@@ -1,26 +1,23 @@
-import { useState } from 'react';
-import { postData } from '~/api/api';
-import { type Metadata, type FormatData } from '~/components/Form102/types';
-import { type AxiosResponse } from 'axios';
+import { getData } from '~/api/api';
 import { useQuery } from 'react-query';
 
 /* @TODO: Adjust to using react query */
 
 interface ParamType {
-  metadata: Metadata;
-  format_data: FormatData;
-  tiffFile: string;
+  user_id: string;
 }
 
-type ResponseType = AxiosResponse | object | undefined;
+const useFetchS102Data = ({ user_id }: ParamType) => {
+  const fetchData = async () => getData(`s102/${user_id}`);
 
-const useMutationCreateS102Data = (arg: ParamType) => {
   const {
-    data: coinPrice,
-    isLoading: isCoinPriceLoading,
-    isError: isCoinPriceError,
-    isFetching: isCoinPriceFetching,
-  } = useQuery('coinPrice', fetchDataPrice);
+    data: s102_data,
+    isLoading: isLoadingS102Data,
+    isError: isErrloadingS102Data,
+    isFetched: isFetchedS102Data,
+  } = useQuery('iso_102', fetchData);
+
+  return { s102_data, isLoadingS102Data, isErrloadingS102Data, isFetchedS102Data };
 };
 
-export default useMutationCreateS102Data;
+export default useFetchS102Data;

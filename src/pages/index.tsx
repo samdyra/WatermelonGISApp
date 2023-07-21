@@ -1,22 +1,13 @@
 import { type NextPage } from 'next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { Navbar, Sidebar, Descbar, Form } from '~/components';
 import { IHO102, inputNames } from '~/constants/texts';
-import { postData } from '~/api/api';
-import Map, {
-  MapProvider,
-  NavigationControl,
-  FullscreenControl,
-  GeolocateControl,
-  AttributionControl,
-  Source,
-  Layer,
-} from 'react-map-gl';
-import sampleData from '../../sample-data.json';
+import useFetchS102Data from '~/hooks/useFetchS102Data';
 import useMutationCreateS102Data from '~/hooks/useMutationCreateS102Data';
 import { type Metadata } from '~/components/Form102/types';
-import { sampleTiffBase64 } from '~/constants/misc';
+import MapV2 from '~/iso_components/mapV2';
+import toast from 'react-hot-toast';
 
 interface FormState {
   [key: string]: string;
@@ -74,16 +65,11 @@ const Home: NextPage = () => {
     tiffFile: formState.tiffFile ?? '',
   };
 
-  // const handleUpload = async () => {
-  //   try {
-  //     await postData('s102/', requestParam);
-  //     console.log('Success!');
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  const { data, fetchData, isLoading } = useMutationCreateS102Data(requestParam);
+  // TEMPORARY CODE BELOW
+  const { mutate, isLoading, isError } = useMutationCreateS102Data(requestParam);
+  const { s102_data } = useFetchS102Data({
+    user_id: '60a7b1b9d6b9a4a7f0a3b3a0',
+  });
 
   return (
     <>
@@ -94,42 +80,7 @@ const Home: NextPage = () => {
       </Head>
       <main className="border-3 overflow-hidden">
         <Navbar handleShowSidebar={handleShowSidebar} />
-        <MapProvider>
-          <Map
-            initialViewState={{
-              longitude: 116.5925,
-              latitude: -8.2775,
-              zoom: 13,
-            }}
-            mapboxAccessToken="pk.eyJ1IjoiZHdpcHV0cmFzYW0iLCJhIjoiY2xlMDRxZDU2MTU3dTNxb2Fkc3Q0NWFpciJ9.M-nfqnbgrf7QQdXHAXn07Q"
-            style={{
-              width: '100vw',
-              height: '92vh',
-            }}
-            mapStyle="mapbox://styles/mapbox/streets-v11"
-            attributionControl={false}
-          >
-            <AttributionControl customAttribution="Made with love by Sam X Datasintesa" style={{ color: 'black' }} />
-            <NavigationControl position="bottom-right" />
-            <FullscreenControl />
-            <GeolocateControl />
-            <Source id="polygonlayer" type="geojson" data={sampleData as string}>
-              <Layer
-                id="polygonlayer"
-                type="line"
-                source="my-data"
-                layout={{
-                  'line-join': 'round',
-                  'line-cap': 'round',
-                }}
-                paint={{
-                  'line-color': 'rgba(230, 0, 0, 1)',
-                  'line-width': 2,
-                }}
-              />
-            </Source>
-          </Map>
-        </MapProvider>
+        <MapV2 geojsonData={{} as string} />
         <Descbar isOpen={isOpen} />
         <Sidebar menuItems={menuItems}>
           <Form
@@ -141,8 +92,15 @@ const Home: NextPage = () => {
             setMetaData={setMetaData}
             FormatData={formatData}
             setFormatData={setFormatData}
-            handleUpload={fetchData}
+            handleUpload={mutate}
           />
+          {/* {s102_data?.data?.map((el) => {
+            return (
+              <a className="text-blue-700" href={el?.hdf5Uri}>
+                link data 1
+              </a>
+            );
+          })} */}
         </Sidebar>
       </main>
     </>

@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { type GRIDDING_METHOD_OPTIONS } from '~/constants/texts';
 
 interface IProps {

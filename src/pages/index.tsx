@@ -1,15 +1,14 @@
 import { type NextPage } from 'next';
 import { useState } from 'react';
 import Head from 'next/head';
-import { Navbar, Sidebar, Descbar, Form, Layerbar } from '~/components';
+import { Navbar, Sidebar, Descbar, Layerbar } from '~/components';
 import { IHO102, inputNames } from '~/constants/texts';
 import useFetchS102Data from '~/hooks/useFetchS102Data';
 import useMutationCreateS102Data from '~/hooks/useMutationCreateS102Data';
 import useDownloadFetchedData from '~/hooks/useDownloadFetchedData';
-import { type Metadata } from '~/components/Form102/types';
+import { type Metadata } from '~/iso_components/Form102/types';
 import MapV2 from '~/iso_components/mapV2';
-import { AddFeature } from '~/iso_components';
-import { BaseMaps } from '~/components';
+import { AddFeature, Form } from '~/iso_components';
 
 interface FormState {
   [key: string]: string;

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import InputSelect from '../Select';
 import { type IHO102, type inputNames } from '~/constants/texts';
-import FormModal from '../FormModal';
+import FormModal from '~/iso_components/FormModal';
 import useModalState from '~/hooks/useModalState';
 import GeotiffInput from './GeotiffInput';
 import { type FormState, type FormatData } from './types';

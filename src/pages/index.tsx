@@ -1,13 +1,15 @@
 import { type NextPage } from 'next';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Head from 'next/head';
-import { Navbar, Sidebar, Descbar, Form } from '~/components';
+import { Navbar, Sidebar, Descbar, Form, Layerbar } from '~/components';
 import { IHO102, inputNames } from '~/constants/texts';
 import useFetchS102Data from '~/hooks/useFetchS102Data';
 import useMutationCreateS102Data from '~/hooks/useMutationCreateS102Data';
 import useDownloadFetchedData from '~/hooks/useDownloadFetchedData';
 import { type Metadata } from '~/components/Form102/types';
 import MapV2 from '~/iso_components/mapV2';
+import { AddFeature } from '~/iso_components';
+import { BaseMaps } from '~/components';
 
 interface FormState {
   [key: string]: string;
@@ -24,6 +26,7 @@ interface FormatData {
 const Home: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const handleShowSidebar = () => setIsOpen(!isOpen);
+  const [isDataLayerOpen, setIsDataLayerOpen] = useState(true);
 
   const menuItems = [
     { name: 'S102', icon: 'home' },
@@ -66,12 +69,18 @@ const Home: NextPage = () => {
   };
 
   // TEMPORARY CODE BELOW
-  const { mutate } = useMutationCreateS102Data(requestParam);
-  const { data: s102Data } = useFetchS102Data({
+  const { mutate, isLoading: isMutateDataLoading } = useMutationCreateS102Data(requestParam);
+  const { data: s102Data, isLoading: isS102DataLoading } = useFetchS102Data({
     user_id: '60a7b1b9d6b9a4a7f0a3b3a0',
   });
 
-  const { data } = useDownloadFetchedData(s102Data?.data ?? []);
+  const { data, isLoading: isDownloadDataLoading } = useDownloadFetchedData(s102Data?.data ?? []);
+
+  const isLoading = isMutateDataLoading || isS102DataLoading || isDownloadDataLoading;
+
+  const handleOpenDataLayer = () => {
+    setIsDataLayerOpen(!isDataLayerOpen);
+  };
 
   return (
     <>
@@ -97,6 +106,9 @@ const Home: NextPage = () => {
             handleUpload={mutate}
           />
         </Sidebar>
+        <Layerbar isOpen={isDataLayerOpen} position="right" size="large" handleShowLayerbar={handleOpenDataLayer}>
+          <AddFeature data={data} isLoading={isLoading} />
+        </Layerbar>
       </main>
     </>
   );

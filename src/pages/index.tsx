@@ -5,9 +5,9 @@ import { Navbar, Sidebar, Descbar, Form } from '~/components';
 import { IHO102, inputNames } from '~/constants/texts';
 import useFetchS102Data from '~/hooks/useFetchS102Data';
 import useMutationCreateS102Data from '~/hooks/useMutationCreateS102Data';
+import useDownloadFetchedData from '~/hooks/useDownloadFetchedData';
 import { type Metadata } from '~/components/Form102/types';
 import MapV2 from '~/iso_components/mapV2';
-import toast from 'react-hot-toast';
 
 interface FormState {
   [key: string]: string;
@@ -66,10 +66,12 @@ const Home: NextPage = () => {
   };
 
   // TEMPORARY CODE BELOW
-  const { mutate, isLoading, isError } = useMutationCreateS102Data(requestParam);
-  const { s102_data } = useFetchS102Data({
+  const { mutate } = useMutationCreateS102Data(requestParam);
+  const { data: s102Data } = useFetchS102Data({
     user_id: '60a7b1b9d6b9a4a7f0a3b3a0',
   });
+
+  const { data } = useDownloadFetchedData(s102Data?.data ?? []);
 
   return (
     <>
@@ -80,7 +82,7 @@ const Home: NextPage = () => {
       </Head>
       <main className="border-3 overflow-hidden">
         <Navbar handleShowSidebar={handleShowSidebar} />
-        <MapV2 geojsonData={{} as string} />
+        <MapV2 geojsonData={data?.[0]?.geojsonData as string} />
         <Descbar isOpen={isOpen} />
         <Sidebar menuItems={menuItems}>
           <Form
@@ -94,13 +96,6 @@ const Home: NextPage = () => {
             setFormatData={setFormatData}
             handleUpload={mutate}
           />
-          {/* {s102_data?.data?.map((el) => {
-            return (
-              <a className="text-blue-700" href={el?.hdf5Uri}>
-                link data 1
-              </a>
-            );
-          })} */}
         </Sidebar>
       </main>
     </>

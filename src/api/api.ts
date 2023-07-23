@@ -1,3 +1,4 @@
+import { type AxiosResponse } from 'axios';
 import apiConfig from './config';
 
 export const postData = async (endpoint: string, data: object) => {
@@ -17,3 +18,12 @@ export const getData = async (endpoint: string) => {
     console.error(error);
   }
 };
+
+export async function axiosGet<T>(endpoint: string) {
+  try {
+    const response: AxiosResponse<T> = await apiConfig.get(`/${endpoint}`);
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}

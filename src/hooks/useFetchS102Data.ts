@@ -1,5 +1,6 @@
-import { getData } from '~/api/api';
+import { axiosGet } from '~/api/api';
 import { useQuery } from 'react-query';
+import { useQueryClient } from 'react-query';
 
 /* @TODO: Adjust to using react query */
 
@@ -7,17 +8,31 @@ interface ParamType {
   user_id: string;
 }
 
+interface ResponseType {
+  _id: string;
+  hdf5Uri: string;
+  geojsonUri: string;
+  file_name: string;
+  user_id: string;
+  hdf5_file_name_location_path: string;
+  geojson_file_name_location_path: string;
+}
+
 const useFetchS102Data = ({ user_id }: ParamType) => {
-  const fetchData = async () => getData(`s102/${user_id}`);
+  const queryClient = useQueryClient();
 
-  const {
-    data: s102_data,
-    isLoading: isLoadingS102Data,
-    isError: isErrloadingS102Data,
-    isFetched: isFetchedS102Data,
-  } = useQuery('iso_102', fetchData);
+  const fetchData = async () => axiosGet<ResponseType[]>(`s102/${user_id}`);
 
-  return { s102_data, isLoadingS102Data, isErrloadingS102Data, isFetchedS102Data };
+  return useQuery('iso_102', fetchData, {
+    refetchOnWindowFocus: false,
+    cacheTime: 1000 * 60 * 30,
+    staleTime: 1000 * 60 * 5,
+    onSuccess: () => {
+      queryClient.invalidateQueries('download_iso_102').catch(() => {
+        console.log('Error fetching iso 102 data');
+      });
+    },
+  });
 };
 
 export default useFetchS102Data;

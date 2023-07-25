@@ -15,4 +15,3 @@ export { default as DirectionModule } from './DirectionModule';
 export { default as RegressionModule } from './RegressionModule';
 export { default as RegressionModuleModal } from './RegressionModuleModal';
 export { default as DirectionModalPicker } from './DirectionModalPicker';
-export { default as Form } from './Form102';

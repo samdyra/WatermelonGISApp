@@ -16,8 +16,8 @@ const SideBar = (props: IProps) => {
   const handleOpen = () => setIsOpen(!isOpen);
 
   const styleSideMenuActive = {
-    width: '250px',
-    left: isOpen2 ? '100px' : '200px',
+    width: '300px',
+    left: isOpen2 ? '100px' : '260px',
   };
   const styleSideMenu = { width: '100px', left: isOpen2 ? '0' : '100px' };
   const wrapper2Style = isOpen ? styleSideMenuActive : styleSideMenu;
@@ -35,7 +35,7 @@ const SideBar = (props: IProps) => {
           </button>
         ))}
 
-        <button className={s.openButton1} style={{ right: isOpen ? '-270px' : '-20px' }} onClick={handleOpen}>
+        <button className={s.openButton1} style={{ right: isOpen ? '-320px' : '-20px' }} onClick={handleOpen}>
           <Image
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             src={openlogo}
@@ -58,7 +58,7 @@ const SideBar = (props: IProps) => {
           />
         </button>
       </div>
-      <div className={s.wrapper2} style={wrapper2Style}>
+      <div className={`${s.wrapper2 ?? ''} bg-gray-600`} style={wrapper2Style}>
         {props.children}
       </div>
     </>

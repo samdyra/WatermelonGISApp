@@ -11,6 +11,7 @@ export interface Metadata {
   issueDate: string;
   issueTime: string;
   file_name: string;
+  metadata: string;
 }
 
 export interface FormatData {

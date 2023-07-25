@@ -42,6 +42,12 @@ const config = {
     'no-nested-ternary': 'warn',
     'no-plusplus': 'warn',
     'no-param-reassign': 'warn',
+    '@typescript-eslint/no-floating-promises': [
+      'error',
+      {
+        ignoreVoid: true,
+      },
+    ],
     'no-empty': 'off',
     'vars-on-top': 'warn',
     'no-restricted-properties': 'warn',

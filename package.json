@@ -42,6 +42,7 @@
     "react-hot-toast": "^2.4.0",
     "react-leaflet": "^4.2.1",
     "react-map-gl": "7.0.21",
+    "react-query": "3.39.3",
     "regression": "^2.0.1",
     "reproject": "^1.2.7",
     "sass": "^1.60.0",

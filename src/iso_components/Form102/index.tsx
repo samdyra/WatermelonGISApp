@@ -15,10 +15,12 @@ interface IFormProps {
   inputNames: typeof inputNames;
   setState: React.Dispatch<React.SetStateAction<FormState>>;
   handleUpload: () => void;
+  handleClear: () => void;
 }
 
 const Form: React.FC<IFormProps> = (props) => {
-  const { options, setState, inputNames, metadata, setMetaData, FormatData, setFormatData, handleUpload } = props;
+  const { options, setState, handleClear, inputNames, metadata, setMetaData, FormatData, setFormatData, handleUpload } =
+    props;
 
   const handleInputChangeMeta = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
@@ -37,36 +39,74 @@ const Form: React.FC<IFormProps> = (props) => {
   };
 
   return (
-    <div className="overflow-y-scroll">
-      {inputNames.map((item) => (
-        <div className="mb-4" key={item.text}>
-          <label className="block text-sm font-bold " htmlFor={item.text}>
-            {item.text}
-          </label>
-          <input
-            type="text"
-            className=" focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-black  shadow focus:outline-none"
-            name={item.key}
-            value={String(metadata[item.key as keyof Metadata])}
-            onChange={handleInputChangeMeta}
-          />
+    <div className="max-h-min  px-4">
+      <div className="max-h-[85%] overflow-y-scroll  text-white">
+        <h1 className=" text-lg font-bold text-slate-200">Meta Data</h1>
+        <div className="flex flex-wrap justify-between  ">
+          {inputNames.map((item, index) => (
+            <div
+              className={`py-[2px] text-slate-200 ${index === inputNames.length - 1 ? 'w-full' : 'w-47'}`}
+              key={item.text}
+            >
+              <label className="block w-full text-sm font-medium " htmlFor={item.text}>
+                {item.text}
+              </label>
+              <input
+                type="text"
+                className="bg-primary focus:shadow-outline w-full appearance-none rounded  px-3 py-2 leading-tight text-white  shadow focus:outline-none"
+                name={item.key}
+                value={String(metadata[item.key as keyof Metadata])}
+                onChange={handleInputChangeMeta}
+              />
+            </div>
+          ))}
         </div>
-      ))}
-      {options.map((item) => (
-        <InputSelect
-          key={item.text}
-          name={item.text}
-          label={item.text}
-          onChange={handleInputChangeEnum}
-          value={String(FormatData[item.text as keyof FormatData])}
-          options={item.value}
-        />
-      ))}
+        <h1 className=" mt-2 text-lg font-bold text-slate-200 ">Enum Data</h1>
+
+        {options.map((item) => (
+          <InputSelect
+            key={item.text}
+            name={item.text}
+            label={item.text}
+            onChange={handleInputChangeEnum}
+            value={String(FormatData[item.text as keyof FormatData])}
+            options={item.value}
+          />
+        ))}
+      </div>
 
       <GeotiffInput setState={setState} />
-      <button type="submit" onClick={handleUpload}>
-        Submit
-      </button>
+
+      <div className="flex justify-between">
+        <button
+          onClick={handleUpload}
+          type="submit"
+          data-te-ripple-init
+          data-te-ripple-color="light"
+          className="w-47  rounded 
+        bg-lime-700 px-6 py-[0.4rem] text-xs font-medium uppercase 
+        leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] 
+        transition duration-150 
+        ease-in-out hover:bg-lime-600 focus:bg-lime-600 
+         focus:outline-none focus:ring-0 "
+        >
+          Submit
+        </button>
+
+        <button
+          onClick={handleClear}
+          data-te-ripple-init
+          data-te-ripple-color="light"
+          className="w-47 inline-block rounded 
+        bg-orange-600 px-6  text-xs font-medium uppercase 
+        leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] 
+        transition duration-150 
+        ease-in-out hover:bg-amber-600 focus:bg-amber-500 
+         focus:outline-none focus:ring-0 "
+        >
+          Clear
+        </button>
+      </div>
     </div>
   );
 };

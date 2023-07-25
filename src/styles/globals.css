@@ -9,3 +9,11 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
+
+.bg-primary {
+  background-color: rgb(31 41 55);
+}
+
+.w-47 {
+  width: 47%;
+}

@@ -86,6 +86,27 @@ const Home: NextPage = () => {
     setIsDataLayerOpen(!isDataLayerOpen);
   };
 
+  const handleClearData = () => {
+    setMetaData({
+      epoch: '',
+      extent_type_code: true,
+      file_name: '',
+      geographicIdentifier: '',
+      horizontalDatumReference: '',
+      horizontalDatumValue: 4326,
+      issueDate: '',
+      issueTime: '',
+      metadata: '',
+    });
+    setFormatData({
+      common_point_rule_dt_type: 1,
+      data_coding_format_dt_type: 2,
+      interpolation_type_dt_type: 1,
+      sequencing_rule_type_dt_type: 1,
+      vertical_datum_dt_type: 3,
+    });
+  };
+
   return (
     <>
       <Head>
@@ -99,6 +120,7 @@ const Home: NextPage = () => {
         <Descbar isOpen={isOpen} />
         <Sidebar menuItems={menuItems}>
           <Form
+            handleClear={handleClearData}
             options={IHO102}
             state={formState}
             setState={setFormState}

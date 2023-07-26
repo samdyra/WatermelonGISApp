@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import InputSelect from '../Select';
 import { type IHO102, type inputNames } from '~/constants/texts';
 import GeotiffInput from './GeotiffInput';
@@ -41,7 +41,7 @@ const Form: React.FC<IFormProps> = (props) => {
   return (
     <div className="max-h-min  px-4">
       <div className="max-h-[85%] overflow-y-scroll  text-white">
-        <h1 className=" text-lg font-bold text-slate-200">Meta Data</h1>
+        <h1 className=" text-lg font-bold text-slate-200">Input Metadata</h1>
         <div className="mb-3 flex flex-wrap justify-between ">
           {inputNames.map((item, index) => (
             <div
@@ -61,7 +61,7 @@ const Form: React.FC<IFormProps> = (props) => {
             </div>
           ))}
         </div>
-        <h1 className=" mt-2 text-lg font-bold text-slate-200 ">Enum Data</h1>
+        <h1 className=" mt-2 text-lg font-bold text-slate-200 ">Configuration</h1>
 
         <div className="mb-3">
           {options.map((item) => (
@@ -111,4 +111,4 @@ const Form: React.FC<IFormProps> = (props) => {
   );
 };
 
-export default Form;
+export default memo(Form);

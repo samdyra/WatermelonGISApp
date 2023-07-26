@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import React, { memo, useState } from 'react';
 import s from './sidebar.module.scss';
 import Image from 'next/image';
@@ -45,31 +46,36 @@ const SideBar = (props: IProps) => {
           if (isOpen2) {
             if (isSelected) {
               return (
-                <div
-                  className="text-bold mx-auto mb-5 flex w-fit items-center justify-center rounded-full border-2"
-                  key={item.name}
-                >
-                  <Image
-                    src={item.icon}
-                    alt="logo"
-                    className="brightness-70 h-[41px] w-[41px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
-                    onClick={() => handleOpenIndex(index, isSelected)}
-                  />
+                <div className="mx-auto mb-5" key={item.name}>
+                  <div
+                    className={`${s.logostyleactive} text-bold mx-auto flex w-fit flex-col items-center justify-center border-orange-400 p-[4px]`}
+                  >
+                    <Image
+                      src={item.icon}
+                      alt="logo"
+                      className="brightness-70 h-[35px] w-[35px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+                      onClick={() => handleOpenIndex(index, isSelected)}
+                    />
+                  </div>
+                  <p className="text-center text-sm font-semibold text-white">{item.name}</p>
                 </div>
               );
             }
 
             return (
-              <div
-                className="text-bold mx-auto  mb-5  flex w-fit items-center justify-center rounded-full"
-                key={item.name}
-              >
-                <Image
-                  src={item.icon}
-                  alt="logo"
-                  className="brightness-70 h-[40px] w-[40px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
-                  onClick={() => handleOpenIndex(index, isSelected)}
-                />
+              <div className="mx-auto mb-5" key={item.name}>
+                <div
+                  className={`${s.logostyle} text-bold mx-auto flex w-fit flex-col items-center justify-center p-[4px]`}
+                  key={item.name}
+                >
+                  <Image
+                    src={item.icon}
+                    alt="logo"
+                    className="brightness-70 h-[35px] w-[35px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+                    onClick={() => handleOpenIndex(index, isSelected)}
+                  />
+                </div>
+                <p className="text-center text-sm font-semibold text-white">{item.name}</p>
               </div>
             );
           }
@@ -125,7 +131,10 @@ const SideBar = (props: IProps) => {
         </button>
       </div>
       <div className={`${s.wrapper2 ?? ''} bg-gray-600`} style={wrapper2Style}>
-        <h1 className="mb-2 pl-4 text-2xl font-bold text-orange-400 ">{props?.menuItems?.[menuIndex]?.label}</h1>
+        {isOpen && (
+          <h1 className="mb-2 pl-4 text-2xl font-bold text-white ">{`${props?.menuItems?.[menuIndex]?.name}:
+        ${props?.menuItems?.[menuIndex]?.label}`}</h1>
+        )}
         {props.children}
       </div>
     </>

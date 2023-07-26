@@ -9,6 +9,9 @@ import useDownloadFetchedData from '~/hooks/useDownloadFetchedData';
 import { type Metadata } from '~/iso_components/Form102/types';
 import MapV2 from '~/iso_components/mapV2';
 import { AddFeature, Form } from '~/iso_components';
+import bathymetry from '../../public/bathymetry.png';
+import waterLevel from '../../public/water_level.png';
+import surfaceCurrents from '../../public/surface_current.png';
 
 interface FormState {
   [key: string]: string;
@@ -22,16 +25,18 @@ interface FormatData {
   vertical_datum_dt_type: number;
 }
 
+const menuItems = [
+  { name: 'S102', icon: bathymetry, label: 'Bathymetry' },
+  { name: 'S104', icon: waterLevel, label: 'Water Level' },
+  { name: 'S111', icon: surfaceCurrents, label: 'Surface Currents' },
+];
+
+export type MenuItemsType = typeof menuItems;
+
 const Home: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const handleShowSidebar = () => setIsOpen(!isOpen);
   const [isDataLayerOpen, setIsDataLayerOpen] = useState(true);
-
-  const menuItems = [
-    { name: 'S102', icon: 'home' },
-    { name: 'S104', icon: 'about' },
-    { name: 'S111', icon: 'contact' },
-  ];
 
   const [formState, setFormState] = useState<FormState>({
     tiffFile: '' as string,

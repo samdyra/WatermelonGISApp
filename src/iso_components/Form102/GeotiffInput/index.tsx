@@ -37,7 +37,7 @@ const GeotiffInput: React.FC<GeotiffInputProps> = ({ setState }) => {
 
   return (
     <div className="mb-2 w-full  text-slate-200">
-      <div className=" text-lg font-bold ">Input Geotiff</div>
+      <div className=" mb-2 text-lg font-bold">Input Geotiff</div>
 
       <label>
         <input

@@ -42,7 +42,7 @@ const Form: React.FC<IFormProps> = (props) => {
     <div className="max-h-min  px-4">
       <div className="max-h-[85%] overflow-y-scroll  text-white">
         <h1 className=" text-lg font-bold text-slate-200">Meta Data</h1>
-        <div className="flex flex-wrap justify-between  ">
+        <div className="mb-3 flex flex-wrap justify-between ">
           {inputNames.map((item, index) => (
             <div
               className={`py-[2px] text-slate-200 ${index === inputNames.length - 1 ? 'w-full' : 'w-47'}`}
@@ -63,16 +63,18 @@ const Form: React.FC<IFormProps> = (props) => {
         </div>
         <h1 className=" mt-2 text-lg font-bold text-slate-200 ">Enum Data</h1>
 
-        {options.map((item) => (
-          <InputSelect
-            key={item.text}
-            name={item.text}
-            label={item.text}
-            onChange={handleInputChangeEnum}
-            value={String(FormatData[item.text as keyof FormatData])}
-            options={item.value}
-          />
-        ))}
+        <div className="mb-3">
+          {options.map((item) => (
+            <InputSelect
+              key={item.text}
+              name={item.text}
+              label={item.text}
+              onChange={handleInputChangeEnum}
+              value={String(FormatData[item.text as keyof FormatData])}
+              options={item.value}
+            />
+          ))}
+        </div>
       </div>
 
       <GeotiffInput setState={setState} />
@@ -85,10 +87,9 @@ const Form: React.FC<IFormProps> = (props) => {
           data-te-ripple-color="light"
           className="w-47  rounded 
         bg-lime-700 px-6 py-[0.4rem] text-xs font-medium uppercase 
-        leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] 
+        leading-normal text-white  
         transition duration-150 
-        ease-in-out hover:bg-lime-600 focus:bg-lime-600 
-         focus:outline-none focus:ring-0 "
+        ease-in-out hover:bg-lime-600"
         >
           Submit
         </button>
@@ -99,10 +100,9 @@ const Form: React.FC<IFormProps> = (props) => {
           data-te-ripple-color="light"
           className="w-47 inline-block rounded 
         bg-orange-600 px-6  text-xs font-medium uppercase 
-        leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] 
+        leading-normal text-white 
         transition duration-150 
-        ease-in-out hover:bg-amber-600 focus:bg-amber-500 
-         focus:outline-none focus:ring-0 "
+        ease-in-out hover:bg-amber-600 "
         >
           Clear
         </button>

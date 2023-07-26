@@ -135,7 +135,8 @@ const SideBar = (props: IProps) => {
           <h1 className="mb-2 pl-4 text-2xl font-bold text-white ">{`${props?.menuItems?.[menuIndex]?.name}:
         ${props?.menuItems?.[menuIndex]?.label}`}</h1>
         )}
-        {props.children}
+
+        {isOpen ? props.children : null}
       </div>
     </>
   );

@@ -12,7 +12,7 @@ interface IProps {
 const Select = (props: IProps) => {
   return (
     <>
-      <div className="  py-[2px] text-sm text-slate-200">
+      <div className="py-[2px] text-sm text-slate-200">
         <label className=" block text-sm font-medium ">{props.label}</label>
         <select
           className="bg-primary focus:shadow-outline w-full appearance-none rounded  px-3 py-2 leading-tight text-white focus:outline-none"

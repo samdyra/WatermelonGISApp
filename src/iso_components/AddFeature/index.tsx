@@ -21,19 +21,26 @@ interface ResponseType {
 interface Props {
   data?: ResponseType[];
   isLoading: boolean;
+  handleDeleteData: (param: { id: string; geojsonUri: string; hdf5Uri: string }) => void;
 }
 
 const AddFeature = (props: Props) => {
-  const downloadData = (data: string) => {
-    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `${data}.json`);
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode?.removeChild(link);
-  };
+  function downloadHDF5File(url: string, name: string) {
+    fetch(url)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = `${name}.h5`;
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      })
+      .catch((error) => {
+        console.error('Error fetching the HDF5 file:', error);
+      });
+  }
 
   return (
     <>
@@ -68,14 +75,13 @@ const AddFeature = (props: Props) => {
         </div>
         <div className="flex h-full flex-col overflow-y-scroll rounded-md bg-gray-600 px-4 py-3">
           {props.data?.map((item) => {
-            const r = (Math.random() + 1).toString(36).substring(7);
             return (
               <div
                 className="mb-2 flex cursor-pointer items-center justify-between rounded-md bg-gray-800  px-3 py-2 transition-all duration-150 ease-linear active:opacity-60 "
-                key={r}
+                key={item.geojson_file_name_location_path}
               >
                 <div className="flex items-center">
-                  <Shape color="red" />
+                  <Shape color="blue" />
                   <p className="text-xs text-slate-200">{item.file_name}</p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -89,13 +95,16 @@ const AddFeature = (props: Props) => {
                     src={downloadImage}
                     alt="download"
                     className="h-[16px] w-[16px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
-                    onClick={() => downloadData(item.geojsonUri)}
+                    onClick={() => downloadHDF5File(item.hdf5Uri, item.file_name)}
                   />
                   <Image
                     src={trashImage}
                     alt="download"
                     className="h-[11px] w-[11px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
-                    // onClick={() => props.handleDelete(item.id)}
+                    onClick={() =>
+                      // eslint-disable-next-line no-underscore-dangle
+                      props.handleDeleteData({ geojsonUri: item.geojsonUri, id: item._id, hdf5Uri: item.hdf5Uri })
+                    }
                   />
                 </div>
               </div>

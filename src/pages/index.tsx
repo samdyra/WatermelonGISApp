@@ -9,6 +9,10 @@ import useDownloadFetchedData from '~/hooks/useDownloadFetchedData';
 import { type Metadata } from '~/iso_components/Form102/types';
 import MapV2 from '~/iso_components/mapV2';
 import { AddFeature, Form } from '~/iso_components';
+import bathymetry from '../../public/bathymetry.png';
+import waterLevel from '../../public/water_level.png';
+import surfaceCurrents from '../../public/surface_current.png';
+import useMutationDeleteS102Data from '~/hooks/useMutationDeleteS102Data';
 
 interface FormState {
   [key: string]: string;
@@ -22,16 +26,18 @@ interface FormatData {
   vertical_datum_dt_type: number;
 }
 
+const menuItems = [
+  { name: 'S102', icon: bathymetry, label: 'Bathymetry' },
+  { name: 'S104', icon: waterLevel, label: 'Water Level' },
+  { name: 'S111', icon: surfaceCurrents, label: 'Surface Currents' },
+];
+
+export type MenuItemsType = typeof menuItems;
+
 const Home: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const handleShowSidebar = () => setIsOpen(!isOpen);
   const [isDataLayerOpen, setIsDataLayerOpen] = useState(true);
-
-  const menuItems = [
-    { name: 'S102', icon: 'home' },
-    { name: 'S104', icon: 'about' },
-    { name: 'S111', icon: 'contact' },
-  ];
 
   const [formState, setFormState] = useState<FormState>({
     tiffFile: '' as string,
@@ -69,16 +75,43 @@ const Home: NextPage = () => {
 
   // TEMPORARY CODE BELOW
   const { mutate, isLoading: isMutateDataLoading } = useMutationCreateS102Data(requestParam);
+  const { mutate: mutateDeleteData, isLoading: isLoadingDelete } = useMutationDeleteS102Data();
+
   const { data: s102Data, isLoading: isS102DataLoading } = useFetchS102Data({
     user_id: '60a7b1b9d6b9a4a7f0a3b3a0',
   });
 
   const { data, isLoading: isDownloadDataLoading } = useDownloadFetchedData(s102Data?.data ?? []);
 
-  const isLoading = isMutateDataLoading || isS102DataLoading || isDownloadDataLoading;
+  const isLoading = isMutateDataLoading || isS102DataLoading || isDownloadDataLoading || isLoadingDelete;
 
   const handleOpenDataLayer = () => {
     setIsDataLayerOpen(!isDataLayerOpen);
+  };
+
+  const handleClearData = () => {
+    setMetaData({
+      epoch: '',
+      extent_type_code: true,
+      file_name: '',
+      geographicIdentifier: '',
+      horizontalDatumReference: '',
+      horizontalDatumValue: 4326,
+      issueDate: '',
+      issueTime: '',
+      metadata: '',
+    });
+    setFormatData({
+      common_point_rule_dt_type: 1,
+      data_coding_format_dt_type: 2,
+      interpolation_type_dt_type: 1,
+      sequencing_rule_type_dt_type: 1,
+      vertical_datum_dt_type: 3,
+    });
+  };
+
+  const handleDeleteData = (param: { id: string; geojsonUri: string; hdf5Uri: string }) => {
+    mutateDeleteData({ _id: param.id, geojsonUri: param.geojsonUri, hdf5Uri: param.hdf5Uri });
   };
 
   return (
@@ -94,6 +127,7 @@ const Home: NextPage = () => {
         <Descbar isOpen={isOpen} />
         <Sidebar menuItems={menuItems}>
           <Form
+            handleClear={handleClearData}
             options={IHO102}
             state={formState}
             setState={setFormState}
@@ -106,7 +140,7 @@ const Home: NextPage = () => {
           />
         </Sidebar>
         <Layerbar isOpen={isDataLayerOpen} position="right" size="large" handleShowLayerbar={handleOpenDataLayer}>
-          <AddFeature data={data} isLoading={isLoading} />
+          <AddFeature data={data} isLoading={isLoading} handleDeleteData={handleDeleteData} />
         </Layerbar>
       </main>
     </>

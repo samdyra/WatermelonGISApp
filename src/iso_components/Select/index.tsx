@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { type GRIDDING_METHOD_OPTIONS } from '~/constants/texts';
 
 interface IProps {
@@ -12,10 +12,10 @@ interface IProps {
 const Select = (props: IProps) => {
   return (
     <>
-      <div className="mb-4">
-        <label className="mb-2 block text-sm font-bold ">{props.label}</label>
+      <div className="  py-[2px] text-sm text-slate-200">
+        <label className=" block text-sm font-medium ">{props.label}</label>
         <select
-          className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 focus:outline-none"
+          className="bg-primary focus:shadow-outline w-full appearance-none rounded  px-3 py-2 leading-tight text-white focus:outline-none"
           id={props.label}
           name={props.name}
           value={props.value}

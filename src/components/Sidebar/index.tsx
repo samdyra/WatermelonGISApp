@@ -11,12 +11,18 @@ interface IProps {
 const SideBar = (props: IProps) => {
   const [isOpen2, setIsOpen2] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
+  const [menuIndex, setMenuIndex] = useState(0);
 
   const handleOpen2 = () => setIsOpen2(!isOpen2);
   const handleOpen = () => setIsOpen(!isOpen);
 
+  const handleOpenIndex = (index: number) => {
+    setMenuIndex(index);
+    setIsOpen(!isOpen);
+  };
+
   const styleSideMenuActive = {
-    width: '250px',
+    width: '330px',
     left: isOpen2 ? '100px' : '200px',
   };
   const styleSideMenu = { width: '100px', left: isOpen2 ? '0' : '100px' };
@@ -25,17 +31,17 @@ const SideBar = (props: IProps) => {
   return (
     <>
       <div className={s.wrapper} style={{ width: isOpen2 ? '100px' : '200px' }}>
-        {props.menuItems?.map((item) => (
+        {props.menuItems?.map((item, index) => (
           <button
             className="text-bold flex h-10 w-full items-center justify-center text-white hover:bg-blue-500"
             key={item.name}
-            onClick={handleOpen}
+            onClick={() => handleOpenIndex(index)}
           >
             {item.name}
           </button>
         ))}
 
-        <button className={s.openButton1} style={{ right: isOpen ? '-270px' : '-20px' }} onClick={handleOpen}>
+        <button className={s.openButton1} style={{ right: isOpen ? '-350px' : '-20px' }} onClick={handleOpen}>
           <Image
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             src={openlogo}
@@ -58,7 +64,8 @@ const SideBar = (props: IProps) => {
           />
         </button>
       </div>
-      <div className={s.wrapper2} style={wrapper2Style}>
+      <div className={`${s.wrapper2 ?? ''} bg-gray-600`} style={wrapper2Style}>
+        <h1 className="pl-4 text-2xl font-bold text-orange-400  ">{props?.menuItems?.[menuIndex]?.name}</h1>
         {props.children}
       </div>
     </>

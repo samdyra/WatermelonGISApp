@@ -3,5 +3,17 @@
 @tailwind utilities;
 
 body {
-    @apply bg-black text-slate-100
+  @apply bg-black text-slate-100;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.bg-primary {
+  background-color: rgb(31 41 55);
+}
+
+.w-47 {
+  width: 47%;
 }

@@ -1,33 +1,17 @@
 import { type NextPage } from 'next';
-import { useState, useId } from 'react';
+import { useState } from 'react';
 import Head from 'next/head';
-import { Navbar, Sidebar, Descbar, Form } from '~/components';
+import { Navbar, Sidebar, Descbar, Layerbar } from '~/components';
 import { IHO102, inputNames } from '~/constants/texts';
-import { postData } from '~/api/api';
-import Map, {
-  MapProvider,
-  NavigationControl,
-  FullscreenControl,
-  GeolocateControl,
-  AttributionControl,
-  Source,
-  Layer,
-} from 'react-map-gl';
-import sampleData from '../../sample-data.json';
+import useFetchS102Data from '~/hooks/useFetchS102Data';
+import useMutationCreateS102Data from '~/hooks/useMutationCreateS102Data';
+import useDownloadFetchedData from '~/hooks/useDownloadFetchedData';
+import { type Metadata } from '~/iso_components/Form102/types';
+import MapV2 from '~/iso_components/mapV2';
+import { AddFeature, Form } from '~/iso_components';
 
 interface FormState {
   [key: string]: string;
-}
-
-interface Metadata {
-  epoch: string;
-  extent_type_code: boolean;
-  geographicIdentifier: string;
-  horizontalDatumReference: string;
-  horizontalDatumValue: number;
-  issueDate: string;
-  issueTime: string;
-  file_name: string;
 }
 
 interface FormatData {
@@ -41,13 +25,12 @@ interface FormatData {
 const Home: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const handleShowSidebar = () => setIsOpen(!isOpen);
-  const id = useId();
+  const [isDataLayerOpen, setIsDataLayerOpen] = useState(true);
 
   const menuItems = [
-    { name: 'IHO BANG', icon: 'home' },
-    { name: 'IHO IYAK', icon: 'about' },
-    { name: 'IHO BENER', icon: 'contact' },
-    { name: 'IHO ASLI', icon: 'settings' },
+    { name: 'S102', icon: 'home' },
+    { name: 'S104', icon: 'about' },
+    { name: 'S111', icon: 'contact' },
   ];
 
   const [formState, setFormState] = useState<FormState>({
@@ -55,38 +38,47 @@ const Home: NextPage = () => {
   });
 
   const [metadata, setMetaData] = useState<Metadata>({
-    epoch: '',
-    extent_type_code: true as boolean,
-    geographicIdentifier: '',
+    // TODO: revert default value ("", bool, 0), use placeholder instead
+    epoch: 'G1762',
+    extent_type_code: true,
+    file_name: '102ID00_ITBS100PROJECT',
+    geographicIdentifier: 'Selat Alas',
     horizontalDatumReference: 'EPSG',
-    horizontalDatumValue: 0,
-    issueDate: '',
-    issueTime: '',
-    file_name: '',
+    horizontalDatumValue: 4326,
+    issueDate: '20230409',
+    issueTime: '1237',
+    metadata: '102ID00_ITBS100PROJECT.xml',
   });
 
   const [formatData, setFormatData] = useState<FormatData>({
-    common_point_rule_dt_type: 0,
-    data_coding_format_dt_type: 0,
-    interpolation_type_dt_type: 0,
-    sequencing_rule_type_dt_type: 0,
-    vertical_datum_dt_type: 0,
+    // TODO: revert default value (0), use placeholder instead
+    common_point_rule_dt_type: 1,
+    data_coding_format_dt_type: 2,
+    interpolation_type_dt_type: 1,
+    sequencing_rule_type_dt_type: 1,
+    vertical_datum_dt_type: 3,
   });
 
-  const handleUpload = async () => {
-    const data = {
-      _id: id,
-      metadata: metadata,
-      format_data: formatData,
-      tiffFile: formState.tiffFile ?? '',
-    };
+  const requestParam = {
+    // TODO: change user_id to real user_id from clerk, and remove sampleTiffBase64
+    user_id: '60a7b1b9d6b9a4a7f0a3b3a0',
+    metadata: metadata,
+    format_data: formatData,
+    tiffFile: formState.tiffFile ?? '',
+  };
 
-    try {
-      await postData('s102/', data);
-      console.log('Success!');
-    } catch (error) {
-      console.log(error);
-    }
+  // TEMPORARY CODE BELOW
+  const { mutate, isLoading: isMutateDataLoading } = useMutationCreateS102Data(requestParam);
+  const { data: s102Data, isLoading: isS102DataLoading } = useFetchS102Data({
+    user_id: '60a7b1b9d6b9a4a7f0a3b3a0',
+  });
+
+  const { data, isLoading: isDownloadDataLoading } = useDownloadFetchedData(s102Data?.data ?? []);
+
+  const isLoading = isMutateDataLoading || isS102DataLoading || isDownloadDataLoading;
+
+  const handleOpenDataLayer = () => {
+    setIsDataLayerOpen(!isDataLayerOpen);
   };
 
   return (
@@ -98,42 +90,7 @@ const Home: NextPage = () => {
       </Head>
       <main className="border-3 overflow-hidden">
         <Navbar handleShowSidebar={handleShowSidebar} />
-        <MapProvider>
-          <Map
-            initialViewState={{
-              longitude: 116.5925,
-              latitude: -8.2775,
-              zoom: 13,
-            }}
-            mapboxAccessToken="pk.eyJ1IjoiZHdpcHV0cmFzYW0iLCJhIjoiY2xlMDRxZDU2MTU3dTNxb2Fkc3Q0NWFpciJ9.M-nfqnbgrf7QQdXHAXn07Q"
-            style={{
-              width: '100vw',
-              height: '92vh',
-            }}
-            mapStyle="mapbox://styles/mapbox/streets-v11"
-            attributionControl={false}
-          >
-            <AttributionControl customAttribution="Made with love by Sam X Datasintesa" style={{ color: 'black' }} />
-            <NavigationControl position="bottom-right" />
-            <FullscreenControl />
-            <GeolocateControl />
-            <Source id="polygonlayer" type="geojson" data={sampleData as string}>
-              <Layer
-                id="polygonlayer"
-                type="line"
-                source="my-data"
-                layout={{
-                  'line-join': 'round',
-                  'line-cap': 'round',
-                }}
-                paint={{
-                  'line-color': 'rgba(230, 0, 0, 1)',
-                  'line-width': 2,
-                }}
-              />
-            </Source>
-          </Map>
-        </MapProvider>
+        <MapV2 geojsonData={data?.[0]?.geojsonData as string} />
         <Descbar isOpen={isOpen} />
         <Sidebar menuItems={menuItems}>
           <Form
@@ -145,9 +102,12 @@ const Home: NextPage = () => {
             setMetaData={setMetaData}
             FormatData={formatData}
             setFormatData={setFormatData}
-            handleUpload={handleUpload}
+            handleUpload={mutate}
           />
         </Sidebar>
+        <Layerbar isOpen={isDataLayerOpen} position="right" size="large" handleShowLayerbar={handleOpenDataLayer}>
+          <AddFeature data={data} isLoading={isLoading} />
+        </Layerbar>
       </main>
     </>
   );

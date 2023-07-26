@@ -5,6 +5,7 @@ import Image from 'next/image';
 import dbImage from '../../../public/db.png';
 import downloadImage from '../../../public/download.png';
 import trashImage from '../../../public/trash.png';
+import infoImage from '../../../public/info.png';
 
 interface ResponseType {
   _id: string;
@@ -20,6 +21,7 @@ interface ResponseType {
 interface Props {
   data?: ResponseType[];
   isLoading: boolean;
+  handleDeleteData: (param: { id: string; geojsonUri: string; hdf5Uri: string }) => void;
 }
 
 const AddFeature = (props: Props) => {
@@ -57,12 +59,12 @@ const AddFeature = (props: Props) => {
         <div className="flex">
           <div className="mb-[-3.5px] flex w-[60%] items-center gap-2 rounded-tl-md rounded-tr-sm bg-gray-600 pl-5 text-sm text-slate-200">
             <h1>Added Layers</h1>
-            {/* <Image
+            <Image
               src={infoImage}
               alt="download"
               className="h-[12px] w-[12px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
               // onClick={() => props.handleShowModalInfo(WORDING_TUTORIAL.ADD_LAYER)}
-            /> */}
+            />
           </div>
           <label
             htmlFor="file"
@@ -73,14 +75,13 @@ const AddFeature = (props: Props) => {
         </div>
         <div className="flex h-full flex-col overflow-y-scroll rounded-md bg-gray-600 px-4 py-3">
           {props.data?.map((item) => {
-            console.log(item);
             return (
               <div
                 className="mb-2 flex cursor-pointer items-center justify-between rounded-md bg-gray-800  px-3 py-2 transition-all duration-150 ease-linear active:opacity-60 "
                 key={item.geojson_file_name_location_path}
               >
                 <div className="flex items-center">
-                  <Shape color="red" />
+                  <Shape color="blue" />
                   <p className="text-xs text-slate-200">{item.file_name}</p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -100,7 +101,10 @@ const AddFeature = (props: Props) => {
                     src={trashImage}
                     alt="download"
                     className="h-[11px] w-[11px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
-                    // onClick={() => props.handleDelete(item.id)}
+                    onClick={() =>
+                      // eslint-disable-next-line no-underscore-dangle
+                      props.handleDeleteData({ geojsonUri: item.geojsonUri, id: item._id, hdf5Uri: item.hdf5Uri })
+                    }
                   />
                 </div>
               </div>

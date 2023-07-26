@@ -27,3 +27,13 @@ export async function axiosGet<T>(endpoint: string) {
     console.error(error);
   }
 }
+
+export async function axiosDelete<T>(endpoint: string, data: object, effects: () => void) {
+  try {
+    const response: AxiosResponse<T> = await apiConfig.delete(`/${endpoint}`, data);
+    effects();
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}

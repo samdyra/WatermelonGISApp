@@ -46,9 +46,9 @@ const MapV2 = ({ geojsonData }: MapV2Props) => {
                   ['linear'],
                   ['get', 'depth'],
                   0,
-                  'rgb(255, 0, 0)', // Dark red for depth = 0
+                  'rgb(0, 0, 200)', // Dark red for depth = 0
                   500,
-                  'rgb(100, 0, 0)', // Light red for depth = 500
+                  'rgb(0, 0, 50)', // Light red for depth = 500
                 ],
                 'fill-opacity': 0.5,
               }}

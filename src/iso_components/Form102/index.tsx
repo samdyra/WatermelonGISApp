@@ -4,6 +4,8 @@ import { type IHO102, type inputNames } from '~/constants/texts';
 import GeotiffInput from './GeotiffInput';
 import { type FormState, type FormatData } from './types';
 import { type Metadata } from './types';
+import infoImage from '../../../public/info.png';
+import Image from 'next/image';
 
 interface IFormProps {
   options: typeof IHO102;
@@ -16,6 +18,7 @@ interface IFormProps {
   setState: React.Dispatch<React.SetStateAction<FormState>>;
   handleUpload: () => void;
   handleClear: () => void;
+  handleShowModalInfo: (desc: string, isShowModal: boolean) => void;
 }
 
 const Form: React.FC<IFormProps> = (props) => {
@@ -44,21 +47,31 @@ const Form: React.FC<IFormProps> = (props) => {
         <h1 className=" text-lg font-bold text-slate-200">Input Metadata</h1>
         <div className="mb-3 flex flex-wrap justify-between ">
           {inputNames.map((item, index) => (
-            <div
-              className={`py-[2px] text-slate-200 ${index === inputNames.length - 1 ? 'w-full' : 'w-47'}`}
-              key={item.text}
-            >
-              <label className="block w-full text-sm font-medium " htmlFor={item.text}>
-                {item.text}
-              </label>
-              <input
-                type="text"
-                className="bg-primary focus:shadow-outline w-full appearance-none rounded  px-3 py-2 leading-tight text-white  shadow focus:outline-none"
-                name={item.key}
-                value={String(metadata[item.key as keyof Metadata])}
-                onChange={handleInputChangeMeta}
-              />
-            </div>
+            <>
+              <div
+                className={`py-[2px] text-slate-200 ${index === inputNames.length - 1 ? 'w-full' : 'w-47'}`}
+                key={item.text}
+              >
+                <div className="flex w-fit items-center">
+                  <label className="block w-full pr-1 text-sm font-medium" htmlFor={item.text}>
+                    {item.text}
+                  </label>
+                  <Image
+                    src={infoImage}
+                    alt="download"
+                    className="h-[12px] w-[12px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+                    onClick={() => props.handleShowModalInfo(item.desc, true)}
+                  />
+                </div>
+                <input
+                  type="text"
+                  className="bg-primary focus:shadow-outline w-full appearance-none rounded  px-3 py-2 leading-tight text-white  shadow focus:outline-none"
+                  name={item.key}
+                  value={String(metadata[item.key as keyof Metadata])}
+                  onChange={handleInputChangeMeta}
+                />
+              </div>
+            </>
           ))}
         </div>
         <h1 className=" mt-2 text-lg font-bold text-slate-200 ">Configuration</h1>
@@ -66,8 +79,10 @@ const Form: React.FC<IFormProps> = (props) => {
         <div className="mb-3">
           {options.map((item) => (
             <InputSelect
+              handleShowModalInfo={props.handleShowModalInfo}
               key={item.text}
               name={item.text}
+              desc={item.desc}
               label={item.text}
               onChange={handleInputChangeEnum}
               value={String(FormatData[item.text as keyof FormatData])}

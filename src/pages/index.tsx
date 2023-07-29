@@ -13,6 +13,7 @@ import bathymetry from '../../public/bathymetry.png';
 import waterLevel from '../../public/water_level.png';
 import surfaceCurrents from '../../public/surface_current.png';
 import useMutationDeleteS102Data from '~/hooks/useMutationDeleteS102Data';
+import ModalInfo from '~/iso_components/ModalInfo';
 
 interface FormState {
   [key: string]: string;
@@ -38,6 +39,10 @@ const Home: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const handleShowSidebar = () => setIsOpen(!isOpen);
   const [isDataLayerOpen, setIsDataLayerOpen] = useState(true);
+  const [modalInfo, setModalInfo] = useState({
+    desc: '',
+    isModalVisible: false,
+  });
 
   const [formState, setFormState] = useState<FormState>({
     tiffFile: '' as string,
@@ -114,6 +119,19 @@ const Home: NextPage = () => {
     mutateDeleteData({ _id: param.id, geojsonUri: param.geojsonUri, hdf5Uri: param.hdf5Uri });
   };
 
+  const handleSetModalInfo = (desc: string, isShow: boolean) => {
+    if (isShow) {
+      return setModalInfo({
+        desc,
+        isModalVisible: true,
+      });
+    }
+
+    setModalInfo({
+      desc: '',
+      isModalVisible: false,
+    });
+  };
   return (
     <>
       <Head>
@@ -123,10 +141,16 @@ const Home: NextPage = () => {
       </Head>
       <main className="border-3 overflow-hidden">
         <Navbar handleShowSidebar={handleShowSidebar} />
+        <ModalInfo
+          desc={modalInfo.desc}
+          handleHideModal={() => handleSetModalInfo('', false)}
+          isModalVisible={modalInfo.isModalVisible}
+        />
         <MapV2 geojsonData={data?.[0]?.geojsonData as string} />
         <Descbar isOpen={isOpen} />
         <Sidebar menuItems={menuItems}>
           <Form
+            handleShowModalInfo={handleSetModalInfo}
             handleClear={handleClearData}
             options={IHO102}
             state={formState}

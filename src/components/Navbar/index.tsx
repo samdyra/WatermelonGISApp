@@ -88,7 +88,7 @@ const Navbar = (props: Props) => {
                   src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                   alt="Your Company"
                 />
-                <Image className="hidden h-9 w-auto lg:block" src={logo} alt="Your Company" />
+                <Image className="hidden h-10 w-auto lg:block" src={logo} alt="Your Company" />
               </Link>
             </div>
             <div className="hidden sm:ml-6 sm:block">

@@ -110,7 +110,7 @@ export const IHO102 = [
     desc: 'Common Point Rule: The common point rule is a standard used to ensure consistency and accuracy of data within hydrographic information systems.',
   },
   {
-    text: 'Interpolation Type Datum',
+    text: 'Interpolation Type',
     key: 'interpolation_type_dt_type',
     value: INTERPOLATION_TYPE_OPTIONS,
     desc: 'Interpolation type is a method used to calculate the values of data between known points.',

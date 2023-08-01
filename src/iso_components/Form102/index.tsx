@@ -45,7 +45,7 @@ const Form: React.FC<IFormProps> = (props) => {
     <div className="max-h-min  px-4">
       <div className="max-h-[85%] overflow-y-scroll  text-white">
         <h1 className=" text-lg font-bold text-slate-200">Input Metadata</h1>
-        <div className="mb-3 flex flex-wrap justify-between ">
+        <div className="mb-2 flex flex-wrap justify-between ">
           {inputNames.map((item, index) => (
             <>
               <div
@@ -74,9 +74,9 @@ const Form: React.FC<IFormProps> = (props) => {
             </>
           ))}
         </div>
-        <h1 className=" mt-2 text-lg font-bold text-slate-200 ">Configuration</h1>
+        <h1 className=" mt-1 text-lg font-bold text-slate-200 ">Configuration</h1>
 
-        <div className="mb-3">
+        <div className="mb-2">
           {options.map((item) => (
             <InputSelect
               handleShowModalInfo={props.handleShowModalInfo}

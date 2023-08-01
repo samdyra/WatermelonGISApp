@@ -36,14 +36,14 @@ const GeotiffInput: React.FC<GeotiffInputProps> = ({ setState }) => {
   };
 
   return (
-    <div className="mb-2 w-full  text-slate-200">
-      <div className=" mb-2 text-lg font-bold">Input Geotiff</div>
+    <div className="mb-1 w-full  text-slate-200">
+      <div className="  text-lg font-bold">Input Geotiff</div>
 
       <label>
         <input
           type="file"
           onChange={handleFileInputChange}
-          className="mb-1 text-sm
+          className=" text-sm
              text-slate-200 file:mr-4
             file:w-[48%] file:rounded-sm file:border-0
             file:bg-gray-800 file:px-6 file:py-1

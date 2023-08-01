@@ -124,9 +124,9 @@ export const IHO102 = [
 ];
 
 export const inputNames = [
-  { text: 'Epoch', key: 'epoch', desc: 'The date and time of the data collected' },
+  { text: 'Epoch (Optional)', key: 'epoch', desc: 'The date and time of the data collected' },
   { text: 'Location Name', key: 'geographicIdentifier', desc: 'The name of the location' },
   { text: 'Issue Date', key: 'issueDate', desc: 'The date the data was issued' },
-  { text: 'Issue Time', key: 'issueTime', desc: 'The time the data was issued' },
+  { text: 'Issue Time (Optional)', key: 'issueTime', desc: 'The time the data was issued' },
   { text: 'File Name', key: 'file_name', desc: 'The name of the file' },
 ];

@@ -4,7 +4,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useUser } from '@clerk/nextjs';
 import { SignInButton, UserButton } from '@clerk/nextjs';
-import logo from '../../../public/logoOffice.png';
+// import logo from '../../../public/logoOffice.png';
+import logo from '../../../public/logo-iso.png';
+
 import Image from 'next/image';
 
 interface Props {
@@ -86,7 +88,7 @@ const Navbar = (props: Props) => {
                   src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                   alt="Your Company"
                 />
-                <Image className="hidden h-8 w-auto lg:block" src={logo} alt="Your Company" />
+                <Image className="hidden h-10 w-auto lg:block" src={logo} alt="Your Company" />
               </Link>
             </div>
             <div className="hidden sm:ml-6 sm:block">

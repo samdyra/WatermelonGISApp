@@ -91,17 +91,42 @@ export const GRIDDING_METHOD_OPTIONS = [
 ];
 
 export const IHO102 = [
-  { text: 'Vertical Datum', key: 'vertical_datum_dt_type', value: VERTICAL_DATUM_OPTIONS },
-  { text: 'Data Coding Format', key: 'data_coding_format_dt_type', value: DATA_CODING_FORMAT_OPTIONS },
-  { text: 'Common Point Rule', key: 'common_point_rule_dt_type', value: COMMON_POINT_RULE_OPTIONS },
-  { text: 'Interpolation Type Datum', key: 'interpolation_type_dt_type', value: INTERPOLATION_TYPE_OPTIONS },
-  { text: 'Sequencing Rule Type', key: 'sequencing_rule_type_dt_type', value: SEQUENCING_RULE_TYPE_OPTIONS },
+  {
+    text: 'Vertical Datum',
+    key: 'vertical_datum_dt_type',
+    value: VERTICAL_DATUM_OPTIONS,
+    desc: 'Vertical datum is a reference surface for vertical positions.',
+  },
+  {
+    text: 'Data Coding Format',
+    key: 'data_coding_format_dt_type',
+    value: DATA_CODING_FORMAT_OPTIONS,
+    desc: 'Data coding format is a method used to encode data in a specific format. This is used to ensure that the data is readable.',
+  },
+  {
+    text: 'Common Point Rule',
+    key: 'common_point_rule_dt_type',
+    value: COMMON_POINT_RULE_OPTIONS,
+    desc: 'Common Point Rule: The common point rule is a standard used to ensure consistency and accuracy of data within hydrographic information systems.',
+  },
+  {
+    text: 'Interpolation Type',
+    key: 'interpolation_type_dt_type',
+    value: INTERPOLATION_TYPE_OPTIONS,
+    desc: 'Interpolation type is a method used to calculate the values of data between known points.',
+  },
+  {
+    text: 'Sequencing Rule Type',
+    key: 'sequencing_rule_type_dt_type',
+    value: SEQUENCING_RULE_TYPE_OPTIONS,
+    desc: 'Sequencing rule is used to assign labels or numbers to each data with the aim of creating an organized identification.',
+  },
 ];
 
 export const inputNames = [
-  { text: 'Epoch', key: 'epoch' },
-  { text: 'Geographic Identifier', key: 'geographicIdentifier' },
-  { text: 'Issue Date', key: 'issueDate' },
-  { text: 'Issue Time', key: 'issueTime' },
-  { text: 'File Name', key: 'file_name' },
+  { text: 'Epoch', key: 'epoch', desc: 'The date and time of the data collected' },
+  { text: 'Location Name', key: 'geographicIdentifier', desc: 'The name of the location' },
+  { text: 'Issue Date', key: 'issueDate', desc: 'The date the data was issued' },
+  { text: 'Issue Time', key: 'issueTime', desc: 'The time the data was issued' },
+  { text: 'File Name', key: 'file_name', desc: 'The name of the file' },
 ];

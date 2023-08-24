@@ -2,18 +2,21 @@ import { type NextPage } from 'next';
 import { useState } from 'react';
 import Head from 'next/head';
 import { Navbar, Sidebar, Descbar, Layerbar } from '~/components';
-import { IHO102, inputNames } from '~/constants/texts';
+import { IHO102, inputNames, IHO104, inputNames104 } from '~/constants/texts';
 import useFetchS102Data from '~/hooks/useFetchS102Data';
 import useMutationCreateS102Data from '~/hooks/useMutationCreateS102Data';
+import useMutationCreateS104Data from '~/hooks/useMutationCreateS104Data';
 import useDownloadFetchedData from '~/hooks/useDownloadFetchedData';
 import { type Metadata } from '~/iso_components/Form102/types';
 import MapV2 from '~/iso_components/mapV2';
-import { AddFeature, Form } from '~/iso_components';
+import { AddFeature, Form, Form104 } from '~/iso_components';
 import bathymetry from '../../public/bathymetry.png';
 import waterLevel from '../../public/water_level.png';
 import surfaceCurrents from '../../public/surface_current.png';
 import useMutationDeleteS102Data from '~/hooks/useMutationDeleteS102Data';
 import ModalInfo from '~/iso_components/ModalInfo';
+import { type ApiContract } from '~/iso_components/Form104/types';
+import { initialApiContract } from '~/iso_components/Form104/constant';
 
 interface FormState {
   [key: string]: string;
@@ -43,11 +46,14 @@ const Home: NextPage = () => {
     desc: '',
     isModalVisible: false,
   });
+  const [menuIndex, setMenuIndex] = useState(0);
 
   const [formState, setFormState] = useState<FormState>({
     tiffFile: '' as string,
   });
 
+  const [data104, setData104] = useState<ApiContract>(initialApiContract);
+  console.log('data104', data104);
   const [metadata, setMetaData] = useState<Metadata>({
     // TODO: revert default value ("", bool, 0), use placeholder instead
     epoch: 'G1762',
@@ -80,6 +86,8 @@ const Home: NextPage = () => {
 
   // TEMPORARY CODE BELOW
   const { mutate, isLoading: isMutateDataLoading } = useMutationCreateS102Data(requestParam);
+  const { mutate: mutate104, isLoading: isMutate104DataLoading } = useMutationCreateS104Data(data104);
+
   const { mutate: mutateDeleteData, isLoading: isLoadingDelete } = useMutationDeleteS102Data();
 
   const { data: s102Data, isLoading: isS102DataLoading } = useFetchS102Data({
@@ -88,7 +96,8 @@ const Home: NextPage = () => {
 
   const { data, isLoading: isDownloadDataLoading } = useDownloadFetchedData(s102Data?.data ?? []);
 
-  const isLoading = isMutateDataLoading || isS102DataLoading || isDownloadDataLoading || isLoadingDelete;
+  const isLoading =
+    isMutate104DataLoading || isMutateDataLoading || isS102DataLoading || isDownloadDataLoading || isLoadingDelete;
 
   const handleOpenDataLayer = () => {
     setIsDataLayerOpen(!isDataLayerOpen);
@@ -115,6 +124,10 @@ const Home: NextPage = () => {
     });
   };
 
+  const handleClear104Data = () => {
+    setData104(initialApiContract);
+  };
+
   const handleDeleteData = (param: { id: string; geojsonUri: string; hdf5Uri: string }) => {
     mutateDeleteData({ _id: param.id, geojsonUri: param.geojsonUri, hdf5Uri: param.hdf5Uri });
   };
@@ -132,6 +145,7 @@ const Home: NextPage = () => {
       isModalVisible: false,
     });
   };
+
   return (
     <>
       <Head>
@@ -148,20 +162,33 @@ const Home: NextPage = () => {
         />
         <MapV2 geojsonData={data?.[0]?.geojsonData as string} />
         <Descbar isOpen={isOpen} />
-        <Sidebar menuItems={menuItems}>
-          <Form
-            handleShowModalInfo={handleSetModalInfo}
-            handleClear={handleClearData}
-            options={IHO102}
-            state={formState}
-            setState={setFormState}
-            inputNames={inputNames}
-            metadata={metadata}
-            setMetaData={setMetaData}
-            FormatData={formatData}
-            setFormatData={setFormatData}
-            handleUpload={mutate}
-          />
+        <Sidebar menuItems={menuItems} menuIndex={menuIndex} setMenuIndex={setMenuIndex}>
+          {menuIndex === 0 && (
+            <Form
+              handleShowModalInfo={handleSetModalInfo}
+              handleClear={handleClearData}
+              options={IHO102}
+              state={formState}
+              setState={setFormState}
+              inputNames={inputNames}
+              metadata={metadata}
+              setMetaData={setMetaData}
+              FormatData={formatData}
+              setFormatData={setFormatData}
+              handleUpload={mutate}
+            />
+          )}
+          {menuIndex === 1 && (
+            <Form104
+              handleShowModalInfo={handleSetModalInfo}
+              handleClear={handleClear104Data}
+              options={IHO104}
+              state={data104}
+              setState={setData104}
+              inputNames={inputNames104}
+              handleUpload={mutate104}
+            />
+          )}
         </Sidebar>
         <Layerbar isOpen={isDataLayerOpen} position="right" size="large" handleShowLayerbar={handleOpenDataLayer}>
           <AddFeature data={data} isLoading={isLoading} handleDeleteData={handleDeleteData} />

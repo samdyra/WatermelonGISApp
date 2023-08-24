@@ -136,7 +136,13 @@ export const IHO102 = [
   },
 ];
 
-export const IHO104 = [
+export const IHO111 = [
+  {
+    text: 'Common Point Rule',
+    key: 'common_point_rule_dt_type',
+    value: COMMON_POINT_RULE_OPTIONS,
+    desc: 'Common Point Rule: The common point rule is a standard used to ensure consistency and accuracy of data within hydrographic information systems.',
+  },
   {
     text: 'Data Dynamicity',
     key: 'data_dynamicity_dt_type',
@@ -165,12 +171,12 @@ export const inputNames = [
   { text: 'File Name', key: 'file_name', desc: 'The name of the file' },
 ];
 
-export const inputNames104 = [
+export const inputNames111 = [
   { text: 'Epoch', key: 'epoch', desc: 'The date and time of the data collected' },
-  { text: 'Location', key: 'geographicIdentifier', desc: 'The name of the location' },
+  { text: 'Extent Type Code', key: 'extent_type_code', desc: 'Extent Type Code' },
   { text: 'File Name', key: 'file_name', desc: 'The name of the file' },
-  { text: 'Horizontal Datum Ref', key: 'horizontalDatumReference', desc: 'Horizontal Datum Reference' },
-  { text: 'Horizontal Datum ', key: 'horizontalDatumValue', desc: 'Horizontal Datum Value' },
+  { text: 'Geographic Identifier', key: 'geographicIdentifier', desc: 'The name of the location' },
+  { text: 'Horizontal Datum', key: 'horizontalDatumValue', desc: 'Horizontal Datum Value' },
   {
     text: 'Horizontal Uncertainty',
     key: 'horizontalPositionUncertainty',
@@ -178,10 +184,8 @@ export const inputNames104 = [
   },
   { text: 'Metadata', key: 'metadata', desc: 'Metadata' },
   { text: 'Method', key: 'methodCurrentsProduct', desc: 'Method Currents Product' },
+  { text: 'Surface Current Depth', key: 'surfaceCurrentDepth', desc: 'Surface Current Depth' },
   { text: 'Time Uncertainty', key: 'timeUncertainty', desc: 'Time Uncertainty' },
   { text: 'Vertical CS', key: 'verticalCS', desc: 'Vertical CS' },
-  { text: 'Vertical Datum', key: 'verticalDatum', desc: 'Vertical Datum' },
-  { text: 'Vertical Datum Ref', key: 'verticalDatumReference', desc: 'Vertical Datum Reference' },
   { text: 'Vertical Uncertainty', key: 'verticalUncertainty', desc: 'Vertical Uncertainty' },
-  { text: 'Water Level Trend Threshold', key: 'waterLevelTrendThreshold', desc: 'Water Level Trend Threshold' },
 ];

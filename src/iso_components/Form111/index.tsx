@@ -1,24 +1,23 @@
 import React, { memo } from 'react';
 import InputSelect from '../Select';
-import { type IHO104, type inputNames104 } from '~/constants/texts';
+import { type IHO111, type inputNames111 } from '~/constants/texts';
 import GeotiffInput from './GeotiffInput';
-import DateTimePicker from '../DateTimePicker';
 import { type ApiContract, type Metadata, type FormatData } from './types';
 import infoImage from '../../../public/info.png';
 import Image from 'next/image';
 import { formatTimeForInput, formatDateForInput } from '~/helpers/globalHelpers';
-import { parse } from 'path';
+
 interface IFormProps {
-  options: typeof IHO104;
+  options: typeof IHO111;
   state: ApiContract;
-  inputNames: typeof inputNames104;
+  inputNames: typeof inputNames111;
   setState: React.Dispatch<React.SetStateAction<ApiContract>>;
   handleUpload: () => void;
   handleClear: () => void;
   handleShowModalInfo: (desc: string, isShowModal: boolean) => void;
 }
 
-const Form104: React.FC<IFormProps> = (props) => {
+const Form111: React.FC<IFormProps> = (props) => {
   const { options, state, setState, handleClear, inputNames, handleUpload } = props;
 
   const handleInputChangeMeta = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,20 +55,6 @@ const Form104: React.FC<IFormProps> = (props) => {
     }));
   };
 
-  const handleDateTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-
-    const [datePart = '', timePart = ''] = value.split(' ');
-    setState((prevState) => ({
-      ...prevState,
-      metadata: {
-        ...prevState.metadata,
-        issueDate: datePart,
-        issueTime: timePart,
-      },
-    }));
-  };
-
   const handleDateChange = (dateInput: string) => {
     const dateWithoutDashes = dateInput.replace(/-/g, '');
 
@@ -99,12 +84,9 @@ const Form104: React.FC<IFormProps> = (props) => {
       <div className="max-h-[60%] overflow-y-scroll  text-white">
         <h1 className=" text-lg font-bold text-slate-200">Input Metadata</h1>
         <div className=" flex flex-wrap justify-between ">
-          {inputNames.map((item, index) => (
+          {inputNames.map((item) => (
             <>
-              <div
-                className={`py-[2px] text-slate-200 ${index === inputNames.length - 1 ? 'w-full' : 'w-47'}`}
-                key={item.text}
-              >
+              <div className={`w-47 py-[2px] text-slate-200`} key={item.text}>
                 <div className="flex w-fit items-center">
                   <label className="block w-full pr-1 text-sm font-medium" htmlFor={item.text}>
                     {item.text}
@@ -190,7 +172,7 @@ const Form104: React.FC<IFormProps> = (props) => {
         <div className={`w-full py-[2px] text-slate-200`}>
           <div className="flex w-fit items-center">
             <label className="block w-full pr-1 text-sm font-medium" htmlFor="Methodology">
-              Water Level Band Name
+              Current Speed Band Name
             </label>
             <Image
               src={infoImage}
@@ -202,8 +184,29 @@ const Form104: React.FC<IFormProps> = (props) => {
           <input
             type="text"
             className="bg-primary focus:shadow-outline w-full appearance-none rounded  px-3 py-2 leading-tight text-white  shadow focus:outline-none"
-            name="water_level_band_name"
-            value={String(state['water_level_band_name' as keyof ApiContract])}
+            name="current_speed_band_name"
+            value={String(state['current_speed_band_name' as keyof ApiContract])}
+            onChange={handleApiContractChange}
+          />
+        </div>
+
+        <div className={`w-full py-[2px] text-slate-200`}>
+          <div className="flex w-fit items-center">
+            <label className="block w-full pr-1 text-sm font-medium" htmlFor="Methodology">
+              Current Direction Band Name
+            </label>
+            <Image
+              src={infoImage}
+              alt="download"
+              className="h-[12px] w-[12px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+              onClick={() => props.handleShowModalInfo('water level band name', true)}
+            />
+          </div>
+          <input
+            type="text"
+            className="bg-primary focus:shadow-outline w-full appearance-none rounded  px-3 py-2 leading-tight text-white  shadow focus:outline-none"
+            name="current_direction_band_name"
+            value={String(state['current_direction_band_name' as keyof ApiContract])}
             onChange={handleApiContractChange}
           />
         </div>
@@ -243,4 +246,4 @@ const Form104: React.FC<IFormProps> = (props) => {
   );
 };
 
-export default memo(Form104);
+export default memo(Form111);

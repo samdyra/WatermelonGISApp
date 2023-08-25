@@ -2,16 +2,16 @@ import React, { memo } from 'react';
 import InputSelect from '../Select';
 import { type IHO111, type inputNames111 } from '~/constants/texts';
 import GeotiffInput from './GeotiffInput';
-import { type ApiContract, type Metadata, type FormatData } from './types';
+import { type ApiContract111, type Metadata, type FormatData } from './types';
 import infoImage from '../../../public/info.png';
 import Image from 'next/image';
 import { formatTimeForInput, formatDateForInput } from '~/helpers/globalHelpers';
 
 interface IFormProps {
   options: typeof IHO111;
-  state: ApiContract;
+  state: ApiContract111;
   inputNames: typeof inputNames111;
-  setState: React.Dispatch<React.SetStateAction<ApiContract>>;
+  setState: React.Dispatch<React.SetStateAction<ApiContract111>>;
   handleUpload: () => void;
   handleClear: () => void;
   handleShowModalInfo: (desc: string, isShowModal: boolean) => void;
@@ -185,7 +185,7 @@ const Form111: React.FC<IFormProps> = (props) => {
             type="text"
             className="bg-primary focus:shadow-outline w-full appearance-none rounded  px-3 py-2 leading-tight text-white  shadow focus:outline-none"
             name="current_speed_band_name"
-            value={String(state['current_speed_band_name' as keyof ApiContract])}
+            value={String(state['current_speed_band_name' as keyof ApiContract111])}
             onChange={handleApiContractChange}
           />
         </div>
@@ -206,7 +206,7 @@ const Form111: React.FC<IFormProps> = (props) => {
             type="text"
             className="bg-primary focus:shadow-outline w-full appearance-none rounded  px-3 py-2 leading-tight text-white  shadow focus:outline-none"
             name="current_direction_band_name"
-            value={String(state['current_direction_band_name' as keyof ApiContract])}
+            value={String(state['current_direction_band_name' as keyof ApiContract111])}
             onChange={handleApiContractChange}
           />
         </div>

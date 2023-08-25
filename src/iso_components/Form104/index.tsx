@@ -2,16 +2,16 @@ import React, { memo } from 'react';
 import InputSelect from '../Select';
 import { type IHO104, type inputNames104 } from '~/constants/texts';
 import GeotiffInput from './GeotiffInput';
-import { type ApiContract, type Metadata, type FormatData } from './types';
+import { type ApiContract104, type Metadata, type FormatData } from './types';
 import infoImage from '../../../public/info.png';
 import Image from 'next/image';
 import { formatTimeForInput, formatDateForInput } from '~/helpers/globalHelpers';
 
 interface IFormProps {
   options: typeof IHO104;
-  state: ApiContract;
+  state: ApiContract104;
   inputNames: typeof inputNames104;
-  setState: React.Dispatch<React.SetStateAction<ApiContract>>;
+  setState: React.Dispatch<React.SetStateAction<ApiContract104>>;
   handleUpload: () => void;
   handleClear: () => void;
   handleShowModalInfo: (desc: string, isShowModal: boolean) => void;
@@ -202,7 +202,7 @@ const Form104: React.FC<IFormProps> = (props) => {
             type="text"
             className="bg-primary focus:shadow-outline w-full appearance-none rounded  px-3 py-2 leading-tight text-white  shadow focus:outline-none"
             name="water_level_band_name"
-            value={String(state['water_level_band_name' as keyof ApiContract])}
+            value={String(state['water_level_band_name' as keyof ApiContract104])}
             onChange={handleApiContractChange}
           />
         </div>

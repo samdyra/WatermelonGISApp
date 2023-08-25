@@ -16,10 +16,10 @@ import waterLevel from '../../public/water_level.png';
 import surfaceCurrents from '../../public/surface_current.png';
 import useMutationDeleteS102Data from '~/hooks/useMutationDeleteS102Data';
 import ModalInfo from '~/iso_components/ModalInfo';
-import { type ApiContract } from '~/iso_components/Form111/types';
-import { initialApiContract } from '~/iso_components/Form111/constant';
-import { type ApiContract } from '~/iso_components/Form104/types';
-import { initialApiContract } from '~/iso_components/Form104/constant';
+import { type ApiContract111 } from '~/iso_components/Form111/types';
+import { initialApiContract111 } from '~/iso_components/Form111/constant';
+import { type ApiContract104 } from '~/iso_components/Form104/types';
+import { initialApiContract104 } from '~/iso_components/Form104/constant';
 
 interface FormState {
   [key: string]: string;
@@ -55,8 +55,8 @@ const Home: NextPage = () => {
     tiffFile: '' as string,
   });
 
-  const [data111, setData111] = useState<ApiContract>(initialApiContract);
-  const [data104, setData104] = useState<ApiContract>(initialApiContract);
+  const [data111, setData111] = useState<ApiContract111>(initialApiContract111);
+  const [data104, setData104] = useState<ApiContract104>(initialApiContract104);
 
   const [metadata, setMetaData] = useState<Metadata>({
     // TODO: revert default value ("", bool, 0), use placeholder instead
@@ -104,7 +104,12 @@ const Home: NextPage = () => {
   const { data, isLoading: isDownloadDataLoading } = useDownloadFetchedData(s102Data?.data ?? []);
 
   const isLoading =
-    isMutate111DataLoading ||isMutate104DataLoading || isMutateDataLoading || isS102DataLoading || isDownloadDataLoading || isLoadingDelete;
+    isMutate111DataLoading ||
+    isMutate104DataLoading ||
+    isMutateDataLoading ||
+    isS102DataLoading ||
+    isDownloadDataLoading ||
+    isLoadingDelete;
 
   const handleOpenDataLayer = () => {
     setIsDataLayerOpen(!isDataLayerOpen);
@@ -132,10 +137,10 @@ const Home: NextPage = () => {
   };
 
   const handleClear111Data = () => {
-    setData111(initialApiContract);
+    setData111(initialApiContract111);
   };
   const handleClear104Data = () => {
-    setData104(initialApiContract);
+    setData104(initialApiContract104);
   };
 
   const handleDeleteData = (param: { id: string; geojsonUri: string; hdf5Uri: string }) => {
@@ -188,6 +193,7 @@ const Home: NextPage = () => {
               handleUpload={mutate}
             />
           )}
+
           {menuIndex === 2 && (
             <Form111
               handleShowModalInfo={handleSetModalInfo}
@@ -197,6 +203,9 @@ const Home: NextPage = () => {
               setState={setData111}
               inputNames={inputNames111}
               handleUpload={mutate111}
+            />
+          )}
+
           {menuIndex === 1 && (
             <Form104
               handleShowModalInfo={handleSetModalInfo}

@@ -42,7 +42,7 @@ export const initialDatasetNcdf = 'base64';
 
 export const initialWaterLevelBandName = '';
 
-export const initialApiContract = {
+export const initialApiContract104 = {
   user_id: '',
   metadata: initialMetadata,
   format_data: initialFormatData,

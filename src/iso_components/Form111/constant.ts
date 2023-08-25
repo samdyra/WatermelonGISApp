@@ -13,7 +13,7 @@ const formattedTime = `${hours}${minutes}`;
 const issueDate: string = formattedDate;
 const issueTime: string = formattedTime;
 
-export const initialApiContract = {
+export const initialApiContract111 = {
   user_id: '60a7b1b9d6b9a4a7f0a3b3a0',
   metadata: {
     epoch: 'G1762',

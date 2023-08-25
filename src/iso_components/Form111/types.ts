@@ -22,7 +22,7 @@ export interface FormatData {
   sequencing_rule_type_dt_type: number;
 }
 
-export interface ApiContract {
+export interface ApiContract111 {
   user_id: string;
   metadata: Metadata;
   format_data: FormatData;

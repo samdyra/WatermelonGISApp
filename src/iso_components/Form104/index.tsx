@@ -55,20 +55,6 @@ const Form104: React.FC<IFormProps> = (props) => {
     }));
   };
 
-  const handleDateTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-
-    const [datePart = '', timePart = ''] = value.split(' ');
-    setState((prevState) => ({
-      ...prevState,
-      metadata: {
-        ...prevState.metadata,
-        issueDate: datePart,
-        issueTime: timePart,
-      },
-    }));
-  };
-
   const handleDateChange = (dateInput: string) => {
     const dateWithoutDashes = dateInput.replace(/-/g, '');
 
@@ -99,31 +85,29 @@ const Form104: React.FC<IFormProps> = (props) => {
         <h1 className=" text-lg font-bold text-slate-200">Input Metadata</h1>
         <div className=" flex flex-wrap justify-between ">
           {inputNames.map((item, index) => (
-            <>
-              <div
-                className={`py-[2px] text-slate-200 ${index === inputNames.length - 1 ? 'w-full' : 'w-47'}`}
-                key={item.text}
-              >
-                <div className="flex w-fit items-center">
-                  <label className="block w-full pr-1 text-sm font-medium" htmlFor={item.text}>
-                    {item.text}
-                  </label>
-                  <Image
-                    src={infoImage}
-                    alt="download"
-                    className="h-[12px] w-[12px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
-                    onClick={() => props.handleShowModalInfo(item.desc, true)}
-                  />
-                </div>
-                <input
-                  type="text"
-                  className="bg-primary focus:shadow-outline w-full appearance-none rounded  px-3 py-2 leading-tight text-white  shadow focus:outline-none"
-                  name={item.key}
-                  value={String(state.metadata[item.key as keyof Metadata])}
-                  onChange={handleInputChangeMeta}
+            <div
+              className={`py-[2px] text-slate-200 ${index === inputNames.length - 1 ? 'w-full' : 'w-47'}`}
+              key={item.text}
+            >
+              <div className="flex w-fit items-center">
+                <label className="block w-full pr-1 text-sm font-medium" htmlFor={item.text}>
+                  {item.text}
+                </label>
+                <Image
+                  src={infoImage}
+                  alt="download"
+                  className="h-[12px] w-[12px] cursor-pointer transition-all duration-150 ease-linear active:opacity-80"
+                  onClick={() => props.handleShowModalInfo(item.desc, true)}
                 />
               </div>
-            </>
+              <input
+                type="text"
+                className="bg-primary focus:shadow-outline w-full appearance-none rounded  px-3 py-2 leading-tight text-white  shadow focus:outline-none"
+                name={item.key}
+                value={String(state.metadata[item.key as keyof Metadata])}
+                onChange={handleInputChangeMeta}
+              />
+            </div>
           ))}
         </div>
 

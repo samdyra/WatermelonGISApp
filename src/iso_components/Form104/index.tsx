@@ -2,12 +2,11 @@ import React, { memo } from 'react';
 import InputSelect from '../Select';
 import { type IHO104, type inputNames104 } from '~/constants/texts';
 import GeotiffInput from './GeotiffInput';
-import DateTimePicker from '../DateTimePicker';
 import { type ApiContract, type Metadata, type FormatData } from './types';
 import infoImage from '../../../public/info.png';
 import Image from 'next/image';
 import { formatTimeForInput, formatDateForInput } from '~/helpers/globalHelpers';
-import { parse } from 'path';
+
 interface IFormProps {
   options: typeof IHO104;
   state: ApiContract;

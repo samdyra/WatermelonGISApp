@@ -136,7 +136,36 @@ export const IHO102 = [
   },
 ];
 
+
 export const IHO104 = [
+
+  {
+    text: 'Data Dynamicity',
+    key: 'data_dynamicity_dt_type',
+    value: DATA_DYNAMICITY_OPTIONS,
+    desc: 'Vertical datum is a reference surface for vertical positions.',
+  },
+  {
+    text: 'Interpolation Type',
+    key: 'interpolation_type_dt_type',
+    value: INTERPOLATION_TYPE_OPTIONS,
+    desc: 'Interpolation type is a method used to calculate the values of data between known points.',
+  },
+  {
+    text: 'Sequencing Rule Type',
+    key: 'sequencing_rule_type_dt_type',
+    value: SEQUENCING_RULE_TYPE_OPTIONS,
+    desc: 'Sequencing rule is used to assign labels or numbers to each data with the aim of creating an organized identification.',
+  },
+];
+
+export const IHO111 = [
+  {
+    text: 'Common Point Rule',
+    key: 'common_point_rule_dt_type',
+    value: COMMON_POINT_RULE_OPTIONS,
+    desc: 'Common Point Rule: The common point rule is a standard used to ensure consistency and accuracy of data within hydrographic information systems.',
+  },
   {
     text: 'Data Dynamicity',
     key: 'data_dynamicity_dt_type',
@@ -185,3 +214,23 @@ export const inputNames104 = [
   { text: 'Vertical Uncertainty', key: 'verticalUncertainty', desc: 'Vertical Uncertainty' },
   { text: 'Water Level Trend Threshold', key: 'waterLevelTrendThreshold', desc: 'Water Level Trend Threshold' },
 ];
+
+export const inputNames111 = [
+  { text: 'Epoch', key: 'epoch', desc: 'The date and time of the data collected' },
+  { text: 'Extent Type Code', key: 'extent_type_code', desc: 'Extent Type Code' },
+  { text: 'File Name', key: 'file_name', desc: 'The name of the file' },
+  { text: 'Geographic Identifier', key: 'geographicIdentifier', desc: 'The name of the location' },
+  { text: 'Horizontal Datum', key: 'horizontalDatumValue', desc: 'Horizontal Datum Value' },
+  {
+    text: 'Horizontal Uncertainty',
+    key: 'horizontalPositionUncertainty',
+    desc: 'Horizontal Position Uncertainty',
+  },
+  { text: 'Metadata', key: 'metadata', desc: 'Metadata' },
+  { text: 'Method', key: 'methodCurrentsProduct', desc: 'Method Currents Product' },
+  { text: 'Surface Current Depth', key: 'surfaceCurrentDepth', desc: 'Surface Current Depth' },
+  { text: 'Time Uncertainty', key: 'timeUncertainty', desc: 'Time Uncertainty' },
+  { text: 'Vertical CS', key: 'verticalCS', desc: 'Vertical CS' },
+  { text: 'Vertical Uncertainty', key: 'verticalUncertainty', desc: 'Vertical Uncertainty' },
+];
+

@@ -2,19 +2,22 @@ import { type NextPage } from 'next';
 import { useState } from 'react';
 import Head from 'next/head';
 import { Navbar, Sidebar, Descbar, Layerbar } from '~/components';
-import { IHO102, inputNames, IHO104, inputNames104 } from '~/constants/texts';
+import { IHO102, inputNames, IHO104, inputNames104, IHO111, inputNames111 } from '~/constants/texts';
 import useFetchS102Data from '~/hooks/useFetchS102Data';
 import useMutationCreateS102Data from '~/hooks/useMutationCreateS102Data';
 import useMutationCreateS104Data from '~/hooks/useMutationCreateS104Data';
+import useMutationCreateS111Data from '~/hooks/useMutationCreateS111Data';
 import useDownloadFetchedData from '~/hooks/useDownloadFetchedData';
 import { type Metadata } from '~/iso_components/Form102/types';
 import MapV2 from '~/iso_components/mapV2';
-import { AddFeature, Form, Form104 } from '~/iso_components';
+import { AddFeature, Form, Form104, Form111 } from '~/iso_components';
 import bathymetry from '../../public/bathymetry.png';
 import waterLevel from '../../public/water_level.png';
 import surfaceCurrents from '../../public/surface_current.png';
 import useMutationDeleteS102Data from '~/hooks/useMutationDeleteS102Data';
 import ModalInfo from '~/iso_components/ModalInfo';
+import { type ApiContract } from '~/iso_components/Form111/types';
+import { initialApiContract } from '~/iso_components/Form111/constant';
 import { type ApiContract } from '~/iso_components/Form104/types';
 import { initialApiContract } from '~/iso_components/Form104/constant';
 
@@ -52,8 +55,9 @@ const Home: NextPage = () => {
     tiffFile: '' as string,
   });
 
+  const [data111, setData111] = useState<ApiContract>(initialApiContract);
   const [data104, setData104] = useState<ApiContract>(initialApiContract);
-  console.log('data104', data104);
+
   const [metadata, setMetaData] = useState<Metadata>({
     // TODO: revert default value ("", bool, 0), use placeholder instead
     epoch: 'G1762',
@@ -86,6 +90,9 @@ const Home: NextPage = () => {
 
   // TEMPORARY CODE BELOW
   const { mutate, isLoading: isMutateDataLoading } = useMutationCreateS102Data(requestParam);
+
+  const { mutate: mutate111, isLoading: isMutate111DataLoading } = useMutationCreateS111Data(data111);
+
   const { mutate: mutate104, isLoading: isMutate104DataLoading } = useMutationCreateS104Data(data104);
 
   const { mutate: mutateDeleteData, isLoading: isLoadingDelete } = useMutationDeleteS102Data();
@@ -97,7 +104,7 @@ const Home: NextPage = () => {
   const { data, isLoading: isDownloadDataLoading } = useDownloadFetchedData(s102Data?.data ?? []);
 
   const isLoading =
-    isMutate104DataLoading || isMutateDataLoading || isS102DataLoading || isDownloadDataLoading || isLoadingDelete;
+    isMutate111DataLoading ||isMutate104DataLoading || isMutateDataLoading || isS102DataLoading || isDownloadDataLoading || isLoadingDelete;
 
   const handleOpenDataLayer = () => {
     setIsDataLayerOpen(!isDataLayerOpen);
@@ -124,6 +131,9 @@ const Home: NextPage = () => {
     });
   };
 
+  const handleClear111Data = () => {
+    setData111(initialApiContract);
+  };
   const handleClear104Data = () => {
     setData104(initialApiContract);
   };
@@ -178,6 +188,15 @@ const Home: NextPage = () => {
               handleUpload={mutate}
             />
           )}
+          {menuIndex === 2 && (
+            <Form111
+              handleShowModalInfo={handleSetModalInfo}
+              handleClear={handleClear111Data}
+              options={IHO111}
+              state={data111}
+              setState={setData111}
+              inputNames={inputNames111}
+              handleUpload={mutate111}
           {menuIndex === 1 && (
             <Form104
               handleShowModalInfo={handleSetModalInfo}

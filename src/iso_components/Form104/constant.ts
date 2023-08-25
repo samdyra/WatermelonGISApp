@@ -12,7 +12,7 @@ const formattedTime = `${hours}${minutes}`;
 
 const issueDate: string = formattedDate;
 const issueTime: string = formattedTime;
-
+import { type ApiContract104 } from './types';
 export const initialMetadata = {
   epoch: '',
   file_name: '',
@@ -42,7 +42,7 @@ export const initialDatasetNcdf = 'base64';
 
 export const initialWaterLevelBandName = '';
 
-export const initialApiContract104 = {
+export const initialApiContract104: ApiContract104 = {
   user_id: '',
   metadata: initialMetadata,
   format_data: initialFormatData,

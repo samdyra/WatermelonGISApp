@@ -1,9 +1,9 @@
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 import { postData } from '~/api/api';
-import { type ApiContract } from '~/iso_components/Form104/types';
+import { type ApiContract104 } from '~/iso_components/Form104/types';
 
-const useMutationCreateS104Data = (arg: ApiContract) => {
+const useMutationCreateS104Data = (arg: ApiContract104) => {
   const queryClient = useQueryClient();
   const createS104DataMutation = useMutation(() => postData('s104/', arg), {
     onSuccess: () => {

@@ -17,3 +17,7 @@ body {
 .w-47 {
   width: 47%;
 }
+
+.white-calendar-icon::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}

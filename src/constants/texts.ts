@@ -90,6 +90,19 @@ export const GRIDDING_METHOD_OPTIONS = [
   { text: 'Discrete', value: 10 },
 ];
 
+export const DATA_DYNAMICITY_OPTIONS = [
+  { text: 'Observation', value: 1 },
+  { text: 'Astronomical prediction', value: 2 },
+  { text: 'Analysis or hybrid method', value: 3 },
+  { text: 'Hydrodynamic model hindcast', value: 4 },
+  { text: 'Hydrodynamic model forecast', value: 5 },
+  { text: 'Observed minus predicted', value: 6 },
+  { text: 'Observed minus analysis', value: 7 },
+  { text: 'Observed minus hindcast', value: 8 },
+  { text: 'Observed minus forecast', value: 9 },
+  { text: 'Forecast minus predicted', value: 10 },
+];
+
 export const IHO102 = [
   {
     text: 'Vertical Datum',
@@ -123,10 +136,52 @@ export const IHO102 = [
   },
 ];
 
+export const IHO104 = [
+  {
+    text: 'Data Dynamicity',
+    key: 'data_dynamicity_dt_type',
+    value: DATA_DYNAMICITY_OPTIONS,
+    desc: 'Vertical datum is a reference surface for vertical positions.',
+  },
+  {
+    text: 'Interpolation Type',
+    key: 'interpolation_type_dt_type',
+    value: INTERPOLATION_TYPE_OPTIONS,
+    desc: 'Interpolation type is a method used to calculate the values of data between known points.',
+  },
+  {
+    text: 'Sequencing Rule Type',
+    key: 'sequencing_rule_type_dt_type',
+    value: SEQUENCING_RULE_TYPE_OPTIONS,
+    desc: 'Sequencing rule is used to assign labels or numbers to each data with the aim of creating an organized identification.',
+  },
+];
+
 export const inputNames = [
   { text: 'Epoch', key: 'epoch', desc: 'The date and time of the data collected' },
   { text: 'Location Name', key: 'geographicIdentifier', desc: 'The name of the location' },
   { text: 'Issue Date', key: 'issueDate', desc: 'The date the data was issued' },
   { text: 'Issue Time', key: 'issueTime', desc: 'The time the data was issued' },
   { text: 'File Name', key: 'file_name', desc: 'The name of the file' },
+];
+
+export const inputNames104 = [
+  { text: 'Epoch', key: 'epoch', desc: 'The date and time of the data collected' },
+  { text: 'Location', key: 'geographicIdentifier', desc: 'The name of the location' },
+  { text: 'File Name', key: 'file_name', desc: 'The name of the file' },
+  { text: 'Horizontal Datum Ref', key: 'horizontalDatumReference', desc: 'Horizontal Datum Reference' },
+  { text: 'Horizontal Datum ', key: 'horizontalDatumValue', desc: 'Horizontal Datum Value' },
+  {
+    text: 'Horizontal Uncertainty',
+    key: 'horizontalPositionUncertainty',
+    desc: 'Horizontal Position Uncertainty',
+  },
+  { text: 'Metadata', key: 'metadata', desc: 'Metadata' },
+  { text: 'Method', key: 'methodCurrentsProduct', desc: 'Method Currents Product' },
+  { text: 'Time Uncertainty', key: 'timeUncertainty', desc: 'Time Uncertainty' },
+  { text: 'Vertical CS', key: 'verticalCS', desc: 'Vertical CS' },
+  { text: 'Vertical Datum', key: 'verticalDatum', desc: 'Vertical Datum' },
+  { text: 'Vertical Datum Ref', key: 'verticalDatumReference', desc: 'Vertical Datum Reference' },
+  { text: 'Vertical Uncertainty', key: 'verticalUncertainty', desc: 'Vertical Uncertainty' },
+  { text: 'Water Level Trend Threshold', key: 'waterLevelTrendThreshold', desc: 'Water Level Trend Threshold' },
 ];

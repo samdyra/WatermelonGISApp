@@ -8,12 +8,14 @@ import { type MenuItemsType } from '~/pages';
 interface IProps {
   children?: React.ReactNode;
   menuItems?: MenuItemsType;
+  setMenuIndex: React.Dispatch<React.SetStateAction<number>>;
+  menuIndex: number;
 }
 
 const SideBar = (props: IProps) => {
+  const { setMenuIndex, menuIndex } = props;
   const [isOpen2, setIsOpen2] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-  const [menuIndex, setMenuIndex] = useState(0);
 
   const handleOpen2 = () => setIsOpen2(!isOpen2);
   const handleOpen = () => setIsOpen(!isOpen);
@@ -31,7 +33,7 @@ const SideBar = (props: IProps) => {
   };
 
   const styleSideMenuActive = {
-    width: '330px',
+    width: '390px',
     left: isOpen2 ? '100px' : '200px',
   };
   const styleSideMenu = { width: '100px', left: isOpen2 ? '0' : '100px' };
@@ -107,7 +109,7 @@ const SideBar = (props: IProps) => {
           );
         })}
 
-        <button className={s.openButton1} style={{ right: isOpen ? '-350px' : '-20px' }} onClick={handleOpen}>
+        <button className={s.openButton1} style={{ right: isOpen ? '-410px' : '-20px' }} onClick={handleOpen}>
           <Image
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             src={openlogo}

@@ -1,9 +1,13 @@
+import useFetchS111Data from '~/hooks/useFetchS111Data';
+import useMutationDeleteS111Data from '~/hooks/useMutationDeleteS111Data';
+import useFetchS104Data from '~/hooks/useFetchS104Data';
 import { type NextPage } from 'next';
 import { useState } from 'react';
 import Head from 'next/head';
 import { Navbar, Sidebar, Descbar, Layerbar } from '~/components';
 import { IHO102, inputNames, IHO104, inputNames104, IHO111, inputNames111 } from '~/constants/texts';
 import useFetchS102Data from '~/hooks/useFetchS102Data';
+import useMutationDeleteS104Data from '~/hooks/useMutationDeleteS104Data';
 import useMutationCreateS102Data from '~/hooks/useMutationCreateS102Data';
 import useMutationCreateS104Data from '~/hooks/useMutationCreateS104Data';
 import useMutationCreateS111Data from '~/hooks/useMutationCreateS111Data';
@@ -96,12 +100,28 @@ const Home: NextPage = () => {
   const { mutate: mutate104, isLoading: isMutate104DataLoading } = useMutationCreateS104Data(data104);
 
   const { mutate: mutateDeleteData, isLoading: isLoadingDelete } = useMutationDeleteS102Data();
+  const { mutate: mutateDelete104Data, isLoading: isLoadingDelete104Data } = useMutationDeleteS104Data();
+  const { mutate: mutateDelete111Data, isLoading: isLoadingDelete111Data } = useMutationDeleteS111Data();
 
   const { data: s102Data, isLoading: isS102DataLoading } = useFetchS102Data({
     user_id: '60a7b1b9d6b9a4a7f0a3b3a0',
   });
 
-  const { data, isLoading: isDownloadDataLoading } = useDownloadFetchedData(s102Data?.data ?? []);
+  const { data: s104Data, isLoading: isS104DataLoading } = useFetchS104Data({
+    user_id: '60a7b1b9d6b9a4a7f0a3b3a0',
+  });
+
+  const { data: s111Data, isLoading: isS111DataLoading } = useFetchS111Data({
+    user_id: '60a7b1b9d6b9a4a7f0a3b3a0',
+  });
+
+  const { data: downloadedS102Data, isLoading: isDownloadDataLoading } = useDownloadFetchedData(s102Data?.data ?? []);
+  const { data: downloadedS104Data, isLoading: isDownloadS104DataLoading } = useDownloadFetchedData(
+    s104Data?.data ?? []
+  );
+  const { data: downloadedS111Data, isLoading: isDownloadS111DataLoading } = useDownloadFetchedData(
+    s111Data?.data ?? []
+  );
 
   const isLoading =
     isMutate111DataLoading ||
@@ -109,7 +129,13 @@ const Home: NextPage = () => {
     isMutateDataLoading ||
     isS102DataLoading ||
     isDownloadDataLoading ||
-    isLoadingDelete;
+    isLoadingDelete ||
+    isDownloadS104DataLoading ||
+    isS104DataLoading ||
+    isLoadingDelete104Data ||
+    isLoadingDelete111Data ||
+    isS111DataLoading ||
+    isDownloadS111DataLoading;
 
   const handleOpenDataLayer = () => {
     setIsDataLayerOpen(!isDataLayerOpen);
@@ -147,6 +173,14 @@ const Home: NextPage = () => {
     mutateDeleteData({ _id: param.id, geojsonUri: param.geojsonUri, hdf5Uri: param.hdf5Uri });
   };
 
+  const handleDelete104Data = (param: { id: string; geojsonUri: string; hdf5Uri: string }) => {
+    mutateDelete104Data({ _id: param.id, geojsonUri: param.geojsonUri, hdf5Uri: param.hdf5Uri });
+  };
+
+  const handleDelete111Data = (param: { id: string; geojsonUri: string; hdf5Uri: string }) => {
+    mutateDelete111Data({ _id: param.id, geojsonUri: param.geojsonUri, hdf5Uri: param.hdf5Uri });
+  };
+
   const handleSetModalInfo = (desc: string, isShow: boolean) => {
     if (isShow) {
       return setModalInfo({
@@ -175,7 +209,9 @@ const Home: NextPage = () => {
           handleHideModal={() => handleSetModalInfo('', false)}
           isModalVisible={modalInfo.isModalVisible}
         />
-        <MapV2 geojsonData={data?.[0]?.geojsonData as string} />
+        {menuIndex === 0 && <MapV2 geojsonData={downloadedS102Data?.[0]?.geojsonData as string} type="s102" />}
+        {menuIndex === 1 && <MapV2 geojsonData={downloadedS104Data?.[0]?.geojsonData as string} type="s104" />}
+        {menuIndex === 2 && <MapV2 geojsonData={downloadedS111Data?.[0]?.geojsonData as string} type="s111" />}
         <Descbar isOpen={isOpen} />
         <Sidebar menuItems={menuItems} menuIndex={menuIndex} setMenuIndex={setMenuIndex}>
           {menuIndex === 0 && (
@@ -219,7 +255,15 @@ const Home: NextPage = () => {
           )}
         </Sidebar>
         <Layerbar isOpen={isDataLayerOpen} position="right" size="large" handleShowLayerbar={handleOpenDataLayer}>
-          <AddFeature data={data} isLoading={isLoading} handleDeleteData={handleDeleteData} />
+          {menuIndex === 0 && (
+            <AddFeature data={downloadedS102Data} isLoading={isLoading} handleDeleteData={handleDeleteData} />
+          )}
+          {menuIndex === 1 && (
+            <AddFeature data={downloadedS104Data} isLoading={isLoading} handleDeleteData={handleDelete104Data} />
+          )}
+          {menuIndex === 2 && (
+            <AddFeature data={downloadedS111Data} isLoading={isLoading} handleDeleteData={handleDelete111Data} />
+          )}
         </Layerbar>
       </main>
     </>

@@ -12,9 +12,10 @@ import {
 
 interface MapV2Props {
   geojsonData: string;
+  type?: 's102' | 's104' | 's111';
 }
 
-const MapV2 = ({ geojsonData }: MapV2Props) => {
+const MapV2 = ({ geojsonData, type = 's104' }: MapV2Props) => {
   return (
     <>
       <MapProvider>
@@ -37,22 +38,44 @@ const MapV2 = ({ geojsonData }: MapV2Props) => {
           <FullscreenControl />
           <GeolocateControl />
           <Source id="my-data" type="geojson" data={geojsonData}>
-            <Layer
-              id="my-polygon"
-              type="fill"
-              paint={{
-                'fill-color': [
-                  'interpolate',
-                  ['linear'],
-                  ['get', 'depth'],
-                  0,
-                  'rgb(0, 0, 200)', // Dark red for depth = 0
-                  500,
-                  'rgb(0, 0, 50)', // Light red for depth = 500
-                ],
-                'fill-opacity': 0.5,
-              }}
-            />
+            {type === 's102' && (
+              <Layer
+                id="my-polygon"
+                type="fill"
+                paint={{
+                  'fill-color': [
+                    'interpolate',
+                    ['linear'],
+                    ['get', 'depth'],
+                    0,
+                    'rgb(0, 0, 200)', // Dark red for depth = 0
+                    500,
+                    'rgb(0, 0, 50)', // Light red for depth = 500
+                  ],
+                  'fill-opacity': 0.5,
+                }}
+              />
+            )}
+            {type === 's104' && (
+              <Layer
+                id="my-polygon"
+                type="fill"
+                paint={{
+                  'fill-color': 'red',
+                  'fill-opacity': 0.5,
+                }}
+              />
+            )}
+            {type === 's111' && (
+              <Layer
+                id="my-polygon"
+                type="fill"
+                paint={{
+                  'fill-color': 'blue',
+                  'fill-opacity': 0.5,
+                }}
+              />
+            )}
           </Source>
         </Map>
       </MapProvider>

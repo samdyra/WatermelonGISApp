@@ -80,8 +80,8 @@ const Form111: React.FC<IFormProps> = (props) => {
   };
 
   return (
-    <div className="max-h-min  px-4">
-      <div className="max-h-[60%] overflow-y-scroll  text-white">
+    <div className="overflow-hidden px-4">
+      <div className="max-h-[83%] overflow-y-scroll  text-white">
         <h1 className=" text-lg font-bold text-slate-200">Input Metadata</h1>
         <div className=" flex flex-wrap justify-between ">
           {inputNames.map((item) => (

@@ -19,16 +19,23 @@ interface MapV2Props {
   type?: 's102' | 's104' | 's111';
 }
 
-function NavigateButton(center) {
+interface NavigateProps {
+  center: [number, number];
+}
+
+function NavigateButton(center: NavigateProps) {
   const { mainMap } = useMap();
+  const { center: mapCenter } = center;
 
   const onClick = () => {
-    mainMap.flyTo({ center: center?.center, zoom: 9 });
+    mainMap?.flyTo({ center: mapCenter, zoom: 9 });
   };
 
   useEffect(() => {
     onClick();
   }, [center]);
+
+  return null;
 }
 
 const MapV2 = ({ geojsonData, type = 's104' }: MapV2Props) => {
@@ -36,7 +43,8 @@ const MapV2 = ({ geojsonData, type = 's104' }: MapV2Props) => {
 
   useEffect(() => {
     if (geojsonData) {
-      const centerPoint = centroid(geojsonData as AllGeoJSON);
+      const centerPoint = centroid(geojsonData as unknown as AllGeoJSON);
+
       setCenter(centerPoint.geometry.coordinates as [number, number]);
     }
   }, [geojsonData]);
@@ -51,9 +59,6 @@ const MapV2 = ({ geojsonData, type = 's104' }: MapV2Props) => {
             latitude: center[1],
             zoom: 5,
           }}
-          // longitude={center[0]}
-          // latitude={center[1]}
-          // zoom={10}
           mapboxAccessToken="pk.eyJ1IjoiZHdpcHV0cmFzYW0iLCJhIjoiY2xlMDRxZDU2MTU3dTNxb2Fkc3Q0NWFpciJ9.M-nfqnbgrf7QQdXHAXn07Q"
           style={{
             width: '100vw',
@@ -66,6 +71,7 @@ const MapV2 = ({ geojsonData, type = 's104' }: MapV2Props) => {
           <NavigationControl position="bottom-right" />
           <FullscreenControl />
           <GeolocateControl />
+
           <NavigateButton center={center} />
           <Source id="my-data" type="geojson" data={geojsonData}>
             {type === 's102' && (

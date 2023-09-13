@@ -1,8 +1,8 @@
 import React from 'react';
-import { type ApiContract } from '../types';
+import { type ApiContract104 } from '../types';
 
 interface GeotiffInputProps {
-  setState: React.Dispatch<React.SetStateAction<ApiContract>>;
+  setState: React.Dispatch<React.SetStateAction<ApiContract104>>;
 }
 
 const GeotiffInput: React.FC<GeotiffInputProps> = ({ setState }) => {

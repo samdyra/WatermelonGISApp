@@ -2,7 +2,6 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 
 import { type AxiosResponse } from 'axios';
-import toast from 'react-hot-toast';
 
 interface ResponseType {
   _id: string;

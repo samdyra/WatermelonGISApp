@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance } from 'axios';
 
 const apiConfig: AxiosInstance = axios.create({
-  baseURL: 'http:///127.0.0.1:8000',
+  baseURL: 'http://103.6.53.254:20280',
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',

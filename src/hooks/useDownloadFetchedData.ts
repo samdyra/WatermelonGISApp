@@ -36,7 +36,7 @@ const useFetchGeojsonUrls = (geojsonUriCollection: ResponseType[]) => {
       cacheTime: 1000 * 60 * 30,
       staleTime: 1000 * 60 * 5,
       onSuccess: () => {
-        toast.success('Successfully fetched geojson data');
+        // toast.success('Successfully fetched geojson data');
       },
     }
   );

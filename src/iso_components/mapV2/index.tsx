@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   AttributionControl,
   FullscreenControl,
@@ -8,23 +8,52 @@ import {
   MapProvider,
   NavigationControl,
   Source,
+  useMap,
 } from 'react-map-gl';
+
+import centroid from '@turf/centroid';
+import { type AllGeoJSON } from '@turf/turf';
 
 interface MapV2Props {
   geojsonData: string;
   type?: 's102' | 's104' | 's111';
 }
 
+function NavigateButton(center) {
+  const { mainMap } = useMap();
+
+  const onClick = () => {
+    mainMap.flyTo({ center: center?.center, zoom: 9 });
+  };
+
+  useEffect(() => {
+    onClick();
+  }, [center]);
+}
+
 const MapV2 = ({ geojsonData, type = 's104' }: MapV2Props) => {
+  const [center, setCenter] = React.useState<[number, number]>([116.5925, -8.2775]);
+
+  useEffect(() => {
+    if (geojsonData) {
+      const centerPoint = centroid(geojsonData as AllGeoJSON);
+      setCenter(centerPoint.geometry.coordinates as [number, number]);
+    }
+  }, [geojsonData]);
+
   return (
     <>
       <MapProvider>
         <Map
+          id="mainMap"
           initialViewState={{
-            longitude: 116.5925,
-            latitude: -8.2775,
-            zoom: 13,
+            longitude: center[0],
+            latitude: center[1],
+            zoom: 5,
           }}
+          // longitude={center[0]}
+          // latitude={center[1]}
+          // zoom={10}
           mapboxAccessToken="pk.eyJ1IjoiZHdpcHV0cmFzYW0iLCJhIjoiY2xlMDRxZDU2MTU3dTNxb2Fkc3Q0NWFpciJ9.M-nfqnbgrf7QQdXHAXn07Q"
           style={{
             width: '100vw',
@@ -37,6 +66,7 @@ const MapV2 = ({ geojsonData, type = 's104' }: MapV2Props) => {
           <NavigationControl position="bottom-right" />
           <FullscreenControl />
           <GeolocateControl />
+          <NavigateButton center={center} />
           <Source id="my-data" type="geojson" data={geojsonData}>
             {type === 's102' && (
               <Layer

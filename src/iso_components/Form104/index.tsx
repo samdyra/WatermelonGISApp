@@ -35,8 +35,6 @@ const Form104: React.FC<IFormProps> = (props) => {
   const handleInputChangeEnum = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
 
-    console.log(value, 'value');
-
     setState((prevState) => ({
       ...prevState,
       format_data: {
@@ -80,8 +78,8 @@ const Form104: React.FC<IFormProps> = (props) => {
   };
 
   return (
-    <div className="max-h-min  px-4">
-      <div className="max-h-[60%] overflow-y-scroll  text-white">
+    <div className="overflow-hidden px-4">
+      <div className="h-[83%] overflow-y-scroll text-white">
         <h1 className=" text-lg font-bold text-slate-200">Input Metadata</h1>
         <div className=" flex flex-wrap justify-between ">
           {inputNames.map((item, index) => (

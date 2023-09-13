@@ -2,7 +2,6 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 
 import { type AxiosResponse } from 'axios';
-import toast from 'react-hot-toast';
 
 interface ResponseType {
   _id: string;
@@ -36,7 +35,7 @@ const useFetchGeojsonUrls = (geojsonUriCollection: ResponseType[]) => {
       cacheTime: 1000 * 60 * 30,
       staleTime: 1000 * 60 * 5,
       onSuccess: () => {
-        toast.success('Successfully fetched geojson data');
+        // toast.success('Successfully fetched geojson data');
       },
     }
   );

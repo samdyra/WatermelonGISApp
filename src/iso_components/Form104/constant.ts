@@ -1,3 +1,5 @@
+import { type ApiContract104 } from './types';
+
 const now: Date = new Date();
 
 const year: number = now.getFullYear();
@@ -12,38 +14,38 @@ const formattedTime = `${hours}${minutes}`;
 
 const issueDate: string = formattedDate;
 const issueTime: string = formattedTime;
-import { type ApiContract104 } from './types';
+
 export const initialMetadata = {
-  epoch: '',
-  file_name: '',
-  geographicIdentifier: '',
-  horizontalDatumReference: '',
-  horizontalDatumValue: 0,
-  horizontalPositionUncertainty: 0,
+  epoch: 'G1762',
+  file_name: 'TESTING S104',
+  geographicIdentifier: 'Selat Sunda',
+  horizontalDatumReference: 'EPSG',
+  horizontalDatumValue: 4326,
+  horizontalPositionUncertainty: 10,
   issueDate: issueDate,
   issueTime: issueTime,
-  metadata: '',
-  methodCurrentsProduct: '',
-  timeUncertainty: 0,
-  verticalCS: 0,
-  verticalDatum: 0,
-  verticalDatumReference: 0,
-  verticalUncertainty: 0,
-  waterLevelTrendThreshold: 0,
+  metadata: '102ID00_ITBS100PROJECT.xml',
+  methodCurrentsProduct: 'ADCIRC_Hydrodynamic_Model_Forecasts',
+  timeUncertainty: 10,
+  verticalCS: 6499,
+  verticalDatum: 10,
+  verticalDatumReference: 2,
+  verticalUncertainty: 10,
+  waterLevelTrendThreshold: 0.2,
 };
 
 export const initialFormatData = {
-  data_dynamicity_dt_type: 0,
-  interpolation_type_dt_type: 0,
-  sequencing_rule_type_dt_type: 0,
+  data_dynamicity_dt_type: 1,
+  interpolation_type_dt_type: 1,
+  sequencing_rule_type_dt_type: 1,
 };
 
 export const initialDatasetNcdf = 'base64';
 
-export const initialWaterLevelBandName = '';
+export const initialWaterLevelBandName = 'wl_pred';
 
 export const initialApiContract104: ApiContract104 = {
-  user_id: '',
+  user_id: '60a7b1b9d6b9a4a7f0a3b3a0',
   metadata: initialMetadata,
   format_data: initialFormatData,
   dataset_ncdf: initialDatasetNcdf,
